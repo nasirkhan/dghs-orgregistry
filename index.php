@@ -46,20 +46,7 @@ require_once 'configuration.php';
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li class="dropdown-header">Nav header</li>
-                                <li><a href="#">Separated link</a></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
+                        
                     </ul>
                     <form class="navbar-form navbar-right">
                         <div class="form-group">
@@ -78,17 +65,22 @@ require_once 'configuration.php';
                 <div class="col-md-3">
                     <div class="well sidebar-nav">
                         <ul class="nav">
-                            <li>Sidebar</li>
-                            <li class="active"><a href="#">Link</a></li>
-                            <li><a href="#">Link</a></li>
-                            <li><a href="#">Link</a></li>
-                            <li>Sidebar</li>
-                            <li><a href="#">Link</a></li>
-                            <li><a href="#">Link</a></li>
-                            <li><a href="#">Link</a></li>
-                            <li>Sidebar</li>
-                            <li><a href="#">Link</a></li>
-                            <li><a href="#">Link</a></li>
+                            <li>Bangladesh</li>
+                            <ul>
+                                <?php 
+                                $sql = "SELECT
+                                            admin_division.division_name,
+                                            admin_division.division_bbs_code
+                                        FROM
+                                            `admin_division`
+                                        WHERE
+                                            admin_division.division_active LIKE 1";
+                                $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>"); 
+                                while ($div_data = mysql_fetch_assoc($result)): ?>
+                                <li><?php echo $div_data['division_name'];?></li>
+                                <?php endwhile;?>
+                                
+                            </ul>
                         </ul>
                     </div><!--/.well -->
                 </div>
