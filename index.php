@@ -9,7 +9,7 @@ require_once 'configuration.php';
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
+        <title>Organization Registry</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -119,6 +119,7 @@ require_once 'configuration.php';
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
 
+        <!--
         <script>
             var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
             (function(d, t) {
@@ -127,5 +128,6 @@ require_once 'configuration.php';
                 s.parentNode.insertBefore(g, s)
             }(document, 'script'));
         </script>
+        -->
     </body>
 </html>
