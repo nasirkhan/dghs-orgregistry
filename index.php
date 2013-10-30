@@ -46,7 +46,8 @@ require_once 'configuration.php';
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#">Home</a></li>
-                        
+                        <li><a href="#">Apply for registration</a></li>
+                        <li><a href="#">Report</a></li>
                     </ul>
                     <form class="navbar-form navbar-right">
                         <div class="form-group">
