@@ -14,7 +14,7 @@ require_once 'configuration.php';
         <meta name="viewport" content="width=device-width">
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        
+
         <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -65,30 +65,69 @@ require_once 'configuration.php';
             <div class="row">
                 <div class="col-md-3">
                     <div class="well sidebar-nav">
-                        <ul class="nav">
-                            <li>Bangladesh</li>
+
+                        <div id="org_list"  style="min-height:300px;">
                             <ul>
-                                <?php 
-                                $sql = "SELECT
-                                            admin_division.division_name,
-                                            admin_division.division_bbs_code
-                                        FROM
-                                            `admin_division`
-                                        WHERE
-                                            admin_division.division_active LIKE 1";
-                                $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>"); 
-                                while ($div_data = mysql_fetch_assoc($result)): ?>
-                                <li><?php echo $div_data['division_name'];?></li>
-                                <?php endwhile;?>
-                                
+                                <li id="tree_root">
+                                    <a href="#">Bangladesh</a>
+                                    <ul>
+                                        <?php
+                                        $sql = "SELECT
+                                                    admin_division.division_name,
+                                                    admin_division.division_bbs_code
+                                                FROM
+                                                    `admin_division`
+                                                WHERE
+                                                    admin_division.division_active LIKE 1";
+                                        $div_result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>");
+                                        while ($div_data = mysql_fetch_assoc($div_result)): ?>
+                                        <li id="div_<?php echo $div_data['division_bbs_code']; ?>">
+                                            <a href="#"><?php echo $div_data['division_name']; ?></a>
+                                            <ul>
+                                                <?php
+                                                $sql = "SELECT
+                                                            district_name,
+                                                            district_bbs_code
+                                                        FROM
+                                                            `admin_district`
+                                                        WHERE
+                                                            division_bbs_code = " . $div_data['division_bbs_code'] . "
+                                                        AND active LIKE 1";
+                                                $dis_result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:2 || Query:</b><br />___<br />$sql</p>");
+                                                while ($dis_data = mysql_fetch_assoc($dis_result)): ?>
+                                                <li id="div_<?php echo $dis_data['district_bbs_code']; ?>">
+                                                    <a href="#"><?php echo $dis_data['district_name']; ?></a>
+                                                    <ul>
+                                                    <?php
+                                                    $sql = "SELECT
+                                                        upazila_name,
+                                                        upazila_bbs_code
+                                                    FROM
+                                                        `admin_upazila`
+                                                    WHERE
+                                                        upazila_district_code = " . $dis_data['district_bbs_code'] . "
+                                                    AND upazila_active LIKE 1;";
+                                                    $uni_result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:3 || Query:</b><br />___<br />$sql</p>");
+                                                    while ($uni_data = mysql_fetch_assoc($uni_result)): ?>
+                                                    <li id="div_<?php echo $uni_data['upazila_bbs_code']; ?>">
+                                                        <a href="#"><?php echo $uni_data['upazila_name']; ?></a>
+                                                    </li>
+                                                    <?php endwhile; ?>
+                                                </ul>
+                                                </li>
+                                                <?php endwhile; ?>
+                                            </ul>
+                                        </li>
+                                        <?php endwhile; ?>
+                                    </ul>
+                                </li>
                             </ul>
-                        </ul>
+                        </div>
                     </div><!--/.well -->
                 </div>
                 <div class="col-md-9">
                     <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
+                    
                 </div>
 
             </div>
@@ -103,14 +142,33 @@ require_once 'configuration.php';
 
         <!-- Bootstrap core JavaScript
         ================================================== -->
-        
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+
+<!--        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>-->
+
+        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.js"></script>
+        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.cookie.js"></script>
+        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.hotkeys.js"></script>
+        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.jstree.js"></script>
 
         <script src="js/vendor/bootstrap.min.js"></script>
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+
+        <script type="text/javascript" class="source below">
+            $(function() {
+                $("#org_list").jstree({
+                    "plugins": ["themes", "html_data", "ui", "crrm", "hotkeys"],
+                    "core": {
+                        "animation": 100
+                    },
+                    "themes": {
+                        "theme": "proton"
+                    },
+                })
+            });
+        </script>
 
         <!--
         <script>
