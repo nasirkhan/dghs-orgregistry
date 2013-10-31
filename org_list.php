@@ -124,13 +124,13 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
+                        <li class="active"><a href="index.php">Home</a></li>
                         <li><a href="#">Apply for registration</a></li>
                         <li><a href="#">Report</a></li>
                     </ul>
-                    <form class="navbar-form navbar-right">
+                    <form name="search-form" class="navbar-form navbar-right" action="search.php" method="post">
                         <div class="form-group">
-                            <input type="text" placeholder="Enter keyward" class="form-control">
+                            <input name="query" type="text" placeholder="Enter keyward" class="form-control">
                         </div>                       
                         <button type="submit" class="btn btn-success">Search</button>
                     </form>
