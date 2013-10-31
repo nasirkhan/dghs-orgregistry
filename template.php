@@ -14,7 +14,7 @@ require_once 'configuration.php';
         <meta name="viewport" content="width=device-width">
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
-
+        <link rel="stylesheet" href="library/font-awesome-4.0.1/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -45,16 +45,16 @@ require_once 'configuration.php';
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.php">Home</a></li>
-                        <li><a href="#">Apply for registration</a></li>
-                        <li><a href="report.php">Report Dashboard</a></li>
-                        <li><a href="search.php">Search</a></li>
+                        <li class="active"><a href="index.php"><i class="fa fa-home fa-lg"></i> Home</a></li>
+                        <li><a href="#"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>
+                        <li><a href="report.php"><i class="fa fa-calendar-o fa-lg"></i> Report Dashboard</a></li>
+                        <li><a href="search.php"><i class="fa fa-search fa-lg"></i> Search</a></li>
                     </ul>
                     <form name="search-form" class="navbar-form navbar-right" action="search.php" method="post">
                         <div class="form-group">
                             <input name="query" type="text" placeholder="Enter keyward" class="form-control">
                         </div>                       
-                        <button type="submit" class="btn btn-success">Search</button>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> Search</button>
                     </form>
                 </div><!--/.navbar-collapse -->
                 <!--</div>-->

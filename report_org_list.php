@@ -109,16 +109,16 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="index.php">Home</a></li>
-                        <li><a href="#">Apply for registration</a></li>
-                        <li class="active"><a href="report.php">Report Dashboard</a></li>
-                        <li><a href="search.php">Search</a></li>
+                        <li><a href="index.php"><i class="fa fa-home fa-lg"></i> Home</a></li>
+                        <li><a href="#"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>
+                        <li class="active"><a href="report.php"><i class="fa fa-calendar-o fa-lg"></i> Report Dashboard</a></li>
+                        <li><a href="search.php"><i class="fa fa-search fa-lg"></i> Search</a></li>
                     </ul>
                     <form name="search-form" class="navbar-form navbar-right" action="search.php" method="post">
                         <div class="form-group">
                             <input name="query" type="text" placeholder="Enter keyward" class="form-control">
                         </div>                       
-                        <button type="submit" class="btn btn-success">Search</button>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> Search</button>
                     </form>
                 </div><!--/.navbar-collapse -->
                 <!--</div>-->
