@@ -126,7 +126,8 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="index.php">Home</a></li>
                         <li><a href="#">Apply for registration</a></li>
-                        <li><a href="#">Report</a></li>
+                        <li><a href="report.php">Report Dashboard</a></li>
+                        <li><a href="search.php">Search</a></li>
                     </ul>
                     <form name="search-form" class="navbar-form navbar-right" action="search.php" method="post">
                         <div class="form-group">
