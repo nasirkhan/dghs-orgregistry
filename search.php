@@ -3,7 +3,7 @@ require_once 'configuration.php';
 
 $query = mysql_real_escape_string(trim($_REQUEST['query']));
 
-if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0){
+if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0) {
     $sql = "SELECT
                 organization.org_name,
                 organization.org_code,
@@ -24,8 +24,8 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0){
         ORDER BY
                 org_name";
     $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:orgSearch || Query:</b><br />___<br />$sql</p>");
-    
-    
+
+
     if (mysql_num_rows($result) > 0) {
         $showReportTable = TRUE;
     }
@@ -75,9 +75,10 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0){
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="#">Home</a></li>
                         <li><a href="#">Apply for registration</a></li>
-                        <li><a href="#">Report</a></li>
+                        <li><a href="report.php">Report</a></li>
+                        <li class="active"><a href="search.php">Search</a></li>
                     </ul>
                     <form name="search-form" class="navbar-form navbar-right" action="search.php" method="post">
                         <div class="form-group">
@@ -93,12 +94,12 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0){
         <div class="container">
             <!-- Example row of columns -->
             <div class="row">
-                
                 <div class="col-md-12">
+                    <h2>Search Organization Registry</h2>
                     <?php if ($showReportTable): ?>                 
-                    <div class="alert alert-info">
-                        Total <em><strong><?php echo mysql_num_rows($result); ?></strong></em> organization(s) found.
-                    </div>
+                        <div class="alert alert-info">
+                            Total <em><strong><?php echo mysql_num_rows($result); ?></strong></em> organization(s) found.
+                        </div>
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
@@ -130,13 +131,53 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0){
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
+                    <?php elseif ($query == ""): ?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                You can search <em>Organization Registry</em> by using the organization name or organization code. Use the following search box. 
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-offset-4 col-md-4">
+                                <form name="search-form" class="navbar-form navbar-right" action="search.php" method="post">
+                                    <div class="form-group">
+                                        <input name="query" type="text" placeholder="Enter keyward" class="form-control input-lg">
+                                    </div>                       
+                                    <button type="submit" class="btn btn-success btn-lg">Search</button>
+                                </form>
+                            </div>
+
+                        </div>
+
+
                     <?php else: ?>
-                    <div class="alert alert-warning">
-                        No result found.<br />
-                        Search query was <em><strong><?php echo $query; ?></strong></em>.
-                        <br /><br />
-                        <?php echo $sql; ?>
-                    </div>
+                        <div class="alert alert-warning">
+                            No result found.<br />
+                            Search query was <em><strong><?php echo $query; ?></strong></em>.
+                            <br /><br />
+                            <?php // echo $sql; ?>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                Use another keyword and search again.
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-offset-4 col-md-4">
+                                <form name="search-form" class="navbar-form navbar-right" action="search.php" method="post">
+                                    <div class="form-group">
+                                        <input name="query" type="text" placeholder="Enter keyward" class="form-control input-lg">
+                                    </div>                       
+                                    <button type="submit" class="btn btn-success btn-lg">Search</button>
+                                </form>
+                            </div>
+
+                        </div>
+
+
                     <?php endif; ?>
 
 
