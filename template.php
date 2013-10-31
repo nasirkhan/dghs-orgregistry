@@ -81,12 +81,13 @@ require_once 'configuration.php';
                                                 WHERE
                                                     admin_division.division_active LIKE 1";
                                         $div_result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>");
-                                        while ($div_data = mysql_fetch_assoc($div_result)): ?>
-                                        <li id="div_<?php echo $div_data['division_bbs_code']; ?>">
-                                            <a href="#"><?php echo $div_data['division_name']; ?></a>
-                                            <ul>
-                                                <?php
-                                                $sql = "SELECT
+                                        while ($div_data = mysql_fetch_assoc($div_result)):
+                                            ?>
+                                            <li id="div_<?php echo $div_data['division_bbs_code']; ?>">
+                                                <a href="#"><?php echo $div_data['division_name']; ?></a>
+                                                <ul>
+                                                    <?php
+                                                    $sql = "SELECT
                                                             district_name,
                                                             district_bbs_code
                                                         FROM
@@ -94,13 +95,14 @@ require_once 'configuration.php';
                                                         WHERE
                                                             division_bbs_code = " . $div_data['division_bbs_code'] . "
                                                         AND active LIKE 1";
-                                                $dis_result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:2 || Query:</b><br />___<br />$sql</p>");
-                                                while ($dis_data = mysql_fetch_assoc($dis_result)): ?>
-                                                <li id="div_<?php echo $dis_data['district_bbs_code']; ?>">
-                                                    <a href="#"><?php echo $dis_data['district_name']; ?></a>
-                                                    <ul>
-                                                    <?php
-                                                    $sql = "SELECT
+                                                    $dis_result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:2 || Query:</b><br />___<br />$sql</p>");
+                                                    while ($dis_data = mysql_fetch_assoc($dis_result)):
+                                                        ?>
+                                                        <li id="div_<?php echo $dis_data['district_bbs_code']; ?>">
+                                                            <a href="#"><?php echo $dis_data['district_name']; ?></a>
+                                                            <ul>
+                                                                <?php
+                                                                $sql = "SELECT
                                                         upazila_name,
                                                         upazila_bbs_code
                                                     FROM
@@ -108,18 +110,19 @@ require_once 'configuration.php';
                                                     WHERE
                                                         upazila_district_code = " . $dis_data['district_bbs_code'] . "
                                                     AND upazila_active LIKE 1;";
-                                                    $uni_result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:3 || Query:</b><br />___<br />$sql</p>");
-                                                    while ($uni_data = mysql_fetch_assoc($uni_result)): ?>
-                                                    <li id="div_<?php echo $uni_data['upazila_bbs_code']; ?>">
-                                                        <a href="#"><?php echo $uni_data['upazila_name']; ?></a>
-                                                    </li>
-                                                    <?php endwhile; ?>
+                                                                $uni_result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:3 || Query:</b><br />___<br />$sql</p>");
+                                                                while ($uni_data = mysql_fetch_assoc($uni_result)):
+                                                                    ?>
+                                                                    <li id="div_<?php echo $uni_data['upazila_bbs_code']; ?>">
+                                                                        <a href="#"><?php echo $uni_data['upazila_name']; ?></a>
+                                                                    </li>
+                                                        <?php endwhile; ?>
+                                                            </ul>
+                                                        </li>
+                                            <?php endwhile; ?>
                                                 </ul>
-                                                </li>
-                                                <?php endwhile; ?>
-                                            </ul>
-                                        </li>
-                                        <?php endwhile; ?>
+                                            </li>
+<?php endwhile; ?>
                                     </ul>
                                 </li>
                             </ul>
@@ -128,7 +131,7 @@ require_once 'configuration.php';
                 </div>
                 <div class="col-md-9">
                     <h2>Heading</h2>
-                    
+
                 </div>
 
             </div>
@@ -144,8 +147,10 @@ require_once 'configuration.php';
         <!-- Bootstrap core JavaScript
         ================================================== -->
 
-<!--        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>-->
+        <!--        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+        -->
 
         <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.js"></script>
         <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.cookie.js"></script>
