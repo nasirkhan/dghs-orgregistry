@@ -190,6 +190,9 @@ function getDisDivNameCodeFromUpazilaAndDistrictCode($upa_code, $dis_code) {
  * @return INT division_bbs_code
  */
 function getDivisionCodeFormId($division_id) {
+    if(!$division_id > 0){
+        return "";
+    }
     $sql = "SELECT division_bbs_code FROM admin_division WHERE old_division_id = $division_id LIMIT 1";
     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getDivisionCodeFormId:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
@@ -204,6 +207,9 @@ function getDivisionCodeFormId($division_id) {
  * @return INT district_bbs_code
  */
 function getDistrictCodeFormId($district_id) {
+    if(!$district_id > 0){
+        return "";
+    }
     $sql = "SELECT district_bbs_code FROM admin_district WHERE old_district_id = $district_id LIMIT 1";
     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getDivisionCodeFormId:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
@@ -218,10 +224,217 @@ function getDistrictCodeFormId($district_id) {
  * @return string org_type_name
  */
 function getOrgTypeNameFormOrgTypeCode($org_type_code) {
+    if(!$org_type_code > 0){
+        return "";
+    }
     $sql = "SELECT org_type_id, org_type_code, org_type_name FROM org_type WHERE org_type_code = $org_type_code LIMIT 1";
     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeNameFormOrgTypeCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
     $org_type_data = mysql_fetch_assoc($result);
     $org_type_name = $org_type_data['org_type_name'];
     return $org_type_name;
+}
+
+function getOrgTypeNameFormOrgCode($org_code) {
+    if (!$org_code > 0) {
+        return "";
+    }
+
+    $sql = "SELECT org_code, org_name, org_type_code, organization_id FROM organization WHERE org_code = $org_code  LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeNameFormOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $data = mysql_fetch_assoc($result);
+    $org_type_code = $data['org_type_code'];
+
+    if (!$org_type_code > 0) {
+        return "";
+    }
+
+    $sql = "SELECT org_type_name  FROM `org_type` WHERE `org_type_code` = $org_type_code LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeNameFormOrgCode:2</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_type_data = mysql_fetch_assoc($result);
+    $org_type_name = $org_type_data['org_type_name'];
+    return $org_type_name;
+}
+
+
+/**
+ * Get the <b>Organization Name</b> from the <b>Organization Code</b><b></b>
+ * @param int $org_code Organization Code
+ * @return String org_name Organization Name
+ */
+function getOrgNameFormOrgCode($org_code) {
+    if(!$org_code > 0){
+        return "";
+    }
+    $sql = "SELECT organization.id,organization.org_name FROM organization WHERE organization.org_code = $org_code";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgNameFormOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_data = mysql_fetch_assoc($result);
+    return $org_data['org_name'];
+}
+
+/**
+ * Get <b>Organizaition Type Code</b> form the <b>Organization Code</b>
+ * @param INT $org_code
+ * @return INT org_type_code
+ */
+function getOrgTypeCodeFromOrgCode($org_code) {
+    if(!$org_code > 0){
+        return "";
+    }
+    $sql = "SELECT organization.org_type_code FROM organization WHERE organization.org_code = $org_code LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeCodeFromOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_type_data = mysql_fetch_assoc($result);
+    return $org_type_data['org_type_code'];
+}
+
+/**
+ * Sanctioned bed input field will be displayed for some specific organization
+ * types, here it checks the organization by org_code
+ * @param INT $org_type_code
+ * @return boolean
+ */
+function showSanctionedBed($org_type_code) {
+    if(!$org_type_code > 0){
+        return "";
+    }
+    $org_type_code = (int) $org_type_code;
+    if ($org_type_code >= 1012 && $org_type_code <= 1018) {
+        return FALSE;
+    } else if ($org_type_code >= 1019 && $org_type_code <= 1020) {
+        return TRUE;
+    } else if ($org_type_code == 1021) {
+        return FALSE;
+    } else if ($org_type_code >= 1022 && $org_type_code <= 1029) {
+        return TRUE;
+    } else if ($org_type_code >= 1030 && $org_type_code <= 1032) {
+        return FALSE;
+    } else if ($org_type_code >= 1033 && $org_type_code <= 1036) {
+        return TRUE;
+    } else if ($org_type_code >= 1037 && $org_type_code <= 1040) {
+        return FALSE;
+    } else if ($org_type_code == 1041) {
+        return TRUE;
+    } else if ($org_type_code == 1042) {
+        return FALSE;
+    } else if ($org_type_code >= 1043 && $org_type_code <= 1044) {
+        return TRUE;
+    } else if ($org_type_code >= 1045 && $org_type_code <= 1055) {
+        return FALSE;
+    } else if ($org_type_code == 1056) {
+        return TRUE;
+    } else if ($org_type_code >= 1057 && $org_type_code <= 1059) {
+        return FALSE;
+    } else if ($org_type_code >= 1060 && $org_type_code <= 1061) {
+        return TRUE;
+    } else if ($org_type_code == 1062) {
+        return FALSE;
+    }
+}
+
+/**
+ * Get <b>Electricity Main Source Name</b> From <b>Electricity Main Source Code</b>
+ * @param type $electricity_main_source_code
+ * @return type
+ */
+function getElectricityMainSourceNameFromCode($electricity_main_source_code) {
+    if(!$electricity_main_source_code > 0){
+        return "";
+    }
+    $sql = "SELECT `electricity_source_name` FROM `org_source_of_electricity_main` WHERE `electricity_source_code` = \"$electricity_main_source_code\" LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>checkPasswordIsCorrect:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $data = mysql_fetch_assoc($result);
+
+    return $data['electricity_source_name'];
+}
+
+/**
+ * Get <b>Electricity Alternative Source Name</b> From <b>Electricity Alternative Source Code</b>
+ * @param type $electricity_main_source_code
+ * @return type
+ */
+function getElectricityAlterSourceNameFromCode($electricity_alter_source_code) {
+    if(!$electricity_alter_source_code > 0){
+        return "";
+    }
+    $sql = "SELECT `electricity_source_name` FROM `org_source_of_electricity_main` WHERE `electricity_source_code` = \"$electricity_alter_source_code\" LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getElectricityAlterSourceNameFromCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $data = mysql_fetch_assoc($result);
+
+    return $data['electricity_source_name'];
+}
+
+/**
+ * Get <b>Water Main Source Name</b> From <b>Water Main Source Code</b>
+ * @param type $water_source_code
+ * @return type
+ */
+function getWaterMainSourceNameFromCode($water_source_code) {
+    if(!$water_source_code > 0){
+        return "";
+    }
+    $sql = "SELECT `water_supply_source_name` FROM `org_source_of_water_supply_main` WHERE `water_supply_source_code` = \"$water_source_code\" LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getWaterMainSourceNameFromCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $data = mysql_fetch_assoc($result);
+
+    return $data['water_supply_source_name'];
+}
+
+/**
+ * Get <b>Water Alternative Source Name</b> From <b>Water Alternative Source Code</b>
+ * @param type $water_source_code
+ * @return type
+ */
+function getWaterAlterSourceNameFromCode($water_source_code) {
+    if(!$water_source_code > 0){
+        return "";
+    }
+    $sql = "SELECT `water_supply_source_name` FROM `org_source_of_water_supply_main` WHERE `water_supply_source_code` = \"$water_source_code\" LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getWaterAlterSourceNameFromCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $data = mysql_fetch_assoc($result);
+
+    return $data['water_supply_source_name'];
+}
+
+
+/**
+ * Get <b>Toilet Type Name</b> From <b>Toilet Type Code</b>
+ * @param type $toilet_type_code
+ * @return type
+ */
+function getToiletTypeNameFromCode($toilet_type_code) {
+    if(!$toilet_type_code > 0){
+        return "";
+    }
+    $sql = "SELECT `toilet_type_name` FROM `org_toilet_type` WHERE `toilet_type_code` = \"$toilet_type_code\" LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getToiletTypeNameFromCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $data = mysql_fetch_assoc($result);
+
+    return $data['toilet_type_name'];
+}
+
+
+/**
+ * Get <b>Toilet Adequacy Name</b> From <b>Toilet Adequacy Code</b>
+ * @param type $toilet_adequacy_code
+ * @return type
+ */
+function getToiletAdequacyNameFromCode($toilet_adequacy_code) {
+    if(!$toilet_adequacy_code > 0){
+        return "";
+    }
+    $sql = "SELECT `toilet_adequacy_name` FROM `org_toilet_adequacy` WHERE `toilet_adequacy_code` = \"$toilet_adequacy_code\" LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getToiletAdequacyNameFromCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $data = mysql_fetch_assoc($result);
+
+    return $data['toilet_adequacy_name'];
 }
