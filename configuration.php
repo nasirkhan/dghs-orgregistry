@@ -2,6 +2,8 @@
 
 error_reporting(E_ERROR | E_WARNING | E_PARSE );
 
+// error_reporting(0); // Turn off all error reporting
+
 session_start();
 
 /**
