@@ -125,16 +125,295 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="basic-info">
-                            x  
+                            <table class="table table-striped table-hover">
+                                <tr>
+                                    <td width="50%"><strong>Organization Name</strong></td>
+                                    <td><?php echo "$org_name"; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Organization Code</strong></td>
+                                    <td><?php echo $data['org_code']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Agency code</strong></td>
+                                    <td><?php echo $data['agency_code']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Agency Name</strong></td>
+                                    <td><?php echo getAgencyNameFromAgencyCode($data['agency_code']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Financial Code (Revenue Code)</strong></td>
+                                    <td><?php echo $data['financial_revenue_code']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Year Established</strong></td>
+                                    <td><?php echo $data['year_established']; ?></td>
+                                </tr>
+                                <tr  class="success">
+                                    <td width="50%" colspan="2"><strong>Urban/Rural Location Information of the Organization</strong></td>
+                                    <!--<td><?php // echo $data['org_code'];         ?></td>-->
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Urban/Rural Location</strong></td>
+                                    <td><?php // echo $data['org_code'];         ?></td>
+                                </tr>
+                                <tr  class="success">
+                                    <td width="50%" colspan="2"><strong>Regional location of the organization</strong></td>
+                                    <!--<td><?php // echo $data['org_code'];         ?></td>-->
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Division Name</strong></td>
+                                    <td><?php echo $data['division_name']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Division Code</strong></td>
+                                    <td><?php echo $data['division_code']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>District Name</strong></td>
+                                    <td><?php echo $data['district_name']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>District Code</strong></td>
+                                    <td><?php echo $data['district_code']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Upazila Name</strong></td>
+                                    <td><?php echo $data['upazila_thana_name']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Upazila Code</strong></td>
+                                    <td><?php echo $data['upazila_thana_code']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Union Name</strong></td>
+                                    <td><?php echo $data['union_name']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Union Code</strong></td>
+                                    <td><?php echo $data['union_code']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Ward</strong></td>
+                                    <td><?php echo $data['ward_code']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Village/Street</strong></td>
+                                    <td><?php echo $data['village_code']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>House No</strong></td>
+                                    <td><?php echo $data['house_number']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Longitude</strong></td>
+                                    <td><a href="#" class="text-input" id="longitude" ><?php echo $data['longitude']; ?></a></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Latitude</strong></td>
+                                    <td><a href="#" class="text-input" id="latitude" ><?php echo $data['latitude']; ?></a></td>
+                                </tr>
+                            </table>  
                         </div>
                         <div class="tab-pane" id="ownership-info">
-                            a
+                            <table class="table table-striped table-hover">
+                                <tr>
+                                    <td width="50%"><strong>Ownership</strong></td>
+                                    <td width="50%"><?php echo getOrgOwnarshioNameFromCode($data['ownership_code']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Organization Type</strong></td>
+                                    <td width="50%"><?php echo getOrgTypeNameFormOrgTypeCode($data['org_type_code']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Organization Function</strong></td>
+                                    <td width="50%"></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Organization Level</strong></td>
+                                    <td width="50%"><?php echo getOrgLevelNamefromCode($data['org_level_code']); ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Health Care Level</strong></td>
+                                    <td width="50%"><?php echo $data['org_healthcare_level_code']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Special service / status of the hospital / clinic</strong></td>
+                                    <td width="50%"></td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="tab-pane" id="permission_approval-info">
-                            b
+                            <table class="table table-striped table-hover">
+                                <!--
+                                <tr>
+                                    <td width="60%"><strong>Special service / status of the hospital / clinic</strong></td>
+                                    <td><?php // echo $data['org_code'];       ?></td>
+                                </tr>
+                                -->
+
+                                <tr class="success">
+                                    <td width="50%" colspan="2"><strong>Permission/Approval/License information</strong></td>
+                                </tr>
+
+                                <tr>
+                                    <td width="60%"><strong>Date of Permission/Approval/License information</strong></td>
+                                    <td><?php echo $data['permission_approval_license_info_date']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="60%"><strong>Permission/Approval/License Type</strong></td>
+                                    <td><?php echo $data['permission_approval_license_type']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="60%"><strong>Permission/ Approval/ License Authority</strong></td>
+                                    <td><?php echo $data['permission_approval_license_aithority']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="60%"><strong>Permission/ Approval/ License No</strong></td>
+                                    <td><?php echo $data['permission_approval_license_number']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="60%"><strong>Next renewal Date</strong></td>
+                                    <td><?php echo $data['permission_approval_license_next_renewal_date']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="60%"><strong>Conditions given for permission/ approval/ license or renewal thereof </strong></td>
+                                    <td><?php echo $data['permission_approval_license_conditions']; ?></td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="tab-pane" id="contact-info">
-                            c
+                            <table class="table table-striped table-hover">
+                                <tr>
+                                    <td width="50%"><strong>Mailing Address</strong></td>
+                                    <td><?php echo $data['mailing_address']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Land Phone Number 1</strong></td>
+                                    <td><?php echo $data['land_phone1']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Land Phone Number 2</strong></td>
+                                    <td><?php echo $data['land_phone2']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Land Phone Number 3</strong></td>
+                                    <td><?php echo $data['land_phone3']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Mobile Phone Number 1</strong></td>
+                                    <td><?php echo $data['mobile_number1']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Mobile Phone Number 2</strong></td>
+                                    <td><?php echo $data['mobile_number2']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Mobile Phone Number 3</strong></td>
+                                    <td><?php echo $data['mobile_number3']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Email Address 1</strong></td>
+                                    <td><?php echo $data['email_address1']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Email Address 2</strong></td>
+                                    <td><?php echo $data['email_address2']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Email Address 3</strong></td>
+                                    <td><?php echo $data['email_address3']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Fax Number 1</strong></td>
+                                    <td><?php echo $data['fax_number1']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Fax Number 2</strong></td>
+                                    <td><?php echo $data['fax_number2']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Fax Number 3</strong></td>
+                                    <td><?php echo $data['fax_number3']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Website URL</strong></td>
+                                    <td><?php echo $data['website_address']; ?></td>
+                                </tr>
+                                <!--
+                                <tr>
+                                    <td><strong>Website2</strong></td>
+                                    <td><?php // echo $data['org_code'];       ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Website3</strong></td>
+                                    <td><?php // echo $data['district_code'];       ?></td>
+                                </tr>
+                                -->
+                                <tr>
+                                    <td width="50%"><strong>Facebook</strong></td>
+                                    <td><?php echo $data['facebook_page']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Google+</strong></td>
+                                    <td><?php echo $data['google_plus_page']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Twitter</strong></td>
+                                    <td><?php echo $data['twitter_page']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><strong>Youtube</strong></td>
+                                    <td><?php echo $data['youtube_page']; ?></td>
+                                </tr>
+                                <?php if ($isCommunityClinic): ?>
+                                    <tr class="success">
+                                        <td><strong>Additional Information</strong></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><strong>Name of CHCP</strong></td>
+                                        <td><?php echo $data['additional_chcp_name']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><strong>Contact no of CHCP</strong></td>
+                                        <td><?php echo $data['additional_chcp_contact']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><strong>Community group information</strong></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><strong>Name of Chairman (CG)</strong></td>
+                                        <td><?php echo $data['additional_chairnam_name']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><strong>Contact No (CG)</strong></td>
+                                        <td><?php echo $data['additional_chairman_contact']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><strong>Community Support group information </strong></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><strong>Name of Chairman (CSG-1)</strong></td>
+                                        <td><?php echo $data['additional_csg_1_name']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><strong>Contact No (CSG-1)</strong></td>
+                                        <td><?php echo $data['additional_csg_1_contact']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><strong>Name of Chairman (CSG-2)</strong></td>
+                                        <td><?php echo $data['additional_csg_2_name']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><strong>Contact No (CSG-2)</strong></td>
+                                        <td><?php echo $data['additional_csg_2_contact']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                            </table>
                         </div>
                         <div class="tab-pane" id="facility-info">
                             <table class="table table-striped table-hover table-bordered">

@@ -438,3 +438,20 @@ function getToiletAdequacyNameFromCode($toilet_adequacy_code) {
 
     return $data['toilet_adequacy_name'];
 }
+
+function getOrgOwnarshioNameFromCode($org_ownarship_code) {
+    if(!$org_ownarship_code > 0){
+        return "";
+    }
+    $sql = "SELECT                
+                org_ownership_authority.org_ownership_authority_name
+            FROM
+                org_ownership_authority
+            WHERE
+                org_ownership_authority.org_ownership_authority_code = $org_ownarship_code LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgOwnarshioNameFromCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $data = mysql_fetch_assoc($result);
+
+    return $data['org_ownership_authority_name'];
+}
