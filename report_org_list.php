@@ -56,13 +56,32 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
 
     $query_string .= " ORDER BY org_name";
 
-    $sql = "SELECT organization.org_name, organization.org_code FROM organization $query_string";
+    $sql = "SELECT
+                organization.org_name,
+                organization.org_code,
+                admin_division.division_name,
+                admin_division.division_bbs_code,
+                admin_district.district_name,
+                admin_district.district_bbs_code,
+                org_agency_code.org_agency_name,
+                org_agency_code.org_agency_code,
+                admin_upazila.upazila_name,
+                admin_upazila.upazila_bbs_code,
+                org_type.org_type_name,
+                org_type.org_type_code
+            FROM
+                organization
+            LEFT JOIN admin_division ON organization.division_code = admin_division.division_bbs_code
+            LEFT JOIN admin_district ON organization.district_code = admin_district.district_bbs_code
+            LEFT JOIN admin_upazila ON organization.upazila_thana_code = admin_upazila.upazila_bbs_code
+            LEFT JOIN org_agency_code ON organization.agency_code = org_agency_code.org_agency_code
+            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code $query_string";
     $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
     if (mysql_num_rows($org_list_result) > 0) {
         $showReportTable = TRUE;
     }
-//echo "$sql";
+echo "$sql";
 }
 ?>
 <!DOCTYPE html>
@@ -243,13 +262,23 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                                     <tr>
                                         <td><strong>Organization Name</strong></td>
                                         <td><strong>Organization Code</strong></td>
+                                        <td><strong>Division</strong></td>
+                                        <td><strong>District</strong></td>
+                                        <td><strong>Upazila</strong></td>
+                                        <td><strong>Agency</strong></td>
+                                        <td><strong>Org Type</strong></td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php while ($data = mysql_fetch_assoc($org_list_result)): ?>
                                         <tr>
-                                            <td><?php echo $data['org_name']; ?></td>
+                                            <td><a href="org_profile.php?org_code=<?php echo $data['org_code']; ?>" target="_blank"><?php echo $data['org_name']; ?></a></td>
                                             <td><?php echo $data['org_code']; ?></td>
+                                            <td><?php echo $data['division_name']; ?></td>
+                                            <td><?php echo $data['district_name']; ?></td>
+                                            <td><?php echo $data['org_code']; ?></td>
+                                            <td><?php echo $data['org_agency_name']; ?></td>
+                                            <td><?php echo $data['org_type_name']; ?></td>
                                         </tr>
                                     <?php endwhile; ?>
                                 </tbody>
