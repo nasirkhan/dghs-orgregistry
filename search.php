@@ -211,15 +211,7 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0) {
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
 
-        <!--
-        <script>
-            var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
-            (function(d, t) {
-                var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
-                g.src = '//www.google-analytics.com/ga.js';
-                s.parentNode.insertBefore(g, s)
-            }(document, 'script'));
-        </script>
-        -->
+        <!-- Google Analytics Code-->
+        <?php include_once 'include/ga_code.php';?>
     </body>
 </html>

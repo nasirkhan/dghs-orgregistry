@@ -586,33 +586,14 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
 
-        <script type="text/javascript" class="source below">
-            $(function() {
-                $("#org_list").jstree({
-                    "plugins": ["themes", "html_data", "ui", "crrm", "hotkeys"],
-                    "core": {
-                        "animation": 100
-                    },
-                    "themes": {
-                        "theme": "proton"
-                    },
-                })
-            });
-        </script>
         <script>
             $(function() {
                 $('.nav-tab-ul #basic-info').tab('show');
             });
         </script>
-        <!--
-        <script>
-            var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
-            (function(d, t) {
-                var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
-                g.src = '//www.google-analytics.com/ga.js';
-                s.parentNode.insertBefore(g, s)
-            }(document, 'script'));
-        </script>
-        -->
+        
+        <!-- Google Analytics Code-->
+        <?php include_once 'include/ga_code.php';?>
+        
     </body>
 </html>

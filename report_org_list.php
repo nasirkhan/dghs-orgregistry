@@ -81,7 +81,7 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
     if (mysql_num_rows($org_list_result) > 0) {
         $showReportTable = TRUE;
     }
-echo "$sql";
+//echo "$sql";
 }
 ?>
 <!DOCTYPE html>
@@ -389,15 +389,7 @@ echo "$sql";
             });
         </script>
 
-        <!--
-        <script>
-            var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
-            (function(d, t) {
-                var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
-                g.src = '//www.google-analytics.com/ga.js';
-                s.parentNode.insertBefore(g, s)
-            }(document, 'script'));
-        </script>
-        -->
+        <!-- Google Analytics Code-->
+        <?php include_once 'include/ga_code.php';?>
     </body>
 </html>
