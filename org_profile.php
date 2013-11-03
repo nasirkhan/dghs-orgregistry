@@ -28,6 +28,16 @@ if ($org_type_code == 1039) {
 }
 
 $showSanctionedBed = showSanctionedBed($org_type_code);
+
+
+$latitude = $data['latitude'];
+$longitude = $data['longitude'];
+$coordinate = $longitude . "," . $latitude;
+if (!($latitude > 0) || !($longitude > 0)) {
+    $map_popup = "";
+} else {
+    $map_popup = $org_name;
+}
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -43,6 +53,10 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="library/font-awesome-4.0.1/css/font-awesome.min.css">
+        <link rel="stylesheet" href="library/leaflet-0.6.4/leaflet.css" />
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="library/leaflet-0.6.4/leaflet.ie.css" />
+        <![endif]-->
         <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -93,7 +107,8 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
                     <!--<h2><?php echo "$org_name"; ?></h2>-->
                     <div class="page-header">
                         <h1><?php echo "$org_name"; ?></h1>
-                        <h3><?php echo "$org_type_name ($org_type_code)"; ?></h3>
+                        <h3><?php echo "$org_type_name"; ?></h3>
+                        <!--<h3><?php echo "$org_type_name ($org_type_code)"; ?></h3>-->
                     </div>
 
                     <!-- Nav tabs -->
@@ -101,6 +116,9 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
 
                     <ul class="nav nav-tabs nav-tab-ul">
                         <li class="active">
+                            <a href="#org-profile-home" data-toggle="tab"><i class="fa fa-qrcode"></i> Org Profile</a>
+                        </li>
+                        <li class="">
                             <a href="#basic-info" data-toggle="tab"><i class="fa fa-hospital"></i> Basic Information</a>
                         </li>
                         <li class="">
@@ -120,8 +138,36 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="basic-info">
-                            <table class="table table-striped table-hover">
+                        <div class="tab-pane active" id="org-profile-home">
+                            <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <?php
+                                        $image_src = $data['org_photo'];
+                                        $image_src = "http://test.dghs.gov.bd/hrmnew/$image_src";
+
+//                                        echo "$image_src";
+                                        $image_src = "img/bangladesh_govt_logo.png";
+
+
+                                        if (file_exists($image_src)) {
+                                            echo "<img src=\"$image_src\" class=\"img-thumbnail\" />";
+                                        } else {
+                                            echo "<img data-src=\"holder.js/480x360\"  class=\"img-thumbnail\" />";
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div id="map" style="height: 500px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="tab-pane" id="basic-info">
+                            <table class="table table-striped table-hover table-bordered">
                                 <tr>
                                     <td width="50%"><strong>Organization Name</strong></td>
                                     <td><?php echo "$org_name"; ?></td>
@@ -213,7 +259,7 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
                             </table>  
                         </div>
                         <div class="tab-pane" id="ownership-info">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover table-bordered">
                                 <tr>
                                     <td width="50%"><strong>Ownership</strong></td>
                                     <td width="50%"><?php echo getOrgOwnarshioNameFromCode($data['ownership_code']); ?></td>
@@ -241,7 +287,7 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
                             </table>
                         </div>
                         <div class="tab-pane" id="permission_approval-info">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover table-bordered">
                                 <!--
                                 <tr>
                                     <td width="60%"><strong>Special service / status of the hospital / clinic</strong></td>
@@ -280,7 +326,7 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
                             </table>
                         </div>
                         <div class="tab-pane" id="contact-info">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover table-bordered">
                                 <tr>
                                     <td width="50%"><strong>Mailing Address</strong></td>
                                     <td><?php echo $data['mailing_address']; ?></td>
@@ -412,7 +458,7 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
                             </table>
                         </div>
                         <div class="tab-pane" id="facility-info">
-                            <table class="table table-striped table-hover table-bordered">
+                            <table class="table table-striped table-hover table-bordered table-bordered">
                                 <tr class="success">
                                     <td width="50%" colspan="2"><strong>Source of Electricity</strong></td>
                                 </tr>
@@ -549,7 +595,6 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
                                     <td><?php echo $data['land_mutation_number']; ?></td>
                                 </tr>
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -584,11 +629,41 @@ $showSanctionedBed = showSanctionedBed($org_type_code);
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+        
+        <script src="library/leaflet-0.6.4/leaflet.js"></script>
 
         <script>
             $(function() {
-                $('.nav-tab-ul #basic-info').tab('show');
+                $('.nav-tab-ul #org-profile-home').tab('show');
             });
+        </script>
+        <script>
+
+            var map = L.map('map').setView([<?php echo $coordinate; ?>], 13);
+
+            L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+            }).addTo(map);
+
+
+            L.marker([<?php echo $coordinate; ?>]).addTo(map)
+                    .bindPopup("<?php echo "$map_popup"; ?>").openPopup();
+
+
+
+
+            var popup = L.popup();
+
+            function onMapClick(e) {
+                popup
+                        .setLatLng(e.latlng)
+                        .setContent("You clicked the map at " + e.latlng.toString())
+                        .openOn(map);
+            }
+
+            map.on('click', onMapClick);
+
         </script>
         
         <!-- Google Analytics Code-->
