@@ -25,14 +25,10 @@ require_once 'configuration.php';
         <![endif]-->
         <div class="container">
 
-            <!-- Main jumbotron for a primary marketing message or call to action -->
-            <div class="jumbotron">
-                <h1>Organization Registry</h1>
-                <p>
-                    Government of People's Republic of Bangladesh <br />
-                    Directorate General of Health Services
-                </p>
-            </div>
+            <!-- Page Header -->
+            <?php include_once 'include/header_page_header.php'; ?>
+            
+            
             <div class="navbar navbar-inverse navbar-default">
                 <!--<div class="container">-->
                 <div class="navbar-header">
@@ -116,13 +112,13 @@ require_once 'configuration.php';
                                                                     <li id="div_<?php echo $uni_data['upazila_bbs_code']; ?>">
                                                                         <a href="#"><?php echo $uni_data['upazila_name']; ?></a>
                                                                     </li>
-                                                        <?php endwhile; ?>
+                                                                <?php endwhile; ?>
                                                             </ul>
                                                         </li>
-                                            <?php endwhile; ?>
+                                                    <?php endwhile; ?>
                                                 </ul>
                                             </li>
-<?php endwhile; ?>
+                                        <?php endwhile; ?>
                                     </ul>
                                 </li>
                             </ul>
@@ -141,7 +137,7 @@ require_once 'configuration.php';
             <footer>
                 <p>
                     <!-- Copyright info -->
-                    <?php include_once 'include/footer_copyright_info.php';?>
+                    <?php include_once 'include/footer_copyright_info.php'; ?>
                 </p>
             </footer>
         </div> <!-- /container -->        
@@ -166,6 +162,6 @@ require_once 'configuration.php';
         <script src="js/main.js"></script>
 
         <!-- Google Analytics Code-->
-        <?php include_once 'include/ga_code.php';?>
+        <?php include_once 'include/ga_code.php'; ?>
     </body>
 </html>

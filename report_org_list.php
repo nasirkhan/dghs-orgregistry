@@ -108,14 +108,10 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
         <![endif]-->
         <div class="container">
 
-            <!-- Main jumbotron for a primary marketing message or call to action -->
-            <div class="jumbotron">
-                <h1>Organization Registry</h1>
-                <p>
-                    Government of People's Republic of Bangladesh <br />
-                    Directorate General of Health Services
-                </p>
-            </div>
+            <!-- Page Header -->
+            <?php include_once 'include/header_page_header.php'; ?>
+            
+            
             <div class="navbar navbar-inverse navbar-default">
                 <!--<div class="container">-->
                 <div class="navbar-header">
