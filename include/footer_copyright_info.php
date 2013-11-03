@@ -1,0 +1,1 @@
+&copy; Company 2013

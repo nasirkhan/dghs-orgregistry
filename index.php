@@ -284,7 +284,10 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
             <hr>
 
             <footer>
-                <p>&copy; MIS, DGHS 2013</p>
+                <p>
+                    <!-- Copyright info -->
+                    <?php include_once 'include/footer_copyright_info.php';?>
+                </p>
             </footer>
         </div> <!-- /container -->        
 

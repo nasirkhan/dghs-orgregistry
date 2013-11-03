@@ -188,7 +188,10 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0) {
             <hr>
 
             <footer>
-                <p>&copy; Company 2013</p>
+                <p>
+                    <!-- Copyright info -->
+                    <?php include_once 'include/footer_copyright_info.php';?>
+                </p>
             </footer>
         </div> <!-- /container -->        
 
