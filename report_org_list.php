@@ -343,19 +343,6 @@ echo "$sql";
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
 
-        <script type="text/javascript" class="source below">
-            $(function() {
-                $("#org_list").jstree({
-                    "plugins": ["themes", "html_data", "ui", "crrm", "hotkeys"],
-                    "core": {
-                        "animation": 100
-                    },
-                    "themes": {
-                        "theme": "proton"
-                    },
-                })
-            });
-        </script>
         <script type="text/javascript">
             // load division
             $('#admin_division').change(function() {

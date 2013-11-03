@@ -196,8 +196,10 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0) {
         <!-- Bootstrap core JavaScript
         ================================================== -->
 
-<!--        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>-->
+        <!--        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+        -->
 
         <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.js"></script>
         <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.cookie.js"></script>
@@ -208,20 +210,6 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0) {
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
-
-        <script type="text/javascript" class="source below">
-            $(function() {
-                $("#org_list").jstree({
-                    "plugins": ["themes", "html_data", "ui", "crrm", "hotkeys"],
-                    "core": {
-                        "animation": 100
-                    },
-                    "themes": {
-                        "theme": "proton"
-                    },
-                })
-            });
-        </script>
 
         <!--
         <script>
