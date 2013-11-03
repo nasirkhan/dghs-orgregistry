@@ -260,7 +260,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                                     <?php $i++; ?>
                                     <tr>
                                         <td><?php echo $i; ?></td>
-                                        <td><?php echo $row['org_name']; ?></td>
+                                        <td><a href="org_profile.php?org_code=<?php echo $row['org_code']; ?>" target="_blank"><?php echo $row['org_name']; ?></a></td>
                                         <td><?php echo $row['org_code']; ?></td>
                                         <td><?php echo $row['org_type_name']; ?></td>
                                         <td><?php echo $row['org_level_name']; ?></td>

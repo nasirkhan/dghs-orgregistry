@@ -120,7 +120,7 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0) {
                                     <?php $i++; ?>
                                     <tr>
                                         <td><?php echo $i; ?></td>
-                                        <td><?php echo $row['org_name']; ?></td>
+                                        <td><a href="org_profile.php?org_code=<?php echo $row['org_code']; ?>" target="_blank"><?php echo $row['org_name']; ?></a></td>
                                         <td><?php echo $row['org_code']; ?></td>
                                         <td><?php echo $row['org_type_name']; ?></td>
                                         <td><?php echo getDivisionNameFromCode($row['division_code']); ?></td>
