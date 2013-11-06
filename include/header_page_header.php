@@ -7,7 +7,7 @@
             <h1>Organization Registry</h1>
             <p>
                 Government of People's Republic of Bangladesh <br />
-                Directorate General of Health Services
+                Ministry of Health and Family Welfare
             </p>
         </div>
     </div>
