@@ -737,6 +737,31 @@ if (!($latitude > 0) || !($longitude > 0)) {
         <!-- Google Analytics Code-->
         <?php include_once 'include/ga_code.php'; ?>
 
+        <?php
+        /*
+         * ******************************
+         * 
+         * Calculate the execution time
+         * 
+         * *******************************
+         */
+        $time_end = microtime(true);
+
+        //dividing with 60 will give the execution time in minutes other wise seconds
+        $execution_time = ($time_end - $start_time);
         
+        $showExecutionTime = TRUE;
+        ?>
+        <?php if($showExecutionTime): ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="text-center">
+                        <code>Execution time: <?php echo "$execution_time sec"; ?></code>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
     </body>
 </html>
