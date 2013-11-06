@@ -1,6 +1,8 @@
 <?php
 require_once 'configuration.php';
 
+$start_time = microtime(true);
+
 if (isset($_GET['org_code']) && $_GET['org_code'] != "") {
     $org_code = (int) mysql_real_escape_string(trim($_GET['org_code']));
     $org_name = getOrgNameFormOrgCode($org_code);
@@ -136,6 +138,9 @@ if (!($latitude > 0) || !($longitude > 0)) {
                         <li class="">
                             <a href="#facility-info" data-toggle="tab"><i class="fa fa-shield"></i> Facility Info</a>
                         </li>
+                        <li class="">
+                            <a href="#org-hrm-status" data-toggle="tab"><i class="fa fa-group"></i> HRM Status</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="org-profile-home">
@@ -215,7 +220,6 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="tab-pane" id="basic-info">
                             <table class="table table-striped table-hover table-bordered">
@@ -245,15 +249,15 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </tr>
                                 <tr  class="success">
                                     <td width="50%" colspan="2"><strong>Urban/Rural Location Information of the Organization</strong></td>
-                                    <!--<td><?php // echo $data['org_code'];          ?></td>-->
+                                    <!--<td><?php // echo $data['org_code'];           ?></td>-->
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Urban/Rural Location</strong></td>
-                                    <td><?php // echo $data['org_code'];          ?></td>
+                                    <td><?php // echo $data['org_code'];           ?></td>
                                 </tr>
                                 <tr  class="success">
                                     <td width="50%" colspan="2"><strong>Regional location of the organization</strong></td>
-                                    <!--<td><?php // echo $data['org_code'];          ?></td>-->
+                                    <!--<td><?php // echo $data['org_code'];           ?></td>-->
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Division Name</strong></td>
@@ -342,7 +346,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 <!--
                                 <tr>
                                     <td width="60%"><strong>Special service / status of the hospital / clinic</strong></td>
-                                    <td><?php // echo $data['org_code'];        ?></td>
+                                    <td><?php // echo $data['org_code'];         ?></td>
                                 </tr>
                                 -->
 
@@ -437,11 +441,11 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 <!--
                                 <tr>
                                     <td><strong>Website2</strong></td>
-                                    <td><?php // echo $data['org_code'];        ?></td>
+                                    <td><?php // echo $data['org_code'];         ?></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Website3</strong></td>
-                                    <td><?php // echo $data['district_code'];        ?></td>
+                                    <td><?php // echo $data['district_code'];         ?></td>
                                 </tr>
                                 -->
                                 <tr>
@@ -647,9 +651,22 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </tr>
                             </table>
                         </div>
+                        <div class="tab-pane" id="org-hrm-status">
+                            <div class="panel panel-default">
+                                <div class="panel-body">                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>Use the following link to get the Human Resource Management System (HRM) Summery status.</p>                                        
+                                            <blockquote>
+                                                <p><a href="#">View HRM Status of <?php echo $org_name; ?></a></p>
+                                            </blockquote>
+                                        </div>                                        
+                                    </div>                                    
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
 
             <hr>
@@ -720,5 +737,6 @@ if (!($latitude > 0) || !($longitude > 0)) {
         <!-- Google Analytics Code-->
         <?php include_once 'include/ga_code.php'; ?>
 
+        
     </body>
 </html>
