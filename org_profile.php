@@ -148,7 +148,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                         $image_src = "http://test.dghs.gov.bd/hrmnew/$image_src";
 
 //                                        echo "$image_src";
-                                        $image_src = "img/bangladesh_govt_logo.png";
+                                        $image_src = "img/comc@ac.dghs.gov.bd.jpg";
 
 
                                         if (file_exists($image_src)) {
@@ -159,7 +159,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                         ?>
                                     </div>
                                     <div class="col-md-6">
-                                        <div id="map" style="height: 500px"></div>
+                                        <div id="map" style="height: 350px"></div>
                                     </div>
                                 </div>
                             </div>
