@@ -2,7 +2,7 @@
 require_once 'configuration.php';
 
 if (isset($_GET['org_code']) && $_GET['org_code'] != "") {
-    $org_code = (int) mysql_real_escape_string($_GET['org_code']);
+    $org_code = (int) mysql_real_escape_string(trim($_GET['org_code']));
     $org_name = getOrgNameFormOrgCode($org_code);
     $org_type_name = getOrgTypeNameFormOrgCode($org_code);
     $echoAdminInfo = " | Administrator";
@@ -69,8 +69,8 @@ if (!($latitude > 0) || !($longitude > 0)) {
 
             <!-- Page Header -->
             <?php include_once 'include/header_page_header.php'; ?>
-            
-            
+
+
             <div class="navbar navbar-inverse navbar-default">
                 <!--<div class="container">-->
                 <div class="navbar-header">
@@ -107,7 +107,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                     <!--<h2><?php echo "$org_name"; ?></h2>-->
                     <div class="page-header">
                         <h1><?php echo "$org_name"; ?></h1>
-                        <h3><?php echo "$org_type_name"; ?></h3>
+                        <h3><?php echo "<em>Org Code: $org_code</em>"; ?></h3>
                         <!--<h3><?php echo "$org_type_name ($org_type_code)"; ?></h3>-->
                     </div>
 
@@ -116,7 +116,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
 
                     <ul class="nav nav-tabs nav-tab-ul">
                         <li class="active">
-                            <a href="#org-profile-home" data-toggle="tab"><i class="fa fa-qrcode"></i> Org Profile</a>
+                            <a href="#org-profile-home" data-toggle="tab"><i class="fa fa-qrcode"></i> At a glance</a>
                         </li>
                         <li class="">
                             <a href="#basic-info" data-toggle="tab"><i class="fa fa-hospital"></i> Basic Information</a>
@@ -140,30 +140,81 @@ if (!($latitude > 0) || !($longitude > 0)) {
                     <div class="tab-content">
                         <div class="tab-pane active" id="org-profile-home">
                             <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <?php
-                                        $image_src = $data['org_photo'];
-                                        $image_src = "http://test.dghs.gov.bd/hrmnew/$image_src";
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <?php
+                                            $image_src = $data['org_photo'];
+                                            $image_src = "http://test.dghs.gov.bd/hrmnew/$image_src";
 
 //                                        echo "$image_src";
-                                        $image_src = "img/comc@ac.dghs.gov.bd.jpg";
+                                            $image_src = "img/comc@ac.dghs.gov.bd.jpg";
 
 
-                                        if (file_exists($image_src)) {
-                                            echo "<img src=\"$image_src\" class=\"img-thumbnail\" />";
-                                        } else {
-                                            echo "<img data-src=\"holder.js/480x360\"  class=\"img-thumbnail\" />";
-                                        }
-                                        ?>
+                                            if (file_exists($image_src)) {
+                                                echo "<img src=\"$image_src\" class=\"img-thumbnail\" />";
+                                            } else {
+                                                echo "<img data-src=\"holder.js/480x360\"  class=\"img-thumbnail\" />";
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div id="map" style="height: 350px"></div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div id="map" style="height: 350px"></div>
+                                    <div class="row">
+                                        <p class="lead"></p>                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-striped table-hover table-bordered">
+                                                <tr>
+                                                    <td width="50%"><strong>Organization Name</strong></td>
+                                                    <td><?php echo "$org_name"; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%"><strong>Organization Type</strong></td>
+                                                    <td><?php echo "$org_type_name"; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%"><strong>Division Name</strong></td>
+                                                    <td width="50%"><?php echo $data['division_name']; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%"><strong>District Name</strong></td>
+                                                    <td width="50%"><?php echo $data['district_name']; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%"><strong>Upazilla Name</strong></td>
+                                                    <td width="50%"><?php echo $data['upazila_thana_name']; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%"><strong>Union Name</strong></td>
+                                                    <td width="50%"><?php echo $data['union_name']; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%"><strong>Email Address</strong></td>
+                                                    <td width="50%"><?php echo $data['email_address1']; ?></td>
+                                                </tr>                                                
+                                                <tr>
+                                                    <td width="50%"><strong>Mobile Number</strong></td>
+                                                    <td width="50%"><?php echo $data['mobile_number1']; ?></td>
+                                                </tr>                                                
+                                                <?php if ($showSanctionedBed): ?>
+                                                    <tr>
+                                                        <td width="50%"><strong>Sanctioned Bed No</strong></td>
+                                                        <td><?php echo $data['sanctioned_bed_number']; ?></td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                                <tr>
+                                                    <td width="50%"><strong>Last updated on</strong></td>
+                                                    <td width="50%"><?php echo $data['updated_datetime']; ?></td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                          </div>
 
                         </div>
                         <div class="tab-pane" id="basic-info">
@@ -194,15 +245,15 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </tr>
                                 <tr  class="success">
                                     <td width="50%" colspan="2"><strong>Urban/Rural Location Information of the Organization</strong></td>
-                                    <!--<td><?php // echo $data['org_code'];         ?></td>-->
+                                    <!--<td><?php // echo $data['org_code'];          ?></td>-->
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Urban/Rural Location</strong></td>
-                                    <td><?php // echo $data['org_code'];         ?></td>
+                                    <td><?php // echo $data['org_code'];          ?></td>
                                 </tr>
                                 <tr  class="success">
                                     <td width="50%" colspan="2"><strong>Regional location of the organization</strong></td>
-                                    <!--<td><?php // echo $data['org_code'];         ?></td>-->
+                                    <!--<td><?php // echo $data['org_code'];          ?></td>-->
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Division Name</strong></td>
@@ -291,7 +342,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 <!--
                                 <tr>
                                     <td width="60%"><strong>Special service / status of the hospital / clinic</strong></td>
-                                    <td><?php // echo $data['org_code'];       ?></td>
+                                    <td><?php // echo $data['org_code'];        ?></td>
                                 </tr>
                                 -->
 
@@ -386,11 +437,11 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 <!--
                                 <tr>
                                     <td><strong>Website2</strong></td>
-                                    <td><?php // echo $data['org_code'];       ?></td>
+                                    <td><?php // echo $data['org_code'];        ?></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Website3</strong></td>
-                                    <td><?php // echo $data['district_code'];       ?></td>
+                                    <td><?php // echo $data['district_code'];        ?></td>
                                 </tr>
                                 -->
                                 <tr>
@@ -606,7 +657,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
             <footer>
                 <p>
                     <!-- Copyright info -->
-                    <?php include_once 'include/footer_copyright_info.php';?>
+                    <?php include_once 'include/footer_copyright_info.php'; ?>
                 </p>
             </footer>
         </div> <!-- /container -->        
@@ -629,7 +680,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
-        
+
         <script src="library/leaflet-0.6.4/leaflet.js"></script>
 
         <script>
@@ -665,9 +716,9 @@ if (!($latitude > 0) || !($longitude > 0)) {
             map.on('click', onMapClick);
 
         </script>
-        
+
         <!-- Google Analytics Code-->
-        <?php include_once 'include/ga_code.php';?>
-        
+        <?php include_once 'include/ga_code.php'; ?>
+
     </body>
 </html>
