@@ -54,7 +54,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
         <meta name="viewport" content="width=device-width">
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="library/font-awesome-4.0.1/css/font-awesome.min.css">
+        <link rel="stylesheet" href="library/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="library/leaflet-0.6.4/leaflet.css" />
         <!--[if lte IE 8]>
             <link rel="stylesheet" href="library/leaflet-0.6.4/leaflet.ie.css" />

@@ -92,7 +92,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
         <meta name="viewport" content="width=device-width">
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="library/font-awesome-4.0.1/css/font-awesome.min.css">
+        <link rel="stylesheet" href="library/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
