@@ -26,7 +26,7 @@ require_once 'configuration.php';
         <div class="container">
 
             <!-- Page Header -->
-            <?php include_once 'include/header_page_header.php'; ?>    
+            <?php include_once 'include/header_page_header.php'; ?>
             
             
             <div class="navbar navbar-inverse navbar-default">
@@ -41,9 +41,9 @@ require_once 'configuration.php';
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="index.php"><i class="fa fa-home fa-lg"></i> Home</a></li>
+                        <li class="active"><a href="index.php"><i class="fa fa-home fa-lg"></i> Home</a></li>
                         <li><a href="add_new_organization.php"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>
-                        <li class="active"><a href="report.php"><i class="fa fa-calendar-o fa-lg"></i> Report Dashboard</a></li>
+                        <li><a href="report.php"><i class="fa fa-calendar-o fa-lg"></i> Report Dashboard</a></li>
                         <li><a href="search.php"><i class="fa fa-search fa-lg"></i> Search</a></li>
                     </ul>
                     <form name="search-form" class="navbar-form navbar-right" action="search.php" method="post">
@@ -59,26 +59,11 @@ require_once 'configuration.php';
 
         <div class="container">
             <!-- Example row of columns -->
-            <div class="row">                
-
+            <div class="row">
+                
                 <div class="col-md-12">
-                    <h2>Report Dashboard</h2>
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <td><strong>Report name</strong></td>
-                                <td><strong>Description</strong></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href="report_org_list.php">Organization list</a></td>
-                                <td>
+                    <h2>Apply for new organization</h2>
 
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
 
             </div>
@@ -88,7 +73,7 @@ require_once 'configuration.php';
             <footer>
                 <p>
                     <!-- Copyright info -->
-                    <?php include_once 'include/footer_copyright_info.php';?>
+                    <?php include_once 'include/footer_copyright_info.php'; ?>
                 </p>
             </footer>
         </div> <!-- /container -->        
@@ -113,6 +98,6 @@ require_once 'configuration.php';
         <script src="js/main.js"></script>
 
         <!-- Google Analytics Code-->
-        <?php include_once 'include/ga_code.php';?>
+        <?php include_once 'include/ga_code.php'; ?>
     </body>
 </html>
