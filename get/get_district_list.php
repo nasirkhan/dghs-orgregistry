@@ -2,7 +2,7 @@
 
 require_once '../configuration.php';
 
-$div_id = $_POST['div_id'];
+$div_id = mysql_real_escape_string(trim($_POST['div_id']));
 
 $sql = "SELECT 
             admin_district.district_bbs_code,
