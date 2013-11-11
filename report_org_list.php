@@ -79,7 +79,7 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
     if (mysql_num_rows($org_list_result) > 0) {
         $showReportTable = TRUE;
     }
-echo "$sql";
+//echo "$sql";
 }
 ?>
 <!DOCTYPE html>
