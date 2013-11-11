@@ -658,7 +658,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                         <div class="col-md-12">
                                             <p>Use the following link to get the Human Resource Management System (HRM) Summery status.</p>                                        
                                             <blockquote>
-                                                <p><a href="#">View HRM Status of <?php echo $org_name; ?></a></p>
+                                                <p><a href="hrm_status.php?org_code=<?php echo $org_code; ?>">View HRM Status of "<?php echo $org_name; ?>"</a></p>
                                             </blockquote>
                                         </div>                                        
                                     </div>                                    
