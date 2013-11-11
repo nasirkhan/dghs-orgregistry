@@ -161,14 +161,6 @@ require_once 'configuration.php';
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_union" class="col-md-3 control-label">Union</label>
-                            <div class="col-md-6">
-                                <select id="org_union" name="org_union" class="form-control">
-                                    <option value="0">__ Select Union __</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label for="org_ownership" class="col-md-3 control-label">Ownership Information</label>
                             <div class="col-md-6">
                                 <select id="org_ownership" name="org_ownership" class="form-control">
@@ -289,7 +281,27 @@ require_once 'configuration.php';
                 });
             });
             
-            
+            // load upazila
+            $('#org_district').change(function() {
+                var dis_code = $('#org_district').val();
+                $("#loading_content").show();
+                $.ajax({
+                    type: "POST",
+                    url: 'get/get_upazilas.php',
+                    data: {dis_code: dis_code},
+                    dataType: 'json',
+                    success: function(data)
+                    {
+                        $("#loading_content").hide();
+                        var admin_upazila = document.getElementById('org_upazila');
+                        admin_upazila.options.length = 0;
+                        for (var i = 0; i < data.length; i++) {
+                            var d = data[i];
+                            admin_upazila.options.add(new Option(d.text, d.value));
+                        }
+                    }
+                });
+            });
         </script>
 
         <!-- Google Analytics Code-->
