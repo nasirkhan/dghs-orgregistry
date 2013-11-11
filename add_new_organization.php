@@ -27,8 +27,8 @@ require_once 'configuration.php';
 
             <!-- Page Header -->
             <?php include_once 'include/header_page_header.php'; ?>
-            
-            
+
+
             <div class="navbar navbar-inverse navbar-default">
                 <!--<div class="container">-->
                 <div class="navbar-header">
@@ -41,8 +41,8 @@ require_once 'configuration.php';
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.php"><i class="fa fa-home fa-lg"></i> Home</a></li>
-                        <li><a href="add_new_organization.php"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>
+                        <li><a href="index.php"><i class="fa fa-home fa-lg"></i> Home</a></li>
+                        <li class="active"><a href="add_new_organization.php"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>
                         <li><a href="report.php"><i class="fa fa-calendar-o fa-lg"></i> Report Dashboard</a></li>
                         <li><a href="search.php"><i class="fa fa-search fa-lg"></i> Search</a></li>
                     </ul>
@@ -60,9 +60,205 @@ require_once 'configuration.php';
         <div class="container">
             <!-- Example row of columns -->
             <div class="row">
-                
+
                 <div class="col-md-12">
                     <h2>Apply for new organization</h2>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="org_name" class="col-md-3 control-label">Organization Name</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="org_name" placeholder="Organization Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_type" class="col-md-3 control-label">Organization Type</label>
+                            <div class="col-md-6">
+                                <select id="org_type" name="org_type" class="form-control">
+                                    <option value="0">__ Select an organization type __</option>
+                                    <?php
+                                    $sql = "SELECT `org_type_name`, `org_type_code` FROM `org_type` ORDER BY org_type_name";
+                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
+                                    if (mysql_num_rows($result) > 0):
+                                        while ($row = mysql_fetch_assoc($result)):
+                                            ?>
+                                            <option value="<?php echo $row['org_type_code']; ?>"><?php echo $row['org_type_name']; ?></option>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_agency" class="col-md-3 control-label">Agency Name</label>
+                            <div class="col-md-6">
+                                <select id="org_agency" name="org_agency" class="form-control">
+                                    <option value="0">__ Select Agency Name __</option>
+                                    <?php
+                                    $sql = "SELECT `org_agency_code`, `org_agency_name` FROM `org_agency_code` ORDER BY org_agency_name";
+                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
+                                    if (mysql_num_rows($result) > 0):
+                                        while ($row = mysql_fetch_assoc($result)):
+                                            ?>
+                                            <option value="<?php echo $row['org_agency_code']; ?>"><?php echo $row['org_agency_name']; ?></option>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="year_established" class="col-md-3 control-label">Year Established</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="year_established" placeholder="Write the year only">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_location" class="col-md-3 control-label">Urban/Rural Location</label>
+                            <div class="col-md-6">
+                                <select id="org_location" name="org_location" class="form-control">
+                                    <option value="0">__ Select Organization Location __</option>
+                                    <?php
+                                    $sql = "SELECT `org_location_type_code`, `org_location_type_name` FROM `org_location_type` ORDER BY org_location_type_name";
+                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
+                                    if (mysql_num_rows($result) > 0):
+                                        while ($row = mysql_fetch_assoc($result)):
+                                            ?>
+                                            <option value="<?php echo $row['org_location_type_code']; ?>"><?php echo $row['org_location_type_name']; ?></option>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_division" class="col-md-3 control-label">Division</label>
+                            <div class="col-md-6">
+                                <select id="org_division" name="org_division" class="form-control">
+                                    <option value="0">__ Select Organization Location __</option>
+                                    <?php
+                                    $sql = "SELECT `org_agency_code`, `org_agency_name` FROM `org_agency_code` ORDER BY org_agency_name";
+                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
+                                    if (mysql_num_rows($result) > 0):
+                                        while ($row = mysql_fetch_assoc($result)):
+                                            ?>
+                                            <option value="<?php echo $row['org_agency_code']; ?>"><?php echo $row['org_agency_name']; ?></option>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_district" class="col-md-3 control-label">District</label>
+                            <div class="col-md-6">
+                                <select id="org_district" name="org_district" class="form-control">
+                                    <option value="0">__ Select Organization Location __</option>
+                                    <?php
+                                    $sql = "SELECT `org_agency_code`, `org_agency_name` FROM `org_agency_code` ORDER BY org_agency_name";
+                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
+                                    if (mysql_num_rows($result) > 0):
+                                        while ($row = mysql_fetch_assoc($result)):
+                                            ?>
+                                            <option value="<?php echo $row['org_agency_code']; ?>"><?php echo $row['org_agency_name']; ?></option>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_upazila" class="col-md-3 control-label">Upazila</label>
+                            <div class="col-md-6">
+                                <select id="org_upazila" name="org_upazila" class="form-control">
+                                    <option value="0">__ Select Organization Location __</option>
+                                    <?php
+                                    $sql = "SELECT `org_agency_code`, `org_agency_name` FROM `org_agency_code` ORDER BY org_agency_name";
+                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
+                                    if (mysql_num_rows($result) > 0):
+                                        while ($row = mysql_fetch_assoc($result)):
+                                            ?>
+                                            <option value="<?php echo $row['org_agency_code']; ?>"><?php echo $row['org_agency_name']; ?></option>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_union" class="col-md-3 control-label">Union</label>
+                            <div class="col-md-6">
+                                <select id="org_union" name="org_union" class="form-control">
+                                    <option value="0">__ Select Organization Location __</option>
+                                    <?php
+                                    $sql = "SELECT `org_agency_code`, `org_agency_name` FROM `org_agency_code` ORDER BY org_agency_name";
+                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
+                                    if (mysql_num_rows($result) > 0):
+                                        while ($row = mysql_fetch_assoc($result)):
+                                            ?>
+                                            <option value="<?php echo $row['org_agency_code']; ?>"><?php echo $row['org_agency_name']; ?></option>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_ownership" class="col-md-3 control-label">Ownership Information</label>
+                            <div class="col-md-6">
+                                <select id="org_ownership" name="org_ownership" class="form-control">
+                                    <option value="0">__ Select Ownership Type __</option>
+                                    <?php
+                                    $sql = "SELECT org_ownership_authority_code, org_ownership_authority_name FROM org_ownership_authority ORDER BY org_ownership_authority_name";
+                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
+                                    if (mysql_num_rows($result) > 0):
+                                        while ($row = mysql_fetch_assoc($result)):
+                                            ?>
+                                            <option value="<?php echo $row['org_ownership_authority_code']; ?>"><?php echo $row['org_ownership_authority_name']; ?></option>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_function" class="col-md-3 control-label">Organization Function</label>
+                            <div class="col-md-6">
+                                <select id="org_function" name="org_function" class="form-control">
+                                    <option value="0">__ Select Organization Function __</option>
+                                    <?php
+                                    $sql = "SELECT `org_organizational_functions_code`, `org_organizational_functions_name` FROM `org_organizational_functions` ORDER BY org_organizational_functions_name";
+                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
+                                    if (mysql_num_rows($result) > 0):
+                                        while ($row = mysql_fetch_assoc($result)):
+                                            ?>
+                                            <option value="<?php echo $row['org_organizational_functions_code']; ?>"><?php echo $row['org_organizational_functions_name']; ?></option>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_level" class="col-md-3 control-label"> Organization Level</label>
+                            <div class="col-md-6">
+                                <select id="org_level" name="org_level" class="form-control">
+                                    <option value="0">__ Select Organization Level __</option>
+                                    <?php
+                                    $sql = "SELECT `org_level_code`, `org_level_name` FROM `org_level` ORDER BY org_level_name";
+                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
+                                    if (mysql_num_rows($result) > 0):
+                                        while ($row = mysql_fetch_assoc($result)):
+                                            ?>
+                                            <option value="<?php echo $row['org_level_code']; ?>"><?php echo $row['org_level_name']; ?></option>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_email" class="col-md-3 control-label">Organization Email</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="org_email" placeholder="Email Address">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-6">
+                                <button type="submit" class="btn btn-lg btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
 
                 </div>
 
