@@ -11,7 +11,9 @@ $sql = "SELECT
             `admin_district`
         WHERE
             division_bbs_code = $div_code
-        AND active LIKE 1";
+        AND active LIKE 1
+        ORDER BY
+            district_name";
 $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_districts:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
 $data = array();
