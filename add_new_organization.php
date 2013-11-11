@@ -63,7 +63,7 @@ require_once 'configuration.php';
 
                 <div class="col-md-12">
                     <h2>Apply for new organization</h2>
-                    <form class="form-horizontal" role="form">
+                    <form class="form-horizontal" role="form" action="" type="POST">
                         <div class="form-group">
                             <label for="org_name" class="col-md-3 control-label">Organization Name</label>
                             <div class="col-md-6">
