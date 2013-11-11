@@ -131,14 +131,14 @@ require_once 'configuration.php';
                             <label for="org_division" class="col-md-3 control-label">Division</label>
                             <div class="col-md-6">
                                 <select id="org_division" name="org_division" class="form-control">
-                                    <option value="0">__ Select Organization Location __</option>
+                                    <option value="0">__ Select Division __</option>
                                     <?php
-                                    $sql = "SELECT `org_agency_code`, `org_agency_name` FROM `org_agency_code` ORDER BY org_agency_name";
+                                    $sql = "SELECT division_name, division_bbs_code FROM admin_division";
                                     $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
                                     if (mysql_num_rows($result) > 0):
                                         while ($row = mysql_fetch_assoc($result)):
                                             ?>
-                                            <option value="<?php echo $row['org_agency_code']; ?>"><?php echo $row['org_agency_name']; ?></option>
+                                            <option value="<?php echo $row['division_bbs_code']; ?>"><?php echo $row['division_name']; ?></option>
                                         <?php endwhile; ?>
                                     <?php endif; ?>
                                 </select>
@@ -148,16 +148,7 @@ require_once 'configuration.php';
                             <label for="org_district" class="col-md-3 control-label">District</label>
                             <div class="col-md-6">
                                 <select id="org_district" name="org_district" class="form-control">
-                                    <option value="0">__ Select Organization Location __</option>
-                                    <?php
-                                    $sql = "SELECT `org_agency_code`, `org_agency_name` FROM `org_agency_code` ORDER BY org_agency_name";
-                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
-                                    if (mysql_num_rows($result) > 0):
-                                        while ($row = mysql_fetch_assoc($result)):
-                                            ?>
-                                            <option value="<?php echo $row['org_agency_code']; ?>"><?php echo $row['org_agency_name']; ?></option>
-                                        <?php endwhile; ?>
-                                    <?php endif; ?>
+                                    <option value="0">__ Select District __</option>
                                 </select>
                             </div>
                         </div>
@@ -165,16 +156,7 @@ require_once 'configuration.php';
                             <label for="org_upazila" class="col-md-3 control-label">Upazila</label>
                             <div class="col-md-6">
                                 <select id="org_upazila" name="org_upazila" class="form-control">
-                                    <option value="0">__ Select Organization Location __</option>
-                                    <?php
-                                    $sql = "SELECT `org_agency_code`, `org_agency_name` FROM `org_agency_code` ORDER BY org_agency_name";
-                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
-                                    if (mysql_num_rows($result) > 0):
-                                        while ($row = mysql_fetch_assoc($result)):
-                                            ?>
-                                            <option value="<?php echo $row['org_agency_code']; ?>"><?php echo $row['org_agency_name']; ?></option>
-                                        <?php endwhile; ?>
-                                    <?php endif; ?>
+                                    <option value="0">__ Select Upazila __</option>
                                 </select>
                             </div>
                         </div>
@@ -182,16 +164,7 @@ require_once 'configuration.php';
                             <label for="org_union" class="col-md-3 control-label">Union</label>
                             <div class="col-md-6">
                                 <select id="org_union" name="org_union" class="form-control">
-                                    <option value="0">__ Select Organization Location __</option>
-                                    <?php
-                                    $sql = "SELECT `org_agency_code`, `org_agency_name` FROM `org_agency_code` ORDER BY org_agency_name";
-                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_org_type_name:1<br />Query:</b><br />___<br />$sql</p>");
-                                    if (mysql_num_rows($result) > 0):
-                                        while ($row = mysql_fetch_assoc($result)):
-                                            ?>
-                                            <option value="<?php echo $row['org_agency_code']; ?>"><?php echo $row['org_agency_name']; ?></option>
-                                        <?php endwhile; ?>
-                                    <?php endif; ?>
+                                    <option value="0">__ Select Union __</option>
                                 </select>
                             </div>
                         </div>
@@ -252,7 +225,7 @@ require_once 'configuration.php';
                                 <input type="text" class="form-control" id="org_email" placeholder="Email Address">
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-6">
                                 <button type="submit" class="btn btn-lg btn-success">Submit</button>
@@ -292,6 +265,32 @@ require_once 'configuration.php';
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+
+        <script type="text/javascript">
+            // load district
+            $('#org_division').change(function() {
+                $("#loading_content").show();
+                var div_code = $('#org_division').val();
+                $.ajax({
+                    type: "POST",
+                    url: 'get/get_districts.php',
+                    data: {div_code: div_code},
+                    dataType: 'json',
+                    success: function(data)
+                    {
+                        $("#loading_content").hide();
+                        var admin_district = document.getElementById('org_district');
+                        admin_district.options.length = 0;
+                        for (var i = 0; i < data.length; i++) {
+                            var d = data[i];
+                            admin_district.options.add(new Option(d.text, d.value));
+                        }
+                    }
+                });
+            });
+            
+            
+        </script>
 
         <!-- Google Analytics Code-->
         <?php include_once 'include/ga_code.php'; ?>
