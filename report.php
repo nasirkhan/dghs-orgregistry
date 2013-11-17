@@ -77,6 +77,12 @@ require_once 'configuration.php';
 
                                 </td>
                             </tr>
+                            <tr>
+                                <td><a href="report_org_summary.php">Organization Summary Report</a></td>
+                                <td>
+
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
