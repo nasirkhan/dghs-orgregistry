@@ -8,9 +8,9 @@ require_once 'configuration.php';
  * POST
  */
 //print_r($_POST);
-$div_id = (int) mysql_real_escape_string(trim($_POST['admin_division']));
-$dis_id = (int) mysql_real_escape_string(trim($_POST['admin_district']));
-$upa_id = (int) mysql_real_escape_string(trim($_POST['admin_upazila']));
+$div_code = (int) mysql_real_escape_string(trim($_POST['admin_division']));
+$dis_code = (int) mysql_real_escape_string(trim($_POST['admin_district']));
+$upa_code = (int) mysql_real_escape_string(trim($_POST['admin_upazila']));
 $agency_code = (int) mysql_real_escape_string(trim($_POST['org_agency']));
 $type_code = (int) mysql_real_escape_string(trim($_POST['org_type']));
 $form_submit = (int) mysql_real_escape_string(trim($_POST['form_submit']));
@@ -22,32 +22,32 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
      * query builder to get the organizatino list
      */
     $query_string = "";
-    if ($div_id > 0 || $dis_id > 0 || $upa_id > 0 || $agency_code > 0 || $type_code > 0) {
+    if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0 || $type_code > 0) {
         $query_string .= " WHERE ";
 
         if ($agency_code > 0) {
             $query_string .= "organization.agency_code = $agency_code";
         }
-        if ($upa_id > 0) {
+        if ($upa_code > 0) {
             if ($agency_code > 0) {
                 $query_string .= " AND ";
             }
-            $query_string .= "organization.upazila_id = $upa_id";
+            $query_string .= "organization.upazila_id = $upa_code";
         }
-        if ($dis_id > 0) {
-            if ($upa_id > 0 || $agency_code > 0) {
+        if ($dis_code > 0) {
+            if ($upa_code > 0 || $agency_code > 0) {
                 $query_string .= " AND ";
             }
-            $query_string .= "organization.district_id = $dis_id";
+            $query_string .= "organization.district_id = $dis_code";
         }
-        if ($div_id > 0) {
-            if ($dis_id > 0 || $upa_id > 0 || $agency_code > 0) {
+        if ($div_code > 0) {
+            if ($dis_code > 0 || $upa_code > 0 || $agency_code > 0) {
                 $query_string .= " AND ";
             }
-            $query_string .= "organization.division_id = $div_id";
+            $query_string .= "organization.division_id = $div_code";
         }
         if ($type_code > 0) {
-            if ($div_id > 0 || $dis_id > 0 || $upa_id > 0 || $agency_code > 0) {
+            if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0) {
                 $query_string .= " AND ";
             }
             $query_string .= "organization.org_type_code = $type_code";
@@ -108,8 +108,8 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
 
             <!-- Page Header -->
             <?php include_once 'include/header_page_header.php'; ?>
-            
-            
+
+
             <div class="navbar navbar-inverse navbar-default">
                 <!--<div class="container">-->
                 <div class="navbar-header">
@@ -229,14 +229,14 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                                 Report displaying form:<br>
                                 <?php
                                 $echo_string = "";
-                                if ($div_id > 0) {
-                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_id)) . "</strong><br>";
+                                if ($div_code > 0) {
+                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
                                 }
-                                if ($dis_id > 0) {
-                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_id)) . "</strong><br>";
+                                if ($dis_code > 0) {
+                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
                                 }
-                                if ($upa_id > 0) {
-                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode(getUpazilaCodeFormId($upa_id)) . "</strong><br>";
+                                if ($upa_code > 0) {
+                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode(getUpazilaCodeFormId($upa_code)) . "</strong><br>";
                                 }
                                 if ($agency_code > 0) {
                                     $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
@@ -282,14 +282,14 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                                 Report displaying form:<br>
                                 <?php
                                 $echo_string = "";
-                                if ($div_id > 0) {
-                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_id)) . "</strong><br>";
+                                if ($div_code > 0) {
+                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
                                 }
-                                if ($dis_id > 0) {
-                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_id)) . "</strong><br>";
+                                if ($dis_code > 0) {
+                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
                                 }
-                                if ($upa_id > 0) {
-                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode(getUpazilaCodeFormId($upa_id)) . "</strong><br>";
+                                if ($upa_code > 0) {
+                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode(getUpazilaCodeFormId($upa_code)) . "</strong><br>";
                                 }
                                 if ($agency_code > 0) {
                                     $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
@@ -316,7 +316,7 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
             <footer>
                 <p>
                     <!-- Copyright info -->
-                    <?php include_once 'include/footer_copyright_info.php';?>
+                    <?php include_once 'include/footer_copyright_info.php'; ?>
                 </p>
             </footer>
         </div> <!-- /container -->        
@@ -387,6 +387,6 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
         </script>
 
         <!-- Google Analytics Code-->
-        <?php include_once 'include/ga_code.php';?>
+        <?php include_once 'include/ga_code.php'; ?>
     </body>
 </html>
