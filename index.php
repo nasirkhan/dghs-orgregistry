@@ -270,6 +270,46 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                             </tbody>
                         </table>
 
+                    <?php else: ?>
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            </ol>
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="img/slideshow/1_Medical_College_Hospital.jpg" alt="Medical College Hospital">
+                                    <div class="carousel-caption">
+                                        Medical College Hospital
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img src="img/slideshow/6_Union_Sub_Center.jpg" alt="Union Sub Center">
+                                    <div class="carousel-caption">
+                                        Union Sub Center
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img src="img/slideshow/5_Upazila_Health_Complex_31_beded.jpg" alt="31 Beded Upazila Health Complex">
+                                    <div class="carousel-caption">
+                                        31 Beded Upazila Health Complex
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Controls -->
+                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        </div>
+
                     <?php endif; ?>
 
 
