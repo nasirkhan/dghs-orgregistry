@@ -97,7 +97,18 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                     <h2>Search Organization Registry</h2>
                     <?php if ($showReportTable): ?>                 
                         <div class="alert alert-info">
-                            Total <em><strong><?php echo mysql_num_rows($result); ?></strong></em> organization(s) found.
+                            <p class="lead">
+                                <i class="fa fa-search"></i><em>Search Keyword :</em> <strong><?php echo "$query";?></strong>
+                                &nbsp;<br />
+                            </p>
+                                
+<!--                            <p> 
+                                <i class="fa fa-search"></i><em>Search Keyword :</em> <strong><?php echo "$query";?></strong>
+                                &nbsp;<br />&nbsp;<br />
+                            </p>-->
+                            <blockquote>
+                                Total <em><strong><?php echo mysql_num_rows($result); ?></strong></em> organization(s) found.
+                            </blockquote>
                         </div>
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
@@ -217,3 +228,4 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
         <?php include_once 'include/ga_code.php';?>
     </body>
 </html>
+
