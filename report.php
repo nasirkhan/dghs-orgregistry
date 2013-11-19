@@ -74,7 +74,15 @@ require_once 'configuration.php';
                             <tr>
                                 <td><a href="report_org_list.php">Organization list</a></td>
                                 <td>
-
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="report_org_summary.php">Organization Summary Report</a>
+                                </td>
+                                <td>
+                                    
                                 </td>
                             </tr>
 <!--                            <tr>

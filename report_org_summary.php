@@ -7,90 +7,97 @@ require_once 'configuration.php';
  * 
  * POST
  */
-//print_r($_POST);
-$div_code = (int) mysql_real_escape_string(trim($_POST['admin_division']));
-$dis_code = (int) mysql_real_escape_string(trim($_POST['admin_district']));
-$upa_code = (int) mysql_real_escape_string(trim($_POST['admin_upazila']));
+//print_r($_REQUEST);
+$div_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_division']));
+$dis_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_district']));
+$upa_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_upazila']));
 
-$report_org_group = (int) mysql_real_escape_string(trim($_POST['report_org_group']));
+$report_org_group = (int) mysql_real_escape_string(trim($_REQUEST['report_org_group']));
 
-$form_submit = (int) mysql_real_escape_string(trim($_POST['form_submit']));
+$form_submit = (int) mysql_real_escape_string(trim($_REQUEST['form_submit']));
 
 
 
-if ($form_submit == 1 && isset($_POST['form_submit'])) {
+if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
     /*
      * 
      * query builder to get the organizatino list
      */
     $query_string = "";
-    if ($div_code > 0 || $dis_code > 0 || $upa_code > 0) {
-        $query_string .= " WHERE ";
+    $sql = "";
+    if (($div_code > 0 || $dis_code > 0 || $upa_code > 0) && ($report_org_group > 0)) {
 
-        if ($upa_code > 0) {
-            $query_string .= "organization.upazila_code = $upa_code";
-        }
-        if ($dis_code > 0) {
-            if ($upa_code > 0) {
-                $query_string .= " AND ";
-            }
-            $query_string .= "organization.district_code = $dis_code";
-        }
-        if ($div_code > 0) {
-            if ($dis_code > 0 || $upa_code > 0) {
-                $query_string .= " AND ";
-            }
-            $query_string .= "organization.division_code = $div_code";
-        }
-    }
-
-
-    switch ($report_org_group) {
-        case 1: echo "Report by Organizaion Type<br>";
+        if ($upa_code > 0) {            
             $sql = "SELECT
-                            org_type.org_type_code,
-                            org_type.org_type_name
+                            org_name,
+                            division_name,
+                            division_code,
+                            district_name,
+                            district_code,
+                            upazila_thana_name,
+                            upazila_thana_code,
+                            COUNT(*) AS org_count
                     FROM
-                            org_type
+                            `organization`
                     WHERE
-                            active LIKE 1
-                    ORDER BY 
-                            org_type.org_type_name";
-            $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_div_list:1<br />Query:</b><br />___<br />$sql</p>");
-            $data_heading = array();
-            if (mysql_num_rows($result) > 0):
-                while ($row = mysql_fetch_assoc($result)):
-                    $data_heading[] = array(
-                        'name' => $row['org_type_name'],
-                        'value' => $row['org_type_code']
-                    );
-                endwhile;
-            endif;
-
-//            print_r($data_heading);
-//            echo "$sql";
-//            die();
-            break;
-        default : echo "Default<br>";
+                            organization.upazila_thana_code = '$upa_code'
+                    and organization.district_code = '$dis_code'
+                    AND organization.org_type_code = '$report_org_group'
+                    GROUP BY
+                    organization.upazila_thana_code";
+        }
+        else if ($dis_code > 0) {
             $sql = "SELECT
-                                organization.org_type_name,
-                                COUNT(*) AS org_count
-                        FROM
-                                organization                        
-                        GROUP BY
-                                organization.org_type_code";
-
-            echo "$sql";
+                            org_name,
+                            division_name,
+                            division_code,
+                            district_name,
+                            district_code,
+                            upazila_thana_name,
+                            upazila_thana_code,
+                            COUNT(*) AS org_count
+                    FROM
+                            `organization`
+                    WHERE
+                            organization.district_code = '$dis_code'
+                    AND organization.org_type_code = '$report_org_group'
+                    GROUP BY
+                    organization.upazila_thana_code";
+        }
+        else if ($div_code > 0) {
+            $sql = "SELECT
+                            org_name,
+                            division_name,
+                            division_code,
+                            district_name,
+                            district_code,
+                            upazila_thana_name,
+                            upazila_thana_code,
+                            COUNT(*) AS org_count
+                    FROM
+                            `organization`
+                    WHERE
+                            organization.division_code = '$div_code'
+                    AND organization.org_type_code = '$report_org_group'
+                    GROUP BY
+                    organization.district_code";
+        }
     }
 
-    $query_string .= " ORDER BY org_name";
-
-    $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
-
-    if (mysql_num_rows($org_list_result) > 0) {
-        $showReportTable = TRUE;
+    
+//    echo "<br>$sql";
+    $row_count = 0;
+    if ($sql != ""){
+        $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+        $row_count = mysql_num_rows($org_list_result);
+        if ($row_count > 0) {
+            $showReportTable = TRUE;
+        }
     }
+    
+
+    
 //echo "$sql";
 }
 ?>
@@ -139,7 +146,7 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                         <li class="active"><a href="report.php"><i class="fa fa-calendar-o fa-lg"></i> Report Dashboard</a></li>
                         <li><a href="search.php"><i class="fa fa-search fa-lg"></i> Search</a></li>
                     </ul>
-                    <form name="search-form" class="navbar-form navbar-right" action="search.php" method="post">
+                    <form name="search-form" class="navbar-form navbar-right" action="search.php" method="get">
                         <div class="form-group">
                             <input name="query" type="text" placeholder="Enter keyward" class="form-control">
                         </div>                       
@@ -153,12 +160,12 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" role="form">
+                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get" role="form">
                         <div class="row">
                             <!--<div class="form-group">-->
                             <div class="col-md-4 form-group">
                                 <select id="admin_division" name="admin_division" class="form-control">
-                                    <option value="0">Select Division</option>
+                                    <option value="0">__Select Division__</option>
                                     <?php
                                     $sql = "SELECT
                                                     division_name,
@@ -180,12 +187,12 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                             </div>
                             <div class="col-md-4 form-group">
                                 <select id="admin_district" name="admin_district" class="form-control">
-                                    <option value="0">Select District</option>                                        
+                                    <option value="0">__Select District__</option>                                        
                                 </select>
                             </div>
                             <div class="col-md-4 form-group">
                                 <select id="admin_upazila" name="admin_upazila" class="form-control">
-                                    <option value="0">Select Upazila</option>                                        
+                                    <option value="0">__Select Upazila__</option>                                        
                                 </select>
                             </div>
                             <!--</div>-->
@@ -199,8 +206,22 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                             <!--<div class="form-group">-->
                             <div class="col-md-4 form-group">
                                 <select id="report_org_group" name="report_org_group" class="form-control">
-                                    <option value="0">__ Select from the list __</option>
-                                    <option value="1">Organization Type</option>
+                                    <option value="0">__Select Org Type__</option>
+                                    <?php
+                                    $sql = "SELECT
+                                                org_type.org_type_code,
+                                                org_type.org_type_name
+                                            FROM
+                                                org_type
+                                            ORDER BY
+                                                org_type.org_type_name ASC";
+                                    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadorg_type:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+                                    while ($rows = mysql_fetch_assoc($result)) {
+                                        echo "<option value=\"" . $rows['org_type_code'] . "\">" . $rows['org_type_name'] . "(" . $rows['org_type_code'] . ")</option>";
+                                    }
+                                    ?>
+                                </select>
                                 </select>
                             </div>
                             <input name="form_submit" value="1" type="hidden" />
@@ -214,20 +235,23 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                             </div>
                         </div>
                     </form>
-                    <?php if ($form_submit == 1 && isset($_POST['form_submit'])) : ?>
+                    <?php if ($form_submit == 1 && isset($_REQUEST['form_submit'])) : ?>
                         <?php if ($showReportTable) : ?>
                             <div class="alert alert-success"> 
                                 Report displaying form:<br>
                                 <?php
                                 $echo_string = "";
                                 if ($div_code > 0) {
-                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
+                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_code) . "</strong><br>";
                                 }
                                 if ($dis_code > 0) {
-                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
+                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_code) . "</strong><br>";
                                 }
                                 if ($upa_code > 0) {
-                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode(getUpazilaCodeFormId($upa_code)) . "</strong><br>";
+                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
+                                }
+                                if ($report_org_group > 0) {
+                                    $echo_string .= " Org Type: <strong>" . getOrgTypeNameFromCode($report_org_group) . "</strong><br>";
                                 }
                                 echo "$echo_string";
                                 ?>
@@ -239,74 +263,36 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <td><strong>Report Type</strong></td>
-                                        <?php
-                                        if (!$div_code > 0 && !$dis_code > 0 && !$upa_code > 0) :
-                                            $sql = "SELECT
-                                                            division_name,
-                                                            division_bbs_code
-                                                    FROM
-                                                            admin_division
-                                                    WHERE
-                                                            division_active LIKE 1
-                                                    ORDER BY
-                                                            division_bbs_code";
-                                            $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_div_list:1<br />Query:</b><br />___<br />$sql</p>");
-                                            $data_table_heading = array();
-                                            if (mysql_num_rows($result) > 0):
-                                                while ($row = mysql_fetch_assoc($result)):
-                                                    $data_table_heading[] = array(
-                                                        'name' => $row['division_name'],
-                                                        'value' => $row['division_bbs_code']
-                                                    );
-                                                endwhile;
-                                            endif;
-                                            for ($i = 0; $i < count($data_table_heading); $i++):
-                                                ?>
-                                                <td><strong><?php echo $data_table_heading[$i]['name']; ?></strong></td>
-                                            <?php endfor; ?>
-                                        <?php endif; ?>
+                                        <td><strong>Area Names</strong></td>
+                                        <td><strong><?php echo getOrgTypeNameFromCode($report_org_group); ?></strong></td>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                    $tr_count = count($data_heading);
-                                    for ($i = 0; $i < $tr_count; $i++):
-                                        ?>                                    
-                                        <tr>
-                                            <td><?php echo $data_heading[$i]['name']; ?>(<?php echo $data_heading[$i]['value']; ?>)</td>
-                                            <?php
-                                            if (!$div_code > 0 && !$dis_code > 0 && !$upa_code > 0) :
-                                                $sql = "SELECT
-                                                                o2.division_name,
-                                                                count(o1.org_code) AS count
-                                                        FROM
-                                                                (
-                                                                        SELECT DISTINCT
-                                                                                `division_name`,
-                                                                                `division_code`
-                                                                        FROM
-                                                                                organization
-                                                                ) o2
-                                                        LEFT JOIN organization o1 ON o1.`division_code` = o2.`division_code`
-                                                        AND o1.org_type_code = " . $data_heading[$i]['value'] . "
-                                                        AND o1.org_type_code > 0
-                                                        GROUP BY
-                                                                o1.division_code
-                                                        ORDER BY
-                                                                o2.division_name ASC";
-                                                $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>get_div_list:2<br />Query:</b><br />___<br />$sql</p>");
-                                                if (mysql_num_rows($result) > 0):
-                                                    while ($row = mysql_fetch_assoc($result)) {
-                                                        echo "<td>" . $row['count'] ."</td>";
-                                                    }
-                                                else:
-                                                    ?>
-                                                    <td>0</td>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
-                                        </tr>
-                                    <?php endfor; ?>
+                                    <?php 
+                                    $total_org_count = 0;
+                                    while($data = mysql_fetch_assoc($org_list_result)):
+                                        $total_org_count += $data['org_count'];?>
+                                    <tr>
+                                        <td>
+                                            <?php 
+                                            if ($upa_code > 0){
+                                                echo $data['upazila_thana_name']; 
+                                            }
+                                            else if ($dis_code > 0){
+                                                echo $data['upazila_thana_name']; 
+                                            }
+                                            else if ($div_code > 0){
+                                                echo $data['district_name']; 
+                                            }
+                                            ?>
+                                        </td>
+                                        <td><?php echo $data['org_count']; ?></td>
+                                    </tr>
+                                    <?php endwhile; ?>
+                                    <tr  class="warning">
+                                        <td><em>Total organization(s)</em></td>
+                                        <td><?php echo $total_org_count; ?></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         <?php else: ?>
@@ -315,19 +301,22 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                                 <?php
                                 $echo_string = "";
                                 if ($div_code > 0) {
-                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
+                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_code) . "</strong><br>";
                                 }
                                 if ($dis_code > 0) {
-                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
+                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_code) . "</strong><br>";
                                 }
                                 if ($upa_code > 0) {
-                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode(getUpazilaCodeFormId($upa_code)) . "</strong><br>";
+                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
+                                }
+                                if ($report_org_group > 0) {
+                                    $echo_string .= " Org Type: <strong>" . getOrgTypeNameFromCode($report_org_group) . "</strong><br>";
                                 }
                                 echo "$echo_string";
                                 ?>
                                 <br />
                                 <blockquote>
-                                    Total <strong><em><?php echo mysql_num_rows($org_list_result); ?></em></strong> organization found.<br />
+                                    Total <strong><em><?php echo $row_count; ?></em></strong> organization found.<br />
                                 </blockquote>
                             </div>
                         <?php endif; ?>
