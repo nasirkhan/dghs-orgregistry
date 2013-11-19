@@ -3,7 +3,7 @@ require_once 'configuration.php';
 
 $query = mysql_real_escape_string(trim($_REQUEST['query']));
 
-if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0) {
+if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") {
     $sql = "SELECT
                 organization.org_name,
                 organization.org_code,
