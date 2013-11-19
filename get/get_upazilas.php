@@ -10,7 +10,7 @@ $sql = "SELECT
         FROM
             `admin_upazila`
         WHERE
-            upazila_district_code = 50
+            upazila_district_code = $dis_code
         AND upazila_active LIKE 1
         ORDER BY
             upazila_name";
