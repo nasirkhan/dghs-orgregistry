@@ -288,7 +288,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                                     </div>
                                 </div>
                                 <div class="item">
-                                    <img src="img/slideshow/6_Union_Sub_Center.jpg" alt="Union Sub Center">
+                                    <img src="img/slideshow/7_Community_clinic_2.JPG" alt="Union Sub Center">
                                     <div class="carousel-caption">
                                         Union Sub Center
                                     </div>
