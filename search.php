@@ -21,6 +21,9 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0) {
         WHERE
                 organization.org_code = \"$query\"
         OR organization.org_name LIKE \"%$query%\"
+        OR organization.division_name LIKE \"%$query%\"
+        OR organization.district_name LIKE \"%$query%\"
+        OR organization.upazila_thana_name LIKE \"%$query%\"    
         ORDER BY
                 org_name";
     $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:orgSearch || Query:</b><br />___<br />$sql</p>");
