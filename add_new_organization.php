@@ -1,5 +1,37 @@
 <?php
 require_once 'configuration.php';
+
+$org_name = mysql_real_escape_string(trim($_REQUEST['org_name']));
+$org_type = (int) mysql_real_escape_string(trim($_REQUEST['org_type']));
+$org_agency = (int) mysql_real_escape_string(trim($_REQUEST['org_agency']));
+$year_established = (int) mysql_real_escape_string(trim($_REQUEST['year_established']));
+$org_division = (int) mysql_real_escape_string(trim($_REQUEST['org_division']));
+$org_district = (int) mysql_real_escape_string(trim($_REQUEST['org_district']));
+$org_upazila = (int) mysql_real_escape_string(trim($_REQUEST['org_upazila']));
+$org_ownership = (int) mysql_real_escape_string(trim($_REQUEST['org_ownership']));
+$org_function = (int) mysql_real_escape_string(trim($_REQUEST['org_function']));
+$org_level = (int) mysql_real_escape_string(trim($_REQUEST['org_level']));
+$org_email = mysql_real_escape_string(trim($_REQUEST['org_email']));
+$org_contact_number = mysql_real_escape_string(trim($_REQUEST['org_contact_number']));
+$form_submit = (int) mysql_real_escape_string(trim($_REQUEST['form_submit']));
+
+if ($form_submit == 1){
+    require_once('./library/recaptcha-php-1.11/recaptchalib.php');
+    $privatekey = "6Lf8VtoSAAAAANfOj7Q6iAsmOjV_U8mvj5XQoYs3";
+    $resp = recaptcha_check_answer ($privatekey,
+                                    $_SERVER["REMOTE_ADDR"],
+                                    $_POST["recaptcha_challenge_field"],
+                                    $_POST["recaptcha_response_field"]);
+
+    if (!$resp->is_valid) {
+        $captcha_passed = FALSE;
+    } else {
+        $captcha_passed = TRUE;
+        // insert code
+    }
+}
+    
+
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -63,11 +95,17 @@ require_once 'configuration.php';
 
                 <div class="col-md-12">
                     <h2>Apply for new organization</h2>
-                    <form class="form-horizontal" role="form" action="" type="POST">
+                    <script type="text/javascript">
+                    var RecaptchaOptions = {
+                       theme : 'clean'
+                    };
+                    
+                    </script>
+                    <form class="form-horizontal" role="form" action="" method="POST">
                         <div class="form-group">
                             <label for="org_name" class="col-md-3 control-label">Organization Name</label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" id="org_name" placeholder="Organization Name">
+                                <input type="text" class="form-control" id="org_name" name="org_name" placeholder="Organization Name">
                             </div>
                         </div>
                         <div class="form-group">
@@ -107,7 +145,7 @@ require_once 'configuration.php';
                         <div class="form-group">
                             <label for="year_established" class="col-md-3 control-label">Year Established</label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" id="year_established" placeholder="Write the year only">
+                                <input type="text" class="form-control" name="year_established" id="year_established" placeholder="Write the year only">
                             </div>
                         </div>
                         <div class="form-group">
@@ -214,12 +252,29 @@ require_once 'configuration.php';
                         <div class="form-group">
                             <label for="org_email" class="col-md-3 control-label">Organization Email</label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" id="org_email" placeholder="Email Address">
+                                <input type="text" class="form-control" name="org_email" id="org_email" placeholder="Email Address"  value="<?php echo $org_email; ?>" required="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_email" class="col-md-3 control-label">Organization Contact Number</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="org_contact_number" id="org_contact_number" placeholder="Mobile Number"  value="<?php echo $org_contact_number; ?>" required="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="org_email" class="col-md-3 control-label">Secutiry Text (CAPTCHA)</label>
+                            <div class="col-md-6">
+                                <?php
+                                require_once('./library/recaptcha-php-1.11/recaptchalib.php');
+                                $publickey = "6Lf8VtoSAAAAAH97FT3J2iwA0ilGqtwYxZOc7o5c"; 
+                                echo recaptcha_get_html($publickey);
+                                ?>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-6">
+                                <input type="hidden" name="form_submit" value="1">
                                 <button type="submit" class="btn btn-lg btn-success">Submit</button>
                             </div>
                         </div>
@@ -238,7 +293,13 @@ require_once 'configuration.php';
                 </p>
             </footer>
         </div> <!-- /container -->        
-
+<!--        <div class="container">
+            
+            <pre>
+                <?php print_r($_REQUEST); ?>
+            </pre>
+            
+        </div>-->
 
         <!-- Bootstrap core JavaScript
         ================================================== -->
@@ -302,7 +363,24 @@ require_once 'configuration.php';
                     }
                 });
             });
+            <?php if(!$captcha_passed): ?>
+            $("#org_name").val("<?php echo "$org_name"; ?>");
+            $("#org_type").val("<?php echo "$org_type"; ?>");
+            $("#org_agency").val("<?php echo "$org_agency"; ?>");
+            $("#year_established").val("<?php echo "$year_established"; ?>");
+            $("#org_division").val("<?php echo "$org_division"; ?>");
+            $("#org_district").val("<?php echo "$org_district"; ?>");
+            $("#org_upazila").val("<?php echo "$org_upazila"; ?>");
+            $("#org_ownership").val("<?php echo "$org_ownership"; ?>");
+            $("#org_function").val("<?php echo "$org_function"; ?>");
+            $("#org_level").val("<?php echo "$org_level"; ?>");
+            $("#org_email").val("<?php echo "$org_email"; ?>");
+            $("#org_contact_number").val("<?php echo "$org_contact_number"; ?>");                        
+            <?php endif; ?>
+
+
         </script>
+        
 
         <!-- Google Analytics Code-->
         <?php include_once 'include/ga_code.php'; ?>
