@@ -181,7 +181,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             <!--<div class="form-group">-->
                             <div class="col-md-4 form-group">
                                 <select id="admin_division" name="admin_division" class="form-control">
-                                    <option value="0">__Select Division__</option>
+                                    <option value="0">__ Select Division __</option>
                                     <?php
                                     $sql = "SELECT
                                                     division_name,
@@ -203,12 +203,12 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             </div>
                             <div class="col-md-4 form-group">
                                 <select id="admin_district" name="admin_district" class="form-control">
-                                    <option value="0">__Select District__</option>                                        
+                                    <option value="0">__ Select District __</option>                                        
                                 </select>
                             </div>
                             <div class="col-md-4 form-group">
                                 <select id="admin_upazila" name="admin_upazila" class="form-control">
-                                    <option value="0">__Select Upazila__</option>                                        
+                                    <option value="0">__ Select Upazila __</option>                                        
                                 </select>
                             </div>
                             <!--</div>-->
@@ -222,7 +222,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             <!--<div class="form-group">-->
                             <div class="col-md-4 form-group">
                                 <select id="report_org_group" name="report_org_group" class="form-control">
-                                    <option value="0">__Select Org Type__</option>
+                                    <option value="0">__ Select Org Type __</option>
                                     <?php
                                     $sql = "SELECT
                                                 org_type.org_type_code,
@@ -234,7 +234,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadorg_type:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
                                     while ($rows = mysql_fetch_assoc($result)) {
-                                        echo "<option value=\"" . $rows['org_type_code'] . "\">" . $rows['org_type_name'] . "(" . $rows['org_type_code'] . ")</option>";
+                                        echo "<option value=\"" . $rows['org_type_code'] . "\">" . $rows['org_type_name'] . "</option>";
                                     }
                                     ?>
                                 </select>
@@ -372,16 +372,9 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         <!-- Bootstrap core JavaScript
         ================================================== -->
 
-        <!--        
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
-        -->
-
-        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.js"></script>
-        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.cookie.js"></script>
-        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.hotkeys.js"></script>
-        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.jstree.js"></script>
-
+        
         <script src="js/vendor/bootstrap.min.js"></script>
 
         <script src="js/plugins.js"></script>
