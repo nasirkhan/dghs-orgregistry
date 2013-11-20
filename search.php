@@ -119,6 +119,7 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                                     <td><strong>Org Type</strong></td>
                                     <td><strong>Division Name</strong></td>
                                     <td><strong>District Name</strong></td>
+                                    <td><strong>Upazila Name</strong></td>
                                     <td><strong>Email</strong></td>
                                     <td><strong>Phone</strong></td>
                                     <!--<td><strong>Upazila Name</strong></td>-->
@@ -135,6 +136,7 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                                         <td><?php echo $row['org_type_name']; ?></td>
                                         <td><?php echo getDivisionNameFromCode($row['division_code']); ?></td>
                                         <td><?php echo getDistrictNameFromCode($row['district_code']); ?></td>
+                                        <td><?php echo getUpazilaNamefromCode($row['upazila_thana_code'],$row['district_code']); ?></td>
                                         <td><?php echo $row['email_address1']; ?></td>
                                         <td><?php echo $row['mobile_number1']; ?></td>
                                     </tr>
