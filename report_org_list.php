@@ -236,7 +236,7 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                                     $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
                                 }
                                 if ($upa_code > 0) {
-                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode(getUpazilaCodeFormId($upa_code)) . "</strong><br>";
+                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
                                 }
                                 if ($agency_code > 0) {
                                     $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
@@ -270,7 +270,7 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                                             <td><?php echo $data['org_code']; ?></td>
                                             <td><?php echo $data['division_name']; ?></td>
                                             <td><?php echo $data['district_name']; ?></td>
-                                            <td><?php echo getUpazilaNamefromCode($data['upazila_thana_code']); ?></td>
+                                            <td><?php echo getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']); ?></td>
                                             <td><?php echo $data['org_agency_name']; ?></td>
                                             <td><?php echo $data['org_type_name']; ?></td>
                                         </tr>
@@ -289,7 +289,7 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                                     $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
                                 }
                                 if ($upa_code > 0) {
-                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode(getUpazilaCodeFormId($upa_code)) . "</strong><br>";
+                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
                                 }
                                 if ($agency_code > 0) {
                                     $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
