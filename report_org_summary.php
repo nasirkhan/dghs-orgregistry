@@ -84,9 +84,25 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     organization.district_code";
         }
     }
+    else if (($div_code == 0 && $dis_code == 0 && $upa_code == 0) && ($report_org_group > 0)){
+        $sql = "SELECT
+                        org_name,
+                        division_name,
+                        division_code,
+                        district_name,
+                        district_code,
+                        upazila_thana_name,
+                        upazila_thana_code,
+                        COUNT(*) AS org_count
+                FROM
+                        `organization`
+                WHERE
+                        organization.org_type_code = '$report_org_group'
+                GROUP BY
+                organization.division_code";
+    }
 
     
-//    echo "<br>$sql";
     $row_count = 0;
     if ($sql != ""){
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
@@ -257,7 +273,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 ?>
                                 <br />
                                 <blockquote>
-                                    Total <strong><em><?php echo mysql_num_rows($org_list_result); ?></em></strong> organization found.<br />
+                                    Total <strong><em><?php echo mysql_num_rows($org_list_result); ?></em></strong> result(s) found.<br />
                                 </blockquote>
                             </div>
                             <table class="table table-striped table-bordered">
@@ -284,6 +300,9 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                             else if ($div_code > 0){
                                                 echo $data['district_name']; 
                                             }
+                                            else {
+                                                echo $data['division_name']; 
+                                            }
                                             ?>
                                         </td>
                                         <td><?php echo $data['org_count']; ?></td>
@@ -291,7 +310,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                     <?php endwhile; ?>
                                     <tr  class="warning">
                                         <td><em>Total organization(s)</em></td>
-                                        <td><?php echo $total_org_count; ?></td>
+                                        <td><strong><?php echo $total_org_count; ?></strong></td>
                                     </tr>
                                 </tbody>
                             </table>
