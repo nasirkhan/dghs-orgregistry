@@ -367,10 +367,7 @@ if ($form_submit == 1){
             $("#org_name").val("<?php echo "$org_name"; ?>");
             $("#org_type").val("<?php echo "$org_type"; ?>");
             $("#org_agency").val("<?php echo "$org_agency"; ?>");
-            $("#year_established").val("<?php echo "$year_established"; ?>");
-            $("#org_division").val("<?php echo "$org_division"; ?>");
-            $("#org_district").val("<?php echo "$org_district"; ?>");
-            $("#org_upazila").val("<?php echo "$org_upazila"; ?>");
+            $("#year_established").val("<?php echo "$year_established"; ?>");            
             $("#org_ownership").val("<?php echo "$org_ownership"; ?>");
             $("#org_function").val("<?php echo "$org_function"; ?>");
             $("#org_level").val("<?php echo "$org_level"; ?>");
