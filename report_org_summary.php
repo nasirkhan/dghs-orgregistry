@@ -279,7 +279,21 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <td><strong>Area Names</strong></td>
+                                        <?php 
+                                            if ($upa_code > 0){
+                                                $area_name = "Upazila";
+                                            }
+                                            else if ($dis_code > 0){
+                                                $area_name = "Upazila";
+                                            }
+                                            else if ($div_code > 0){
+                                                $area_name = "District";
+                                            }
+                                            else {
+                                                $area_name = "Division";
+                                            }
+                                            ?>
+                                        <td><strong><?php echo $area_name; ?> Name(s)</strong></td>
                                         <td><strong><?php echo getOrgTypeNameFromCode($report_org_group); ?></strong></td>
                                     </tr>
                                 </thead>
