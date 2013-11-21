@@ -271,6 +271,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                         </table>
 
                     <?php else: ?>
+                    <!--forntpage image slider-->
                     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                             <!-- Indicators -->
                             <ol class="carousel-indicators">
