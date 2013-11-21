@@ -7,15 +7,19 @@ require_once 'configuration.php';
  * 
  * POST
  */
-//print_r($_POST);
-$div_code = (int) mysql_real_escape_string(trim($_POST['admin_division']));
-$dis_code = (int) mysql_real_escape_string(trim($_POST['admin_district']));
-$upa_code = (int) mysql_real_escape_string(trim($_POST['admin_upazila']));
-$agency_code = (int) mysql_real_escape_string(trim($_POST['org_agency']));
-$type_code = (int) mysql_real_escape_string(trim($_POST['org_type']));
-$form_submit = (int) mysql_real_escape_string(trim($_POST['form_submit']));
+//print_r($_REQUEST);
 
-if ($form_submit == 1 && isset($_POST['form_submit'])) {
+$export = (int) mysql_real_escape_string(trim($_REQUEST['export']));
+
+
+$div_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_division']));
+$dis_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_district']));
+$upa_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_upazila']));
+$agency_code = (int) mysql_real_escape_string(trim($_REQUEST['org_agency']));
+$type_code = (int) mysql_real_escape_string(trim($_REQUEST['org_type']));
+$form_submit = (int) mysql_real_escape_string(trim($_REQUEST['form_submit']));
+
+if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
     /*
      * 
@@ -53,8 +57,9 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
             $query_string .= "organization.org_type_code = $type_code";
         }
     }
-
-    $query_string .= " ORDER BY org_name";
+    else if (($div_code == 0 && $dis_code == 0 && $upa_code == 0 && $agency_code == 0) && $type_code > 0){
+        $query_string .= "organization.org_type_code = $type_code";
+    }
 
     $sql = "SELECT
                 organization.org_name,
@@ -141,7 +146,7 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" role="form">
+                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get" role="form">
                         <div class="row">
                             <!--<div class="form-group">-->
                             <div class="col-md-4 form-group">
@@ -223,33 +228,44 @@ if ($form_submit == 1 && isset($_POST['form_submit'])) {
                             </div>
                         </div>
                     </form>
-                    <?php if ($form_submit == 1 && isset($_POST['form_submit'])) : ?>
+                    <?php if ($form_submit == 1 && isset($_REQUEST['form_submit'])) : ?>
                         <?php if ($showReportTable) : ?>
                             <div class="alert alert-success"> 
-                                Report displaying form:<br>
-                                <?php
-                                $echo_string = "";
-                                if ($div_code > 0) {
-                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
-                                }
-                                if ($dis_code > 0) {
-                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
-                                }
-                                if ($upa_code > 0) {
-                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
-                                }
-                                if ($agency_code > 0) {
-                                    $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
-                                }
-                                if ($type_code > 0) {
-                                    $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code) . "</strong><br>";
-                                }
-                                echo "$echo_string";
-                                ?>
-                                <br />
-                                <blockquote>
-                                    Total <strong><em><?php echo mysql_num_rows($org_list_result); ?></em></strong> organization found.<br />
-                                </blockquote>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                    Report displaying form:<br>
+                                    <?php
+                                    $echo_string = "";
+                                    if ($div_code > 0) {
+                                        $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
+                                    }
+                                    if ($dis_code > 0) {
+                                        $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
+                                    }
+                                    if ($upa_code > 0) {
+                                        $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
+                                    }
+                                    if ($agency_code > 0) {
+                                        $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
+                                    }
+                                    if ($type_code > 0) {
+                                        $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code) . "</strong><br>";
+                                    }
+                                    echo "$echo_string";
+                                    ?>
+                                    <br />
+                                    <blockquote>
+                                        Total <strong><em><?php echo mysql_num_rows($org_list_result); ?></em></strong> organization found.<br />
+                                    </blockquote>
+                                </div>
+                                <div class="col-md-2">
+                                    <!--<button type="button" class="btn btn-primary">Export Excel</button>-->
+                                    <p>
+                                        <button type="button" class="btn btn-primary btn-block">Export Excel</button>
+                                        <button type="button" class="btn btn-default btn-block">Export CSV</button>
+                                    </p>
+                                </div>
+                                </div>
                             </div>
                             <table class="table table-striped table-bordered">
                                 <thead>
