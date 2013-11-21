@@ -27,6 +27,80 @@ if ($form_submit == 1){
         $captcha_passed = FALSE;
     } else {
         $captcha_passed = TRUE;
+        
+        if($org_name != "" 
+            && $org_type > 0 
+            && $org_agency > 0 
+            && $year_established > 0 
+            && $org_division > 0 
+            && $org_district > 0 
+            && $org_upazila > 0 
+            && $org_ownership > 0 
+            && $org_function > 0  
+            && $org_level > 0
+            && $org_email > 0
+            && $org_contact_number > 0){
+            $sql = "INSERT INTO `organization_requested` ("
+                    . "`org_name`, "
+                    . "`org_code`, "
+                    . "`org_type_code`, "
+                    . "`agency_code`, "
+                    . "`org_function_code`, "
+                    . "`org_level_code`, "
+                    . "`org_level_name`, "
+                    . "`org_healthcare_level_code`, "
+                    . "`special_service_code`, "
+                    . "`year_established`, "
+                    . "`org_location_type`, "
+                    . "`division_code`, "
+                    . "`division_name`, "
+                    . "`district_code`, "
+                    . "`district_name`, "
+                    . "`upazila_thana_code`, "
+                    . "`upazila_thana_name`, "
+                    . "`union_code`, "
+                    . "`union_name`, "
+                    . "`ward_code`, "
+                    . "`house_number`, "
+                    . "`latitude`, "
+                    . "`longitude`, "
+                    . "`ownership_code`, "
+                    . "`mailing_address`, "
+                    . "`mobile_number1`, "
+                    . "`email_address1`, "
+                    . "`org_functions`, "
+                    . "`updated_by`) VALUES ("
+                    . "'name', "
+                    . "'123', "
+                    . "'$org_type', "
+                    . "'$org_agency', "
+                    . "'$org_function', "
+                    . "'30', "
+                    . "'40', "
+                    . "'50', "
+                    . "'60', "
+                    . "'70', "
+                    . "'80', "
+                    . "'90', "
+                    . "'11', "
+                    . "'22', "
+                    . "'33', "
+                    . "'44', "
+                    . "'55', "
+                    . "'66', "
+                    . "'77', "
+                    . "'88', "
+                    . "'99', "
+                    . "'100', "
+                    . "'200', "
+                    . "'555', "
+                    . "'79', "
+                    . "'123', "
+                    . "'4568', "
+                    . "'8', "
+                    . "'nasirkhan') ";
+        }
+        
         // insert code
     }
 }
