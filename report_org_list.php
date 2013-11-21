@@ -56,8 +56,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             }
             $query_string .= "organization.org_type_code = $type_code";
         }
-    }
-    else if (($div_code == 0 && $dis_code == 0 && $upa_code == 0 && $agency_code == 0) && $type_code > 0){
+    } else if (($div_code == 0 && $dis_code == 0 && $upa_code == 0 && $agency_code == 0) && $type_code > 0) {
         $query_string .= "organization.org_type_code = $type_code";
     }
 
@@ -83,6 +82,196 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
     if (mysql_num_rows($org_list_result) > 0) {
         $showReportTable = TRUE;
+    }
+
+
+    if ($export == "excel" && $form_submit == 1 && isset($_REQUEST['export'])) {
+//        echo "OMG";
+        error_reporting(E_ALL);
+        ini_set('display_errors', TRUE);
+        ini_set('display_startup_errors', TRUE);
+        date_default_timezone_set('Europe/London');
+
+        if (PHP_SAPI == 'cli')
+                die('This example should only be run from a Web Browser');
+
+        /** Include PHPExcel */
+        require_once 'library/PHPExcel/Classes/PHPExcel.php';
+
+
+        // Create new PHPExcel object
+        $objPHPExcel = new PHPExcel();
+
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("Nasir Khan Saikat")
+                                                                 ->setLastModifiedBy("Nasir Khan Saikat")
+                                                                 ->setTitle("Office 2007 XLSX Test Document")
+                                                                 ->setSubject("Office 2007 XLSX Test Document")
+                                                                 ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                                                                 ->setKeywords("office 2007 openxml php")
+                                                                 ->setCategory("Organization Registry Export");
+
+        /**
+         * --------------------------------------------------------------------
+         * 
+         * Writing date to excel file.
+         * 
+         * --------------------------------------------------------------------
+         */ 
+        
+        /**
+         * 
+         *          Start
+         * *********************************
+         */    
+        $echo_string = "";
+        if ($div_code > 0) {
+            $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
+        }
+        if ($dis_code > 0) {
+            $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
+        }
+        if ($upa_code > 0) {
+            $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
+        }
+        if ($agency_code > 0) {
+            $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
+        }
+        if ($type_code > 0) {
+            $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code) . "</strong><br>";
+        }
+//                                        echo "$echo_string";
+        $row_number =0;   
+//        Writing excel headings
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'Organization Registry Report')                    
+                    ->setCellValue('A3', 'Government of People\'s Republic of Bangladesh')
+                    ->setCellValue('A4', 'Ministry of Health and Family Welfare')
+                    ->setCellValue('A6', 'Total ' . mysql_num_rows($org_list_result) . ' organization(s) found.')
+                    ->setCellValue('A7', 'Report displaying form:'); 
+        
+//        writing report infromation
+        $row_number =8;
+        if ($div_code > 0) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue("A$row_number", "Dision")
+                    ->setCellValue("B$row_number", getDivisionNamefromCode(getDivisionCodeFormId($div_code)));
+            $row_number++;
+        }
+        if ($dis_code > 0) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue("A$row_number", "District")
+                    ->setCellValue("B$row_number", getDistrictNamefromCode(getDistrictCodeFormId($dis_code)));
+            $row_number++;
+        }
+        if ($upa_code > 0) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue("A$row_number", "Upazila")
+                    ->setCellValue("B$row_number", getUpazilaNamefromCode($upa_code, $dis_code));
+            $row_number++;
+        }
+        if ($agency_code > 0) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue("A$row_number", "Agency")
+                    ->setCellValue("B$row_number", getAgencyNameFromAgencyCode($agency_code));
+            $row_number++;
+        }
+        if ($type_code > 0) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue("A$row_number", "Org Type")
+                    ->setCellValue("B$row_number", getOrgTypeNameFormOrgTypeCode($type_code));
+            $row_number++;
+        }
+        
+        // start writing data values
+        $row_number++;
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue("A$row_number", "Organization Name")
+                    ->setCellValue("B$row_number", "Organization Code")
+                    ->setCellValue("C$row_number", "Division")
+                    ->setCellValue("D$row_number", "District")
+                    ->setCellValue("E$row_number", "Upazila")
+                    ->setCellValue("F$row_number", "Agency")
+                    ->setCellValue("G$row_number", "Org Type");
+        
+        while ($data = mysql_fetch_assoc($org_list_result)){
+            $row_number++;
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue("A$row_number", $data['org_name'])
+                    ->setCellValue("B$row_number", $data['org_code'])
+                    ->setCellValue("C$row_number", $data['division_name'])
+                    ->setCellValue("D$row_number", $data['district_name'])
+                    ->setCellValue("E$row_number", getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']))
+                    ->setCellValue("F$row_number", $data['org_agency_name'])
+                    ->setCellValue("G$row_number", $data['org_type_name']);
+        }
+        
+        /*
+        
+         <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td><strong>Organization Name</strong></td>
+                    <td><strong>Organization Code</strong></td>
+                    <td><strong>Division</strong></td>
+                    <td><strong>District</strong></td>
+                    <td><strong>Upazila</strong></td>
+                    <td><strong>Agency</strong></td>
+                    <td><strong>Org Type</strong></td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($data = mysql_fetch_assoc($org_list_result)): ?>
+                    <tr>
+                        <td><a href="org_profile.php?org_code=<?php echo $data['org_code']; ?>" target="_blank"><?php echo $data['org_name']; ?></a></td>
+                        <td><?php echo $data['org_code']; ?></td>
+                        <td><?php echo $data['division_name']; ?></td>
+                        <td><?php echo $data['district_name']; ?></td>
+                        <td><?php echo getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']); ?></td>
+                        <td><?php echo $data['org_agency_name']; ?></td>
+                        <td><?php echo $data['org_type_name']; ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+         */
+//        $objPHPExcel->setActiveSheetIndex(0)
+//                    ->setCellValue('A8', "")
+//                    ->setCellValue('A9', "glyphs");
+//        
+//        $objPHPExcel->setActiveSheetIndex(0)
+//                    ->setCellValue('A8', "")
+//                    ->setCellValue('A9', "glyphs");
+//        
+         /**
+         * 
+         *          Start
+         * *********************************
+         */
+        // Rename worksheet
+        $objPHPExcel->getActiveSheet()->setTitle('Organizaion Registry Report');
+
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $objPHPExcel->setActiveSheetIndex(0);
+
+
+        // Redirect output to a client’s web browser (Excel5)
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="Organizaion Registry Report.xls"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1990 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+        exit;
     }
 //echo "$sql";
 }
@@ -233,38 +422,56 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             <div class="alert alert-success"> 
                                 <div class="row">
                                     <div class="col-md-10">
-                                    Report displaying form:<br>
-                                    <?php
-                                    $echo_string = "";
-                                    if ($div_code > 0) {
-                                        $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
-                                    }
-                                    if ($dis_code > 0) {
-                                        $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
-                                    }
-                                    if ($upa_code > 0) {
-                                        $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
-                                    }
-                                    if ($agency_code > 0) {
-                                        $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
-                                    }
-                                    if ($type_code > 0) {
-                                        $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code) . "</strong><br>";
-                                    }
-                                    echo "$echo_string";
-                                    ?>
-                                    <br />
-                                    <blockquote>
-                                        Total <strong><em><?php echo mysql_num_rows($org_list_result); ?></em></strong> organization found.<br />
-                                    </blockquote>
-                                </div>
-                                <div class="col-md-2">
-                                    <!--<button type="button" class="btn btn-primary">Export Excel</button>-->
-                                    <p>
-                                        <button type="button" class="btn btn-primary btn-block">Export Excel</button>
-                                        <button type="button" class="btn btn-default btn-block">Export CSV</button>
-                                    </p>
-                                </div>
+                                        Report displaying form:<br>
+                                        <?php
+                                        $echo_string = "";
+                                        if ($div_code > 0) {
+                                            $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
+                                        }
+                                        if ($dis_code > 0) {
+                                            $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
+                                        }
+                                        if ($upa_code > 0) {
+                                            $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
+                                        }
+                                        if ($agency_code > 0) {
+                                            $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
+                                        }
+                                        if ($type_code > 0) {
+                                            $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code) . "</strong><br>";
+                                        }
+                                        echo "$echo_string";
+                                        ?>
+                                        <br />
+                                        <blockquote>
+                                            Total <strong><em><?php echo mysql_num_rows($org_list_result); ?></em></strong> organization found.<br />
+                                        </blockquote>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <!--<button type="button" class="btn btn-primary">Export Excel</button>-->
+                                        <p>
+                                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" role="form">
+                                            <input type="hidden" name="admin_division" value="<?php echo $div_code; ?>" >
+                                            <input type="hidden" name="admin_district" value="<?php echo $dis_code; ?>" >
+                                            <input type="hidden" name="admin_upazila" value="<?php echo $upa_code; ?>" >
+                                            <input type="hidden" name="org_agency" value=<?php echo $agency_code; ?>"" >
+                                            <input type="hidden" name="org_type" value="<?php echo $type_code; ?>" >
+                                            <input type="hidden" name="form_submit" value="<?php echo $form_submit; ?>" >
+                                            <button type="submit" class="btn btn-primary btn-block" name="export" value="excel">Export Excel</button>
+                                        </form>
+                                        </p>
+                                        <p>
+                                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" role="form">
+                                            <input type="hidden" name="admin_division" value="<?php echo $div_code; ?>" >
+                                            <input type="hidden" name="admin_district" value="<?php echo $dis_code; ?>" >
+                                            <input type="hidden" name="admin_upazila" value="<?php echo $upa_code; ?>" >
+                                            <input type="hidden" name="org_agency" value=<?php echo $agency_code; ?>"" >
+                                            <input type="hidden" name="org_type" value="<?php echo $type_code; ?>" >
+                                            <input type="hidden" name="form_submit" value="<?php echo $form_submit; ?>" >
+                                            <button type="submit" class="btn btn-default btn-block" name="export" value="csv">Export CSV</button>
+                                        </form>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             <table class="table table-striped table-bordered">
