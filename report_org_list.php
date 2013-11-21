@@ -86,11 +86,11 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
 
     if ($export == "excel" && $form_submit == 1 && isset($_REQUEST['export'])) {
-//        echo "OMG";
         error_reporting(E_ALL);
         ini_set('display_errors', TRUE);
         ini_set('display_startup_errors', TRUE);
-        date_default_timezone_set('Europe/London');
+        date_default_timezone_set('Asia/Dhaka');
+        $report_export_datetime = date("Y-m-d H:i:s"); 
 
         if (PHP_SAPI == 'cli')
                 die('This example should only be run from a Web Browser');
@@ -104,24 +104,27 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("Nasir Khan Saikat")
-                                                                 ->setLastModifiedBy("Nasir Khan Saikat")
-                                                                 ->setTitle("Office 2007 XLSX Test Document")
-                                                                 ->setSubject("Office 2007 XLSX Test Document")
-                                                                 ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
-                                                                 ->setKeywords("office 2007 openxml php")
-                                                                 ->setCategory("Organization Registry Export");
+                                    ->setLastModifiedBy("Nasir Khan Saikat")
+                                    ->setTitle("Organization Registry Report Export")
+                                    ->setSubject("Organization Registry Report Export")
+                                    ->setDescription("Ministry of Health and Family Welfare Organization Registry Report Export")
+                                    ->setKeywords("office 2007 openxml php")
+                                    ->setCategory("Organization Registry Export");
 
         /**
          * --------------------------------------------------------------------
          * 
          * Writing date to excel file.
          * 
+         * @todo Excel Export
+         * @todo Enable cache
+         * @todo set print header and footer
          * --------------------------------------------------------------------
          */ 
         
         /**
          * 
-         *          Start
+         *          Start writing
          * *********************************
          */    
         $echo_string = "";
@@ -143,15 +146,34 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 //                                        echo "$echo_string";
         $row_number =0;   
 //        Writing excel headings
-        $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'Organization Registry Report')                    
+        $objPHPExcel->setActiveSheetIndex(0)                   
                     ->setCellValue('A3', 'Government of People\'s Republic of Bangladesh')
                     ->setCellValue('A4', 'Ministry of Health and Family Welfare')
-                    ->setCellValue('A6', 'Total ' . mysql_num_rows($org_list_result) . ' organization(s) found.')
-                    ->setCellValue('A7', 'Report displaying form:'); 
+                    ->setCellValue('A6', 'Report Exported on:')
+                    ->setCellValue('B6', "$report_export_datetime")
+                    ->setCellValue('A8', 'Total ' . mysql_num_rows($org_list_result) . ' organization(s) found.')
+                    ->setCellValue('A9', 'Report displaying form:'); 
         
+        
+        
+        $objRichText = new PHPExcel_RichText();
+        $objRichText->createText(' ');
+
+        $objPayable = $objRichText->createTextRun('Organization Registry Report');
+        $objPayable->getFont()->setBold(true);
+
+        $objRichText->createText(' ');
+
+        $objPHPExcel->getActiveSheet()->getCell('A1')->setValue($objRichText);
+
+
+
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
+        $objPHPExcel->getActiveSheet()->mergeCells('A2:G2');
+        $objPHPExcel->getActiveSheet()->mergeCells('A3:G3');
+        $objPHPExcel->getActiveSheet()->mergeCells('A4:G4');
 //        writing report infromation
-        $row_number =8;
+        $row_number = 10;
         if ($div_code > 0) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue("A$row_number", "Dision")
@@ -185,6 +207,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         
         // start writing data values
         $row_number++;
+      
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue("A$row_number", "Organization Name")
                     ->setCellValue("B$row_number", "Organization Code")
@@ -206,50 +229,15 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     ->setCellValue("G$row_number", $data['org_type_name']);
         }
         
-        /*
-        
-         <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <td><strong>Organization Name</strong></td>
-                    <td><strong>Organization Code</strong></td>
-                    <td><strong>Division</strong></td>
-                    <td><strong>District</strong></td>
-                    <td><strong>Upazila</strong></td>
-                    <td><strong>Agency</strong></td>
-                    <td><strong>Org Type</strong></td>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($data = mysql_fetch_assoc($org_list_result)): ?>
-                    <tr>
-                        <td><a href="org_profile.php?org_code=<?php echo $data['org_code']; ?>" target="_blank"><?php echo $data['org_name']; ?></a></td>
-                        <td><?php echo $data['org_code']; ?></td>
-                        <td><?php echo $data['division_name']; ?></td>
-                        <td><?php echo $data['district_name']; ?></td>
-                        <td><?php echo getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']); ?></td>
-                        <td><?php echo $data['org_agency_name']; ?></td>
-                        <td><?php echo $data['org_type_name']; ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-         */
-//        $objPHPExcel->setActiveSheetIndex(0)
-//                    ->setCellValue('A8', "")
-//                    ->setCellValue('A9', "glyphs");
-//        
-//        $objPHPExcel->setActiveSheetIndex(0)
-//                    ->setCellValue('A8', "")
-//                    ->setCellValue('A9', "glyphs");
-//        
-         /**
+        /**
          * 
-         *          Start
+         *          END writing
          * *********************************
          */
+        
+        
         // Rename worksheet
-        $objPHPExcel->getActiveSheet()->setTitle('Organizaion Registry Report');
+        $objPHPExcel->getActiveSheet()->setTitle('Organization Registry Report');
 
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
@@ -258,7 +246,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
         // Redirect output to a client’s web browser (Excel5)
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Organizaion Registry Report.xls"');
+        header('Content-Disposition: attachment;filename="Organization Registry Report.xls"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
@@ -460,6 +448,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                             <button type="submit" class="btn btn-primary btn-block" name="export" value="excel">Export Excel</button>
                                         </form>
                                         </p>
+                                        <!--
                                         <p>
                                         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" role="form">
                                             <input type="hidden" name="admin_division" value="<?php echo $div_code; ?>" >
@@ -471,6 +460,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                             <button type="submit" class="btn btn-default btn-block" name="export" value="csv">Export CSV</button>
                                         </form>
                                         </p>
+                                        -->
                                     </div>
                                 </div>
                             </div>
