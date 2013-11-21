@@ -11,8 +11,11 @@ require_once 'configuration.php';
 $div_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_division']));
 $dis_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_district']));
 $upa_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_upazila']));
+$report_org_group = array();
+$report_org_group = $_REQUEST['report_org_group'];
+$report_org_group_count = count($report_org_group);
 
-$report_org_group = (int) mysql_real_escape_string(trim($_REQUEST['report_org_group']));
+
 
 $form_submit = (int) mysql_real_escape_string(trim($_REQUEST['form_submit']));
 
@@ -26,11 +29,23 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
      */
     $query_string = "";
     $sql = "";
-    if (($div_code > 0 || $dis_code > 0 || $upa_code > 0) && ($report_org_group > 0)) {
+    $output_array = array();
+    $row_count = 0;
 
-        if ($upa_code > 0) {            
+    $org_type_selected_array = "";
+    for ($i = 0; $i < $report_org_group_count; $i++) {
+        $org_type_selected_array .= " organization.org_type_code = '" . $report_org_group[$i] . "'";
+        if ($i >= 0 && $i != $report_org_group_count - 1) {
+            $org_type_selected_array .= " OR ";
+        }
+    }
+    echo "$org_type_selected_array";
+
+
+    if (($div_code > 0 || $dis_code > 0 || $upa_code > 0) && ($report_org_group_count > 0)) {
+
+        if ($upa_code > 0) {
             $sql = "SELECT
-                            org_name,
                             division_name,
                             division_code,
                             district_name,
@@ -41,15 +56,14 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     FROM
                             `organization`
                     WHERE
-                            organization.upazila_thana_code = '$upa_code'
-                    and organization.district_code = '$dis_code'
-                    AND organization.org_type_code = '$report_org_group'
+                            $org_type_selected_array
+                            AND organization.upazila_thana_code = '$upa_code'
+                            AND organization.district_code = '$dis_code'
+                    
                     GROUP BY
                     organization.upazila_thana_code";
-        }
-        else if ($dis_code > 0) {
+        } else if ($dis_code > 0) {
             $sql = "SELECT
-                            org_name,
                             division_name,
                             division_code,
                             district_name,
@@ -60,14 +74,13 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     FROM
                             `organization`
                     WHERE
-                            organization.district_code = '$dis_code'
-                    AND organization.org_type_code = '$report_org_group'
+                            $org_type_selected_array
+                            AND organization.district_code = '$dis_code'
+                    
                     GROUP BY
                     organization.upazila_thana_code";
-        }
-        else if ($div_code > 0) {
+        } else if ($div_code > 0) {
             $sql = "SELECT
-                            org_name,
                             division_name,
                             division_code,
                             district_name,
@@ -78,42 +91,58 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     FROM
                             `organization`
                     WHERE
-                            organization.division_code = '$div_code'
-                    AND organization.org_type_code = '$report_org_group'
+                            $org_type_selected_array
+                            AND organization.division_code = '$div_code'                    
                     GROUP BY
                     organization.district_code";
         }
-    }
-    else if (($div_code == 0 && $dis_code == 0 && $upa_code == 0) && ($report_org_group > 0)){
+    } else if (($div_code == 0 && $dis_code == 0 && $upa_code == 0) && ($report_org_group[0] > 0)) {
+
         $sql = "SELECT
-                        org_name,
                         division_name,
                         division_code,
-                        district_name,
-                        district_code,
-                        upazila_thana_name,
-                        upazila_thana_code,
                         COUNT(*) AS org_count
                 FROM
                         `organization`
                 WHERE
-                        organization.org_type_code = '$report_org_group'
+                        $org_type_selected_array
                 GROUP BY
                 organization.division_code";
+        if ($sql != "") {
+            $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+            $row_count = mysql_num_rows($org_list_result);
+            if ($row_count > 0) {
+                $showReportTable = TRUE;
+            }
+        }
+        for ($i = 0; $i < $report_org_group_count; $i++) {
+            $org_type_selected_array .= " organization.org_type_code = '" . $report_org_group[$i] . "'";
+            if ($i >= 0 && $i != $report_org_group_count - 1) {
+                $org_type_selected_array .= " OR ";
+            }
+        }
     }
 
+
     
-    $row_count = 0;
-    if ($sql != ""){
+    if ($sql != "") {
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
         $row_count = mysql_num_rows($org_list_result);
         if ($row_count > 0) {
             $showReportTable = TRUE;
         }
     }
-    
+    echo "<pre>";
+//    print_r(mysql_fetch_assoc($org_list_result));
 
-    
+    echo "<br>Output Array";
+
+    while ($data = mysql_fetch_assoc($org_list_result)) {
+        $output_array[] = $data;
+    }
+    print_r($output_array);
+
+    echo "</pre>";
 //echo "$sql";
 }
 ?>
@@ -131,7 +160,10 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="library/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="library/bootstrap-multiselect/css/bootstrap-multiselect.css">
+
         <link rel="stylesheet" href="css/main.css">
+
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
@@ -142,7 +174,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         <div class="container">
 
             <!-- Page Header -->
-            <?php include_once 'include/header_page_header.php'; ?>
+<?php include_once 'include/header_page_header.php'; ?>
 
 
             <div class="navbar navbar-inverse navbar-default">
@@ -182,8 +214,8 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             <div class="col-md-4 form-group">
                                 <select id="admin_division" name="admin_division" class="form-control">
                                     <option value="0">__ Select Division __</option>
-                                    <?php
-                                    $sql = "SELECT
+<?php
+$sql = "SELECT
                                                     division_name,
                                                     division_bbs_code
                                             FROM
@@ -192,10 +224,10 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                                     division_active LIKE 1
                                             ORDER BY
                                                     division_bbs_code";
-                                    $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>Select Division:1<br />Query:</b><br />___<br />$sql</p>");
-                                    if (mysql_num_rows($result) > 0):
-                                        while ($row = mysql_fetch_assoc($result)):
-                                            ?>
+$result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>Select Division:1<br />Query:</b><br />___<br />$sql</p>");
+if (mysql_num_rows($result) > 0):
+    while ($row = mysql_fetch_assoc($result)):
+        ?>
                                             <option value="<?php echo $row['division_bbs_code']; ?>"><?php echo $row['division_name']; ?></option>
                                         <?php endwhile; ?>
                                     <?php endif; ?>
@@ -220,23 +252,23 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                         </div>
                         <div class="row">
                             <!--<div class="form-group">-->
-                            <div class="col-md-4 form-group">
-                                <select id="report_org_group" name="report_org_group" class="form-control">
+                            <div class="col-md-12 form-group">
+                                <select id="report_org_group" name="report_org_group[]" class="form-control"  multiple="multiple">
                                     <option value="0">__ Select Org Type __</option>
-                                    <?php
-                                    $sql = "SELECT
+<?php
+$sql = "SELECT
                                                 org_type.org_type_code,
                                                 org_type.org_type_name
                                             FROM
                                                 org_type
                                             ORDER BY
                                                 org_type.org_type_name ASC";
-                                    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadorg_type:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+$result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadorg_type:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
-                                    while ($rows = mysql_fetch_assoc($result)) {
-                                        echo "<option value=\"" . $rows['org_type_code'] . "\">" . $rows['org_type_name'] . "</option>";
-                                    }
-                                    ?>
+while ($rows = mysql_fetch_assoc($result)) {
+    echo "<option value=\"" . $rows['org_type_code'] . "\">" . $rows['org_type_name'] . "</option>";
+}
+?>
                                 </select>
                                 </select>
                             </div>
@@ -251,26 +283,26 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             </div>
                         </div>
                     </form>
-                    <?php if ($form_submit == 1 && isset($_REQUEST['form_submit'])) : ?>
-                        <?php if ($showReportTable) : ?>
+<?php if ($form_submit == 1 && isset($_REQUEST['form_submit'])) : ?>
+    <?php if ($showReportTable) : ?>
                             <div class="alert alert-success"> 
                                 Report displaying form:<br>
-                                <?php
-                                $echo_string = "";
-                                if ($div_code > 0) {
-                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_code) . "</strong><br>";
-                                }
-                                if ($dis_code > 0) {
-                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_code) . "</strong><br>";
-                                }
-                                if ($upa_code > 0) {
-                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
-                                }
-                                if ($report_org_group > 0) {
-                                    $echo_string .= " Org Type: <strong>" . getOrgTypeNameFromCode($report_org_group) . "</strong><br>";
-                                }
-                                echo "$echo_string";
-                                ?>
+                            <?php
+                            $echo_string = "";
+                            if ($div_code > 0) {
+                                $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_code) . "</strong><br>";
+                            }
+                            if ($dis_code > 0) {
+                                $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_code) . "</strong><br>";
+                            }
+                            if ($upa_code > 0) {
+                                $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
+                            }
+                            if ($report_org_group[0] > 0) {
+                                $echo_string .= " Org Type: <strong>" . getOrgTypeNameFromCode($report_org_group[0]) . "</strong><br>";
+                            }
+                            echo "$echo_string";
+                            ?>
                                 <br />
                                 <blockquote>
                                     Total <strong><em><?php echo mysql_num_rows($org_list_result); ?></em></strong> result(s) found.<br />
@@ -279,81 +311,76 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <?php 
-                                            if ($upa_code > 0){
-                                                $area_name = "Upazila";
-                                            }
-                                            else if ($dis_code > 0){
-                                                $area_name = "Upazila";
-                                            }
-                                            else if ($div_code > 0){
-                                                $area_name = "District";
-                                            }
-                                            else {
-                                                $area_name = "Division";
-                                            }
-                                            ?>
+        <?php
+        if ($upa_code > 0) {
+            $area_name = "Upazila";
+        } else if ($dis_code > 0) {
+            $area_name = "Upazila";
+        } else if ($div_code > 0) {
+            $area_name = "District";
+        } else {
+            $area_name = "Division";
+        }
+        ?>
                                         <td><strong><?php echo $area_name; ?> Name(s)</strong></td>
-                                        <td><strong><?php echo getOrgTypeNameFromCode($report_org_group); ?></strong></td>
+                                        <td><strong><?php echo getOrgTypeNameFromCode($report_org_group[0]); ?></strong></td>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php 
-                                    $total_org_count = 0;
-                                    while($data = mysql_fetch_assoc($org_list_result)):
-                                        $total_org_count += $data['org_count'];?>
-                                    <tr>
-                                        <td>
-                                            <?php 
-                                            if ($upa_code > 0){
-                                                echo $data['upazila_thana_name']; 
-                                            }
-                                            else if ($dis_code > 0){
-                                                echo $data['upazila_thana_name']; 
-                                            }
-                                            else if ($div_code > 0){
-                                                echo $data['district_name']; 
-                                            }
-                                            else {
-                                                echo $data['division_name']; 
-                                            }
+                                        <?php
+                                        $total_org_count = 0;
+                                        while ($data = mysql_fetch_assoc($org_list_result)):
+                                            $total_org_count += $data['org_count'];
                                             ?>
-                                        </td>
-                                        <td><?php echo $data['org_count']; ?></td>
-                                    </tr>
-                                    <?php endwhile; ?>
+                                        <tr>
+                                            <td>
+                                        <?php
+                                        if ($upa_code > 0) {
+                                            echo $data['upazila_thana_name'];
+                                        } else if ($dis_code > 0) {
+                                            echo $data['upazila_thana_name'];
+                                        } else if ($div_code > 0) {
+                                            echo $data['district_name'];
+                                        } else {
+                                            echo $data['division_name'];
+                                        }
+                                        ?>
+                                            </td>
+                                            <td><?php echo $data['org_count']; ?></td>
+                                        </tr>
+                                            <?php endwhile; ?>
                                     <tr  class="warning">
                                         <td><em>Total organization(s)</em></td>
                                         <td><strong><?php echo $total_org_count; ?></strong></td>
                                     </tr>
                                 </tbody>
                             </table>
-                        <?php else: ?>
+                                <?php else: ?>
                             <div class="alert alert-warning"> 
                                 Report displaying form:<br>
-                                <?php
-                                $echo_string = "";
-                                if ($div_code > 0) {
-                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_code) . "</strong><br>";
-                                }
-                                if ($dis_code > 0) {
-                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_code) . "</strong><br>";
-                                }
-                                if ($upa_code > 0) {
-                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
-                                }
-                                if ($report_org_group > 0) {
-                                    $echo_string .= " Org Type: <strong>" . getOrgTypeNameFromCode($report_org_group) . "</strong><br>";
-                                }
-                                echo "$echo_string";
-                                ?>
+        <?php
+        $echo_string = "";
+        if ($div_code > 0) {
+            $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_code) . "</strong><br>";
+        }
+        if ($dis_code > 0) {
+            $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_code) . "</strong><br>";
+        }
+        if ($upa_code > 0) {
+            $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
+        }
+        if ($report_org_group[0] > 0) {
+            $echo_string .= " Org Type: <strong>" . getOrgTypeNameFromCode($report_org_group[0]) . "</strong><br>";
+        }
+        echo "$echo_string";
+        ?>
                                 <br />
                                 <blockquote>
                                     Total <strong><em><?php echo $row_count; ?></em></strong> organization found.<br />
                                 </blockquote>
                             </div>
+                            <?php endif; ?>
                         <?php endif; ?>
-                    <?php endif; ?>
                 </div>
             </div>
 
@@ -363,7 +390,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             <footer>
                 <p>
                     <!-- Copyright info -->
-                    <?php include_once 'include/footer_copyright_info.php'; ?>
+<?php include_once 'include/footer_copyright_info.php'; ?>
                 </p>
             </footer>
         </div> <!-- /container -->        
@@ -374,11 +401,13 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
-        
+
         <script src="js/vendor/bootstrap.min.js"></script>
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+
+        <script src="library/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
 
         <script type="text/javascript">
             // load district
@@ -424,9 +453,15 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     }
                 });
             });
+
+            $("#report_org_group").multiselect({
+                includeSelectAllOption: true,
+                maxHeight: 300,
+                buttonWidth: '350px'
+            });
         </script>
 
         <!-- Google Analytics Code-->
-        <?php include_once 'include/ga_code.php'; ?>
+<?php include_once 'include/ga_code.php'; ?>
     </body>
 </html>
