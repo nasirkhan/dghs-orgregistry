@@ -15,3 +15,10 @@
 .slidorion{
     width: 860px;
 }
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .slidorion{
+        width: 720px;
+        margin-left:-370px;
+    }
+}
