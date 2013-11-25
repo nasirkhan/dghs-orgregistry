@@ -5,6 +5,7 @@ $org_name = mysql_real_escape_string(trim($_REQUEST['org_name']));
 $org_type = (int) mysql_real_escape_string(trim($_REQUEST['org_type']));
 $org_agency = (int) mysql_real_escape_string(trim($_REQUEST['org_agency']));
 $year_established = (int) mysql_real_escape_string(trim($_REQUEST['year_established']));
+$org_location = (int) mysql_real_escape_string(trim($_REQUEST['org_location']));
 $org_division = (int) mysql_real_escape_string(trim($_REQUEST['org_division']));
 $org_district = (int) mysql_real_escape_string(trim($_REQUEST['org_district']));
 $org_upazila = (int) mysql_real_escape_string(trim($_REQUEST['org_upazila']));
@@ -26,20 +27,21 @@ if ($form_submit == 1){
     if (!$resp->is_valid) {
         $captcha_passed = FALSE;
     } else {
-        $captcha_passed = TRUE;
-        
+//        echo "<pre>";
+//        print_r($_REQUEST);
+//        echo "</pre>";
         if($org_name != "" 
             && $org_type > 0 
             && $org_agency > 0 
             && $year_established > 0 
             && $org_division > 0 
-            && $org_district > 0 
-            && $org_upazila > 0 
+            && $org_district > 0     
+            && $org_upazila > 0     
             && $org_ownership > 0 
             && $org_function > 0  
             && $org_level > 0
-            && $org_email > 0
-            && $org_contact_number > 0){
+            && $org_email != "" 
+            && $org_contact_number != ""){
             $sql = "INSERT INTO `organization_requested` ("
                     . "`org_name`, "
                     . "`org_code`, "
@@ -48,8 +50,6 @@ if ($form_submit == 1){
                     . "`org_function_code`, "
                     . "`org_level_code`, "
                     . "`org_level_name`, "
-                    . "`org_healthcare_level_code`, "
-                    . "`special_service_code`, "
                     . "`year_established`, "
                     . "`org_location_type`, "
                     . "`division_code`, "
@@ -58,53 +58,60 @@ if ($form_submit == 1){
                     . "`district_name`, "
                     . "`upazila_thana_code`, "
                     . "`upazila_thana_name`, "
-                    . "`union_code`, "
-                    . "`union_name`, "
-                    . "`ward_code`, "
-                    . "`house_number`, "
                     . "`latitude`, "
                     . "`longitude`, "
                     . "`ownership_code`, "
-                    . "`mailing_address`, "
                     . "`mobile_number1`, "
                     . "`email_address1`, "
-                    . "`org_functions`, "
                     . "`updated_by`) VALUES ("
-                    . "'name', "
-                    . "'123', "
+                    . "\"$org_name\", "
+                    . "'0', "
                     . "'$org_type', "
                     . "'$org_agency', "
                     . "'$org_function', "
-                    . "'30', "
-                    . "'40', "
-                    . "'50', "
-                    . "'60', "
-                    . "'70', "
-                    . "'80', "
-                    . "'90', "
-                    . "'11', "
-                    . "'22', "
-                    . "'33', "
-                    . "'44', "
-                    . "'55', "
-                    . "'66', "
-                    . "'77', "
-                    . "'88', "
-                    . "'99', "
-                    . "'100', "
-                    . "'200', "
-                    . "'555', "
-                    . "'79', "
-                    . "'123', "
-                    . "'4568', "
-                    . "'8', "
+                    . "'$org_level', "
+                    . "\"" . getOrgLevelNameFromCode($org_level) . "\", "                    
+                    . "'$year_established', "
+                    . "'$org_location', "
+                    . "'$org_division', "
+                    . "\"" . getDivisionNameFromCode($org_division) . "\", "
+                    . "'$org_district', "
+                    . "\"" . getDistrictNameFromCode($org_district) . "\", "
+                    . "'$org_upazila', "
+                    . "\"" . getUpazilaNamefromCode($org_upazila, $org_district) . "\", "                    
+                    . "'$latitude', "
+                    . "'$longitude', "
+                    . "'$org_ownership', "
+                    . "\"" . $org_contact_number . "\", "
+                    . "\"" . $org_email . "\", "
                     . "'nasirkhan') ";
-        }
-        
-        // insert code
+            $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>insert_new_org:1<br />Query:</b><br />___<br />$sql</p>");
+            $captcha_passed = TRUE;
+//            echo "ok";
+            
+            unset_all_values();
+        }        
     }
 }
     
+
+function unset_all_values(){
+    unset($_REQUEST);
+    $org_name = "";
+    $org_type = 0;
+    $org_agency = 0;
+    $year_established = 0;
+    $org_location = 0;
+    $org_division = 0;
+    $org_district = 0;
+    $org_upazila = 0;
+    $org_ownership = 0;
+    $org_function = 0;
+    $org_level = 0;
+    $org_email = "";
+    $org_contact_number = "";
+    $form_submit = 0;
+}
 
 ?>
 <!DOCTYPE html>
@@ -175,6 +182,19 @@ if ($form_submit == 1){
                     };
                     
                     </script>
+                    <?php if ($form_submit == 1) :?>
+                        <?php if ($captcha_passed) :?>
+                        <div class="alert alert-success">
+                            Thank you for submitting new organization. 
+                            We will inform you when the organization will be added to the <em>Organization Registry</em>
+                        </div>
+                        <?php endif; ?>
+                        <?php if (!$captcha_passed) :?>
+                        <div class="alert alert-danger">
+                            You made some mistake. Please fill the form correctly and submit again.
+                        </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
                     <form class="form-horizontal" role="form" action="" method="POST">
                         <div class="form-group">
                             <label for="org_name" class="col-md-3 control-label">Organization Name</label>
@@ -326,13 +346,13 @@ if ($form_submit == 1){
                         <div class="form-group">
                             <label for="org_email" class="col-md-3 control-label">Organization Email</label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="org_email" id="org_email" placeholder="Email Address"  value="<?php echo $org_email; ?>" required="">
+                                <input type="text" class="form-control" name="org_email" id="org_email" placeholder="Email Address"  value="" required="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="org_email" class="col-md-3 control-label">Organization Contact Number</label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="org_contact_number" id="org_contact_number" placeholder="Mobile Number"  value="<?php echo $org_contact_number; ?>" required="">
+                                <input type="text" class="form-control" name="org_contact_number" id="org_contact_number" placeholder="Mobile Number"  value="" required="">
                             </div>
                         </div>
                         <div class="form-group">
