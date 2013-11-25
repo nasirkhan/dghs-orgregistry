@@ -150,12 +150,9 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                         <div class="col-md-6">
                                             <?php
                                             $image_src = $data['org_photo'];
-                                            $image_src = "http://test.dghs.gov.bd/hrmnew/$image_src";
+                                            $image_src = "http://test.dghs.gov.bd/hrmnew/uploads/$image_src";
 
-//                                        echo "$image_src";
-                                            $image_src = "img/comc@ac.dghs.gov.bd.jpg";
-
-
+//                                          echo "$image_src";
                                             if (file_exists($image_src)) {
                                                 echo "<img src=\"$image_src\" class=\"img-thumbnail\" />";
                                             } else {
