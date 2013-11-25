@@ -93,6 +93,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="library/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="library/Slidorion/css/slidorion.css">
         <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -272,44 +273,34 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
 
                     <?php else: ?>
                     <!--forntpage image slider-->
-                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                            <!-- Indicators -->
-                            <ol class="carousel-indicators">
-                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                            </ol>
-
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner">
-                                <div class="item active">
-                                    <img src="img/slideshow/1_Medical_College_Hospital.jpg" alt="Medical College Hospital">
-                                    <div class="carousel-caption">
-                                        Medical College Hospital
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <img src="img/slideshow/7_Community_clinic_2.JPG" alt="Union Sub Center">
-                                    <div class="carousel-caption">
-                                        Union Sub Center
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <img src="img/slideshow/5_Upazila_Health_Complex_31_beded.jpg" alt="31 Beded Upazila Health Complex">
-                                    <div class="carousel-caption">
-                                        31 Beded Upazila Health Complex
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Controls -->
-                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left"></span>
-                            </a>
-                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right"></span>
-                            </a>
+                    <div id="slidorion" class="slidorion">
+                        <div class="slider">
+                            <div class="slide"><img src="img/slideshow/1_Medical_College_Hospital_600x400.jpg" /></div>
+                            <div class="slide"><img src="img/slideshow/2_250_bed_District_Hospital_600x400.jpg" /></div>
+                            <div class="slide"><img src="img/slideshow/5_Upazila_Health_Complex_31_beded_600x400.jpg" /></div>
                         </div>
+
+                        <div class="accordion">
+                            <div class="header">Medical College Hospital</div>
+                            <div class="content">
+                                <p>
+                                    Medical College Hospital
+                                </p>
+                            </div>
+                            <div class="header">District Hospital</div>
+                            <div class="content">
+                                <p>
+                                    250 Bed District Hospital
+                                </p>
+                            </div>
+                            <div class="header">Upazila Health Complex</div>
+                            <div class="content">
+                                <p>
+                                    31 Beded Upazila Health Complex
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
                     <?php endif; ?>
 
@@ -345,6 +336,9 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
         <script src="js/vendor/bootstrap.min.js"></script>
 
         <script src="js/plugins.js"></script>
+        
+        <script src="library/Slidorion/dist/jquery.slidorion.min.js"></script>
+        
         <script src="js/main.js"></script>
 
         <script type="text/javascript">
@@ -361,6 +355,18 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
         });
         </script>
 
+        <script>
+            $(function() {
+                $('#slidorion').slidorion({
+                    effect: 'slideRandom',
+                    hoverPause: true,
+                    interval: 20000,
+                    speed: 800,
+                    controlNav: false,
+                    controlNavClass: 'nav'
+                });
+            });
+        </script>
         <!-- Google Analytics Code-->
         <?php include_once 'include/ga_code.php';?>
     </body>
