@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="The Slidorion is a great new jQuery plugin built to combine an image slider and an accordion. Accompanied by a range of features and effects, the Slidorion a fantastic and slick plugin that is compatible with all browsers.">
+	<meta name="author" content="Ben Holland">
+
+	<title>Slidorion, A jQuery Plugin | jQuery Image Slider and jQuery Accordion</title>
+
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/slidorion.css" />
+	<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,200,700' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+
+	<div id="header"><h1>SLIDORION</h1></div>
+
+	<div id="slidorion" class="slidorion">
+		<div class="slider">
+			<div class="slide"><img src="img/boxing.jpg" /></div>
+			<div class="slide"><img src="img/athletics.jpg" /></div>
+			<div class="slide"><img src="img/basketball.jpg" /></div>
+		</div>
+
+		<div class="accordion">
+			<div class="header">Muhammad Ali</div>
+			<div class="content">
+				<p>Muhammad Ali (born Cassius Marcellus Clay, Jr.) is an American former professional boxer, philanthropist and social activist. Nicknamed "The Greatest", and widely considered the best heavyweight of all-time, Ali was involved in several historic boxing matches.</p>
+				<p>Ali become the first and only three-time lineal World Heavyweight Champion.</p>
+			</div>
+			<div class="header">Usain Bolt</div>
+			<div class="content">
+				<p>Usain Bolt is a Jamaican sprinter widely regarded as the fastest person ever. He is the first man to hold both the 100 and 200 metres world records since automatic time measurements became mandatory in 1977.</p>
+				<p>His achievements have earned him the media nickname "Lightning Bolt", and awards including the IAAF World Athlete of the Year and Track &amp; Field Athlete of the Year</p>
+			</div>
+			<div class="header">Michael Jordan</div>
+			<div class="content">
+				<p>Michael Jeffrey Jordan (MJ), is an American former professional basketball player, entrepreneur, and majority owner and chairman of the Charlotte Bobcats.</p>
+				<p>MJ's individual accolades and accomplishments include five MVP awards, fourteen NBA All-Star Game appearances and many more. He was inducted into the Basketball Hall of Fame in 2009.</p>
+			</div>
+		</div>
+	</div>
+
+	<div id="container">
+
+		<div id="download-box">
+			<a href="https://github.com/hollandben/Slidorion/archive/master.zip" class="download" onClick="trackDownload()">Download</a>
+			<p style="margin-top:0;">Version 1.2</p>
+			<h3>Download the Slidorion now!</h3>
+			<p>Slidorion was created by Ben Holland, student and part time web developer at <a href="http://www.tidydesign.com" target="_blank">Tidy Design</a>. Follow me on <a href="http://www.twitter.com/hollandben" target="_blank">Twitter</a> or check out my <a href="http://www.ben-holland.co.uk/blog/" target="_blank">blog.</a></p>
+			<div class="social-media"><div class="fb-like" data-href="http://www.slidorion.com/" data-send="false" data-layout="box_count" data-show-faces="false" data-font="trebuchet ms"></div></div><div class="social-media"><g:plusone size="tall"></g:plusone></div><div class="social-media"><a href="https://twitter.com/share" class="twitter-share-button" data-text="Slidorion - An image slider and an accordion combined. A great #jQuery plugin" data-count="vertical" data-via="hollandben">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script></div>
+			<p>Contribute or tell me about issues on <a href="https://github.com/hollandben/slidorion" target="_blank">GitHub</a></p>
+		</div>
+
+		<div id="about">
+			<h2>The Slidorion</h2>
+			<h4>A combination of an image slider and an accordion, the Slidorion displays beautiful images along with a variable length description. With slides linked to each tab, and accompanied by a large array of effects, the Slidorion is a great alternative to the traditional jQuery slider.</h4><br />
+			<p style="font-size:90%;"><strong>Slidorion</strong> is <strong>FREE</strong> to use provided that you leave my credits intact, and is licensed under the Apache License 2.0 <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">see details here</a></p><br />
+			<p>Basic demo - <a href="demos/slidorion-basic-demo.html">click to see</a></p>
+			<p>Random Effect demo - <a href="demos/slidorion-random-demo.html">click to see</a></p>
+			<p>Random Slide demo - <a href="demos/slidorion-sliderandom-demo.html">click to see</a></p>
+			<p>Random Overlap demo - <a href="demos/slidorion-overrandom-demo.html">click to see</a></p>
+			<p>Multiple Slidorion demo - <a href="demos/slidorion-multiple-demo.html">click to see</a></p>
+		</div>
+
+		<div id="effects">
+			<h2>Effects</h2>
+			<p><strong>fade</strong> - <a href="demos/slidorion-basic-demo.html">click for demo</a></p>
+			<p><strong>slideRandom</strong> - <a href="demos/slidorion-sliderandom-demo.html">click for demo</a></p>
+			<p><strong>overRandom</strong> - <a href="demos/slidorion-overrandom-demo.html">click for demo</a></p><br />
+			<p><strong>slideUp</strong></p>
+			<p><strong>slideRight</strong></p>
+			<p><strong>slideDown</strong></p>
+			<p><strong>slideLeft</strong></p><br />
+			<p><strong>overUp</strong></p>
+			<p><strong>overRight</strong></p>
+			<p><strong>overDown</strong></p>
+			<p><strong>overLeft</strong></p>
+			<p><strong>none</strong></p>
+		</div>
+
+		<div id="options">
+			<h2>Options</h2>
+			<strong>autoPlay</strong> - Automatically plays the slidorion (boolean)</p>
+			<strong>easing</strong> - The easing of the animations (string)</p>
+			<strong>effect</strong> - The effect of the animation (string)</p>
+			<strong>first</strong> - The first slide to show (the <em>rel</em> of that slide) (string) see above</p>
+			<strong>hoverPause</strong> - The slidorion pauses when hovered over  (boolean)</p>
+			<strong>interval</strong> - The time between each slide (number)</p>
+			<strong>speed</strong> - The speed of the animation (number)</p>
+			<strong>controlNav</strong> - Show navigation buttons (boolean)</p>
+			<strong>controlNavClass</strong> - The class of the navigation control buttons (string)</p>
+		</div>
+
+		<div id="usage">
+			<h2>Usage</h2>
+			<h3>Import jQuery, Easing and Slidorion</h3>
+			<pre>
+&lt;link rel="stylesheet" href="css/slidorion.css" /&gt;
+
+&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="js/jquery.easing.js"&gt;&lt;/script&gt;
+&lt;script src="js/jquery.slidorion.min.js"&gt;&lt;/script&gt;
+			</pre>
+			<a href="dist/jquery.slidorion.min.js">Download Slidorion</a><br />
+			<a href="js/jquery.easing.js">Download Easing</a> - v1.3 Required<br /><br />
+			<h3>HTML Structure</h3>
+			<p>The required selector tags are shown. This is the structure that must be maintained throughout. The accordion and slider can change positions though, i.e. accordion on the left</p><br />
+			<pre>
+&lt;div id="slidorion" class="slidorion"&gt;
+    &lt;div class="slider"&gt;
+        &lt;div class="slide"&gt;&lt;img src="img/boxing.jpg" /&gt;&lt;/div&gt;
+        &lt;div class="slide"&gt;&lt;img src="img/athletics.jpg" /&gt;&lt;/div&gt;
+        &lt;div class="slide"&gt;&lt;img src="img/basketball.jpg" /&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="accordion"&gt;
+        &lt;div class="header"&gt;Muhammad Ali&lt;/div&gt;
+        &lt;div class="content"&gt;&lt;-- CONTENT GOES HERE --&gt;&lt;/div&gt;
+        &lt;div class="header"&gt;Usain Bolt&lt;/div&gt;
+        &lt;div class="content"&gt;&lt;-- CONTENT GOES HERE --&gt;&lt;/div&gt;
+        &lt;div class="header"&gt;Michael Jordan&lt;/div&gt;
+        &lt;div class="content"&gt;&lt;-- CONTENT GOES HERE --&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+			</pre>
+			<h3>Basic Initialising</h3>
+			<pre>
+$(document).ready(function(){
+	$('#slidorion').slidorion();
+});
+			</pre>
+			<h3>Initialising With Options</h3>
+			<p></p>
+			<pre>
+$(document).ready(function(){
+	$('#slidorion').slidorion({
+		speed: 1000,
+		interval: 4000,
+		effect: 'slideLeft'
+	});
+});
+			</pre>
+		</div>
+
+		<div id="changelog">
+			<h2>Change Log</h2>
+			<h3>Version 1.2</h3>
+			<ul class="changes">
+				<li>Added slide selection from URL</li>
+				<li>Fixed z-index issues</li>
+				<li>Code factor</li>
+				<li>Change markup for easier use</li>
+			</ul>
+			<h3>Version 1.1</h3>
+			<ul class="changes">
+				<li>Added an option for creating navigation buttons</li>
+			</ul>
+			<h3>Version 1.0</h3>
+			<ul class="changes">
+				<li>Added random effects for slide, over and all</li>
+				<li>Improved performance</li>
+				<li>Allows for embedded HTML</li>
+				<li>Improved usability and syntax</li>
+				<li>Fixed bug with accordion jumping out of container</li>
+				<li>Fixed bug with simultaneous effects</li>
+			</ul>
+			<h3>Version 0.93</h3>
+			<ul class="changes">
+				<li>Improved slider autoplay functionality</li>
+				<li>Added ability to have multiple Slidorions on a page</li>
+			</ul>
+			<h3>Version 0.92</h3>
+			<ul class="changes">
+				<li>Solved starting image issue in IE8</li>
+				<li>Created function to center images in the slider section</li>
+				<li>Add the effect option "none"</li>
+			</ul>
+			<h3>Version 0.91</h3>
+			<ul class="changes">
+				<li>Changed the accordion to prevent page jumping</li>
+				<li>Solved some transition issues with IE8</li>
+			</ul>
+			<h3>Version 0.9</h3>
+			<ul class="changes">
+				<li>Launch of Slidorion</li>
+			</ul>
+		</div>
+
+		<div id="footer"></div>
+
+	</div>
+
+	<script src="dist/jquery.min.js"></script>
+	<script src="js/jquery.easing.js"></script>
+    <script src="dist/jquery.slidorion.min.js"></script>
+
+    <script>
+	$(function(){
+		$('#slidorion').slidorion({
+			effect: 'slideRandom',
+			hoverPause: true,
+			interval: 20000,
+			speed: 800,
+			controlNav: false,
+			controlNavClass: 'nav'
+		});
+	});
+	</script>
+
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-41507759-1', 'slidorion.com');
+		ga('send', 'pageview');
+	</script>
+
+	</script>
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=250647338304374";
+		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
+
+</body>
+
+</html>
