@@ -15,7 +15,9 @@
 .slidorion{
     width: 860px;
 }
-
+.accordion .content{
+    height: 235px;
+}
 @media (min-width: 992px) and (max-width: 1199px) {
   .slidorion{
         width: 720px;
