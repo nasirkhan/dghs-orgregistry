@@ -278,25 +278,33 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                             <div class="slide"><img src="img/slideshow/1_Medical_College_Hospital_600x400.jpg" /></div>
                             <div class="slide"><img src="img/slideshow/2_250_bed_District_Hospital_600x400.jpg" /></div>
                             <div class="slide"><img src="img/slideshow/5_Upazila_Health_Complex_31_beded_600x400.jpg" /></div>
+                            <div class="slide"><img src="img/slideshow/7_Community_clinic_2_600x400.jpg" /></div>
                         </div>
 
                         <div class="accordion">
-                            <div class="header">Medical College Hospital</div>
+                            <div class="header">Tertiary Health Care</div>
                             <div class="content">
                                 <p>
-                                    Medical College Hospital
+                                    Medical College Hospitals, Specialized Institutes,
+                                    Located at different regional leveled   
                                 </p>
                             </div>
-                            <div class="header">District Hospital</div>
+                            <div class="header">Secondary Health Care</div>
                             <div class="content">
                                 <p>
-                                    250 Bed District Hospital
+                                    District Hospitals, General Hospitals, 100-250 Bed Hospitals
                                 </p>
                             </div>
-                            <div class="header">Upazila Health Complex</div>
+                            <div class="header">Primary Health Care</div>
                             <div class="content">
                                 <p>
-                                    31 Beded Upazila Health Complex
+                                    Upazila Health Complexes, TB Clinics
+                                </p>
+                            </div>
+                            <div class="header">Daycare facilities</div>
+                            <div class="content">
+                                <p>
+                                    Upazila Sub-centers, UH&FWCs, Community Clinics
                                 </p>
                             </div>
                         </div>
