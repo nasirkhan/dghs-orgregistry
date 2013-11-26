@@ -285,8 +285,8 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                             <div class="header">Tertiary Health Care</div>
                             <div class="content">
                                 <p>
-                                    Medical College Hospitals, Specialized Institutes,
-                                    Located at different regional leveled   
+                                    Medical College Hospitals, Specialized Institutes, Maternity Hospital
+                                    Located at different regional level  
                                 </p>
                             </div>
                             <div class="header">Secondary Health Care</div>
@@ -298,7 +298,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                             <div class="header">Primary Health Care</div>
                             <div class="content">
                                 <p>
-                                    Upazila Health Complexes, TB Clinics
+                                    Upazila Health Complexes, TB Clinics, Upazila Family Planning Office, MCWCs
                                 </p>
                             </div>
                             <div class="header">Daycare facilities</div>
