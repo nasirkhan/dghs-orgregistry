@@ -8,7 +8,6 @@ require_once 'configuration.php';
  * POST
  */
 //print_r($_REQUEST);
-
 $export = (int) mysql_real_escape_string(trim($_REQUEST['export']));
 
 
@@ -59,8 +58,9 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
     } else if (($div_code == 0 && $dis_code == 0 && $upa_code == 0 && $agency_code == 0) && $type_code > 0) {
         $query_string .= "organization.org_type_code = $type_code";
     }
-
-    $sql = "SELECT
+    
+    if($_REQUEST['export'] != "excel"){
+        $sql = "SELECT
                 organization.org_name,
                 organization.org_code,
                 organization.upazila_thana_code,
@@ -70,6 +70,10 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 admin_district.district_bbs_code,
                 org_agency_code.org_agency_name,
                 org_agency_code.org_agency_code,
+                organization.org_function_code,
+                organization.org_level_code,
+                organization.mobile_number1,
+                organization.email_address1,
                 org_type.org_type_name,
                 org_type.org_type_code
             FROM
@@ -78,14 +82,45 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             LEFT JOIN admin_district ON organization.district_code = admin_district.district_bbs_code
             LEFT JOIN org_agency_code ON organization.agency_code = org_agency_code.org_agency_code
             LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code $query_string";
-    $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
-
-    if (mysql_num_rows($org_list_result) > 0) {
-        $showReportTable = TRUE;
+        $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+        $org_list_result_count = mysql_num_rows($org_list_result);
+        if ($org_list_result_count > 0) {
+            $showReportTable = TRUE;
+        }
     }
+    
 
 
     if ($export == "excel" && $form_submit == 1 && isset($_REQUEST['export'])) {
+        $sql = "SELECT
+                organization.org_name,
+                organization.org_code,
+                organization.upazila_thana_code,
+                admin_division.division_name,
+                admin_division.division_bbs_code,
+                admin_district.district_name,
+                admin_district.district_bbs_code,
+                org_agency_code.org_agency_name,
+                org_organizational_functions.org_organizational_functions_name,
+                org_level.org_level_name,
+                organization.mobile_number1,
+                organization.email_address1,
+                org_source_of_electricity_main.electricity_source_name,
+                organization.sanctioned_bed_number,
+                org_type.org_type_name,
+                org_type.org_type_code
+            FROM
+                organization
+            LEFT JOIN admin_division ON organization.division_code = admin_division.division_bbs_code
+            LEFT JOIN admin_district ON organization.district_code = admin_district.district_bbs_code
+            LEFT JOIN org_agency_code ON organization.agency_code = org_agency_code.org_agency_code
+            LEFT JOIN org_level ON organization.org_level_code = org_level.org_level_code
+            LEFT JOIN org_source_of_electricity_main ON organization.source_of_electricity_main_code = org_source_of_electricity_main.electricity_source_code
+            LEFT JOIN org_organizational_functions ON organization.org_function_code = org_organizational_functions.org_organizational_functions_code
+            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code $query_string";
+        $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    
         error_reporting(E_ALL);
         ini_set('display_errors', TRUE);
         ini_set('display_startup_errors', TRUE);
@@ -150,9 +185,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     ->setCellValue('A3', 'Government of People\'s Republic of Bangladesh')
                     ->setCellValue('A4', 'Ministry of Health and Family Welfare')
                     ->setCellValue('A6', 'Report Exported on:')
-                    ->setCellValue('B6', "$report_export_datetime")
-                    ->setCellValue('A8', 'Total ' . mysql_num_rows($org_list_result) . ' organization(s) found.')
-                    ->setCellValue('A9', 'Report displaying form:'); 
+                    ->setCellValue('B6', "$report_export_datetime"); 
         
         
         
@@ -173,37 +206,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         $objPHPExcel->getActiveSheet()->mergeCells('A3:G3');
         $objPHPExcel->getActiveSheet()->mergeCells('A4:G4');
 //        writing report infromation
-        $row_number = 10;
-        if ($div_code > 0) {
-            $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue("A$row_number", "Dision")
-                    ->setCellValue("B$row_number", getDivisionNamefromCode(getDivisionCodeFormId($div_code)));
-            $row_number++;
-        }
-        if ($dis_code > 0) {
-            $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue("A$row_number", "District")
-                    ->setCellValue("B$row_number", getDistrictNamefromCode(getDistrictCodeFormId($dis_code)));
-            $row_number++;
-        }
-        if ($upa_code > 0) {
-            $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue("A$row_number", "Upazila")
-                    ->setCellValue("B$row_number", getUpazilaNamefromCode($upa_code, $dis_code));
-            $row_number++;
-        }
-        if ($agency_code > 0) {
-            $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue("A$row_number", "Agency")
-                    ->setCellValue("B$row_number", getAgencyNameFromAgencyCode($agency_code));
-            $row_number++;
-        }
-        if ($type_code > 0) {
-            $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue("A$row_number", "Org Type")
-                    ->setCellValue("B$row_number", getOrgTypeNameFormOrgTypeCode($type_code));
-            $row_number++;
-        }
+        $row_number = 8;
         
         // start writing data values
         $row_number++;
@@ -215,8 +218,14 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     ->setCellValue("D$row_number", "District")
                     ->setCellValue("E$row_number", "Upazila")
                     ->setCellValue("F$row_number", "Agency")
-                    ->setCellValue("G$row_number", "Org Type");
-        
+                    ->setCellValue("G$row_number", "Org Type")
+                    ->setCellValue("H$row_number", "Org Function")
+                    ->setCellValue("I$row_number", "Org Level")
+                    ->setCellValue("J$row_number", "Mobile Number")
+                    ->setCellValue("K$row_number", "Email Address")
+                    ->setCellValue("L$row_number", "Bed Number")
+                    ->setCellValue("M$row_number", "Electricity Source");
+
         while ($data = mysql_fetch_assoc($org_list_result)){
             $row_number++;
             $objPHPExcel->setActiveSheetIndex(0)
@@ -226,9 +235,15 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     ->setCellValue("D$row_number", $data['district_name'])
                     ->setCellValue("E$row_number", getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']))
                     ->setCellValue("F$row_number", $data['org_agency_name'])
-                    ->setCellValue("G$row_number", $data['org_type_name']);
+                    ->setCellValue("G$row_number", $data['org_type_name'])
+                    ->setCellValue("H$row_number", $data['org_organizational_functions_name'])
+                    ->setCellValue("I$row_number", $data['org_level_name'])
+                    ->setCellValue("J$row_number", $data['mobile_number1'])
+                    ->setCellValue("K$row_number", $data['email_address1'])
+                    ->setCellValue("L$row_number", $data['sanctioned_bed_number'])
+                    ->setCellValue("M$row_number", $data['electricity_source_name']);
         }
-        
+
         /**
          * 
          *          END writing
@@ -514,7 +529,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 ?>
                                 <br />
                                 <blockquote>
-                                    Total <strong><em><?php echo mysql_num_rows($org_list_result); ?></em></strong> organization found.<br />
+                                    Total <strong><em><?php echo $org_list_result_count; ?></em></strong> organization found.<br />
                                 </blockquote>
                             </div>
                         <?php endif; ?>
