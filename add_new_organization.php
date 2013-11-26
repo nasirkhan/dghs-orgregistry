@@ -156,7 +156,7 @@ function unset_all_values(){
                     <ul class="nav navbar-nav">
                         <li><a href="index.php"><i class="fa fa-home fa-lg"></i> Home</a></li>
                         <li class="active"><a href="add_new_organization.php"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>
-                        <li><a href="report.php"><i class="fa fa-calendar-o fa-lg"></i> Report Dashboard</a></li>
+                        <li><a href="report.php"><i class="fa fa-calendar-o fa-lg"></i> Reports</a></li>
                         <li><a href="search.php"><i class="fa fa-search fa-lg"></i> Search</a></li>
                     </ul>
                     <form name="search-form" class="navbar-form navbar-right" action="search.php" method="post">
