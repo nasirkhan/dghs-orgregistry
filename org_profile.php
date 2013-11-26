@@ -747,7 +747,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
         //dividing with 60 will give the execution time in minutes other wise seconds
         $execution_time = ($time_end - $start_time);
         
-        $showExecutionTime = TRUE;
+        $showExecutionTime = FALSE;
         ?>
         <?php if($showExecutionTime): ?>
         <div class="container">
