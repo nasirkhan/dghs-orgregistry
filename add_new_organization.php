@@ -1,6 +1,24 @@
 <?php
 require_once 'configuration.php';
 
+/**
+ * PHP Mailer Configuration
+ */
+require_once 'library/PHPMailer/PHPMailerAutoload.php';
+$mail = new PHPMailer;
+
+$mail->From = 'from@example.com';
+$mail->FromName = 'Mailer';
+$mail->addAddress('nasir8891@gmail.com', 'Nasir Khan');  // Add a recipient
+$mail->addAddress('ellen@example.com');               // Name is optional
+$mail->addReplyTo('info@example.com', 'Information');
+$mail->addCC('cc@example.com');
+$mail->addBCC('bcc@example.com');
+
+$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+$mail->isHTML(true);                                  // Set email format to HTML
+
+
 $org_name = mysql_real_escape_string(trim($_REQUEST['org_name']));
 $org_type = (int) mysql_real_escape_string(trim($_REQUEST['org_type']));
 $org_agency = (int) mysql_real_escape_string(trim($_REQUEST['org_agency']));
@@ -89,6 +107,22 @@ if ($form_submit == 1){
             $captcha_passed = TRUE;
 //            echo "ok";
             
+            $hrm_url = "http://test.dghs.gov.bd/hrm-dev";
+            $mail->Subject = "[Org Registry] New Organization Request for \"$org_name\"";
+            $mail->Body    = "A new organizaion creation request has been submitted."
+                            . "Please login to the HRM Software and review the submission."
+                            . "<br />$hrm_url";
+//            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+            
+            
+            if (!$mail->send()) {
+                $mail_sent = TRUE;
+//                echo 'Message could not be sent.';
+//                echo 'Mailer Error: ' . $mail->ErrorInfo;
+                exit;
+            }
+
+
             unset_all_values();
         }        
     }
@@ -187,6 +221,10 @@ function unset_all_values(){
                         <div class="alert alert-success">
                             Thank you for submitting new organization. 
                             We will inform you when the organization will be added to the <em>Organization Registry</em>
+                            <?php if($mail_sent): ?>
+                            <br />
+                            An email has been sent to the administrator, after the approval you will get a notification.
+                            <?php endif;?>
                         </div>
                         <?php endif; ?>
                         <?php if (!$captcha_passed) :?>
