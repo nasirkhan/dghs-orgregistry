@@ -55,7 +55,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="library/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="library/leaflet-0.6.4/leaflet.css" />
+        <link rel="stylesheet" href="library/leaflet-0.6.4/leaflet.css" />        
         <!--[if lte IE 8]>
             <link rel="stylesheet" href="library/leaflet-0.6.4/leaflet.ie.css" />
         <![endif]-->
@@ -150,10 +150,10 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                         <div class="col-md-6">
                                             <?php
                                             $image_src = $data['org_photo'];
-                                            $image_src = "http://test.dghs.gov.bd/hrmnew/uploads/$image_src";
+                                            $image_src = $hrm_root_dir . "/uploads/$image_src";
 
 //                                          echo "$image_src";
-                                            if (file_exists($image_src)) {
+                                            if ($data['org_photo'] != "") {
                                                 echo "<img src=\"$image_src\" class=\"img-thumbnail\" />";
                                             } else {
                                                 echo "<img data-src=\"holder.js/480x360\"  class=\"img-thumbnail\" />";
@@ -694,6 +694,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+        <script src="js/holder/holder.js"></script>
 
         <script src="library/leaflet-0.6.4/leaflet.js"></script>
 

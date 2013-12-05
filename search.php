@@ -13,7 +13,8 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                 organization.district_code,
                 organization.upazila_thana_code,
                 organization.email_address1,
-                organization.mobile_number1
+                organization.mobile_number1,
+                organization.org_photo
             FROM
                     organization
             LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
@@ -48,6 +49,7 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="library/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="library/slimbox-2.05/css/slimbox2.css">
         <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -122,7 +124,7 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                                     <td><strong>Upazila Name</strong></td>
                                     <td><strong>Email</strong></td>
                                     <td><strong>Phone</strong></td>
-                                    <!--<td><strong>Upazila Name</strong></td>-->
+                                    <td><strong>Photo</strong></td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -139,6 +141,11 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                                         <td><?php echo getUpazilaNamefromCode($row['upazila_thana_code'],$row['district_code']); ?></td>
                                         <td><?php echo $row['email_address1']; ?></td>
                                         <td><?php echo $row['mobile_number1']; ?></td>
+                                        <td>
+                                            <?php if ($row['org_photo'] != ""): ?>
+                                            <a href="<?php echo $hrm_root_dir; ?>/uploads/<?php echo $row['org_photo']; ?>" rel="lightbox" title="<?php echo $row['org_name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
+                                            <?php endif; ?>
+                                        </td>
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>
@@ -225,6 +232,8 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+        
+        <script src="library/slimbox-2.05/js/slimbox2.js"></script>        
 
         <!-- Google Analytics Code-->
         <?php include_once 'include/ga_code.php';?>
