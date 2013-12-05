@@ -75,7 +75,8 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 organization.mobile_number1,
                 organization.email_address1,
                 org_type.org_type_name,
-                org_type.org_type_code
+                org_type.org_type_code,
+                organization.org_photo
             FROM
                 organization
             LEFT JOIN admin_division ON organization.division_code = admin_division.division_bbs_code
@@ -108,7 +109,8 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 org_source_of_electricity_main.electricity_source_name,
                 organization.sanctioned_bed_number,
                 org_type.org_type_name,
-                org_type.org_type_code
+                org_type.org_type_code,
+                organization.org_photo
             FROM
                 organization
             LEFT JOIN admin_division ON organization.division_code = admin_division.division_bbs_code
@@ -293,6 +295,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="library/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="library/slimbox-2.05/css/slimbox2.css">
         <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -489,6 +492,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                         <td><strong>Upazila</strong></td>
                                         <td><strong>Agency</strong></td>
                                         <td><strong>Org Type</strong></td>
+                                        <td><strong>Photo</strong></td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -501,6 +505,11 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                             <td><?php echo getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']); ?></td>
                                             <td><?php echo $data['org_agency_name']; ?></td>
                                             <td><?php echo $data['org_type_name']; ?></td>
+                                            <td>
+                                                <?php if ($data['org_photo'] != ""): ?>
+                                                <a href="<?php echo $hrm_root_dir; ?>/uploads/<?php echo $data['org_photo']; ?>" rel="lightbox" title="<?php echo $data['org_name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
+                                                <?php endif; ?>
+                                            </td>
                                         </tr>
                                     <?php endwhile; ?>
                                 </tbody>
@@ -567,6 +576,8 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+        
+        <script src="library/slimbox-2.05/js/slimbox2.js"></script> 
 
         <script type="text/javascript">
             // load division
