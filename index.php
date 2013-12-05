@@ -265,7 +265,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                                         <td><?php echo $row['org_level_name']; ?></td>
                                         <td>
                                             <?php if ($row['org_photo'] != ""): ?>
-                                            <a href="http://test.dghs.gov.bd/hrmnew/uploads/<?php echo $row['org_photo']; ?>" rel="lightbox" title="<?php echo $row['org_name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
+                                            <a href="<?php echo $hrm_root_dir; ?>/hrmnew/uploads/<?php echo $row['org_photo']; ?>" rel="lightbox" title="<?php echo $row['org_name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
                                             <?php endif; ?>
                                         </td>
                                         
