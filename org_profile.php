@@ -55,7 +55,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="library/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="library/leaflet-0.6.4/leaflet.css" />
+        <link rel="stylesheet" href="library/leaflet-0.6.4/leaflet.css" />        
         <!--[if lte IE 8]>
             <link rel="stylesheet" href="library/leaflet-0.6.4/leaflet.ie.css" />
         <![endif]-->
@@ -694,6 +694,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+        <script src="js/holder/holder.js"></script>
 
         <script src="library/leaflet-0.6.4/leaflet.js"></script>
 
