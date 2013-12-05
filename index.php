@@ -14,7 +14,8 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                     organization.org_type_code,
                     org_type.org_type_name,
                     org_level.org_level_name,
-                    organization.org_level_code
+                    organization.org_level_code,
+                    organization.org_photo
                 FROM
                     `organization`
                 LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
@@ -36,7 +37,8 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                         organization.org_type_code,
                         org_type.org_type_name,	
                         organization.org_level_code,
-                        org_level.org_level_name
+                        org_level.org_level_name,
+                        organization.org_photo
                 FROM
                         `organization`
                 LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
@@ -63,7 +65,8 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                     organization.org_type_code,
                     org_type.org_type_name,	
                     organization.org_level_code,
-                    org_level.org_level_name
+                    org_level.org_level_name,
+                    organization.org_photo
                 FROM
                     `organization`
                 LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
@@ -93,10 +96,12 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="library/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="library/Slidorion/css/slidorion.css">
+        <link rel="stylesheet" href="library/slimbox-2.05/css/slimbox2.css">
         <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        
+        
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -245,10 +250,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                                     <td><strong>Organization Code</strong></td>
                                     <td><strong>Org Type</strong></td>
                                     <td><strong>Org Level</strong></td>
-                                    <!-- 
-                                    <td></td>
-                                    <td></td>
-                                    -->
+                                    <td><strong>Photo</strong></td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -261,6 +263,12 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                                         <td><?php echo $row['org_code']; ?></td>
                                         <td><?php echo $row['org_type_name']; ?></td>
                                         <td><?php echo $row['org_level_name']; ?></td>
+                                        <td>
+                                            <?php if ($row['org_photo'] != ""): ?>
+                                            <a href="http://test.dghs.gov.bd/hrmnew/uploads/<?php echo $row['org_photo']; ?>" rel="lightbox" title="<?php echo $row['org_name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
+                                            <?php endif; ?>
+                                        </td>
+                                        
                                         
                                         <!-- 
                                         <td></td>
@@ -270,45 +278,6 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
-
-                    <?php else: ?>
-                    <!--forntpage image slider-->
-                    <div id="slidorion" class="slidorion">
-                        <div class="slider">
-                            <div class="slide"><img src="img/slideshow/1_Medical_College_Hospital_600x400.jpg" /></div>
-                            <div class="slide"><img src="img/slideshow/2_250_bed_District_Hospital_600x400.jpg" /></div>
-                            <div class="slide"><img src="img/slideshow/5_Upazila_Health_Complex_31_beded_600x400.jpg" /></div>
-                            <div class="slide"><img src="img/slideshow/7_Community_clinic_2_600x400.jpg" /></div>
-                        </div>
-
-                        <div class="accordion">
-                            <div class="header">Tertiary Health Care</div>
-                            <div class="content">
-                                <p>
-                                    Medical College Hospitals, Specialized Institutes, Maternity Hospital
-                                    Located at different regional level  
-                                </p>
-                            </div>
-                            <div class="header">Secondary Health Care</div>
-                            <div class="content">
-                                <p>
-                                    District Hospitals, General Hospitals, 100-250 Bed Hospitals
-                                </p>
-                            </div>
-                            <div class="header">Primary Health Care</div>
-                            <div class="content">
-                                <p>
-                                    Upazila Health Complexes, TB Clinics, Upazila Family Planning Office, MCWCs
-                                </p>
-                            </div>
-                            <div class="header">Daycare facilities</div>
-                            <div class="content">
-                                <p>
-                                    Upazila Sub-centers, UH&FWCs, Community Clinics
-                                </p>
-                            </div>
-                        </div>
-                    </div>
 
                     <?php endif; ?>
 
@@ -344,10 +313,9 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
         <script src="js/vendor/bootstrap.min.js"></script>
 
         <script src="js/plugins.js"></script>
-        
-        <script src="library/Slidorion/dist/jquery.slidorion.min.js"></script>
-        
         <script src="js/main.js"></script>
+        
+        <script src="library/slimbox-2.05/js/slimbox2.js"></script>
 
         <script type="text/javascript">
         $(function() {
@@ -362,19 +330,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
             })
         });
         </script>
-
-        <script>
-            $(function() {
-                $('#slidorion').slidorion({
-                    effect: 'slideRandom',
-                    hoverPause: true,
-                    interval: 20000,
-                    speed: 800,
-                    controlNav: false,
-                    controlNavClass: 'nav'
-                });
-            });
-        </script>
+        
         <!-- Google Analytics Code-->
         <?php include_once 'include/ga_code.php';?>
     </body>
