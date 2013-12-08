@@ -78,8 +78,9 @@ if ($form_submit == 1){
                     . "`latitude`, "
                     . "`longitude`, "
                     . "`ownership_code`, "
-                    . "`mobile_number1`, "
+                    . "`mobile_number1`, "                    
                     . "`email_address1`, "
+                    . "`approved_rejected`, "
                     . "`updated_by`) VALUES ("
                     . "\"$org_name\", "
                     . "'$org_type', "
@@ -100,6 +101,7 @@ if ($form_submit == 1){
                     . "'$org_ownership', "
                     . "\"" . $org_contact_number . "\", "
                     . "\"" . $org_email . "\", "
+                    . "\"Pending\", "
                     . "'nasirkhan') ";
             $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>insert_new_org:1<br />Query:</b><br />___<br />$sql</p>");
             $captcha_passed = TRUE;
