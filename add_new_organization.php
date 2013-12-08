@@ -62,7 +62,6 @@ if ($form_submit == 1){
             && $org_contact_number != ""){
             $sql = "INSERT INTO `organization_requested` ("
                     . "`org_name`, "
-                    . "`org_code`, "
                     . "`org_type_code`, "
                     . "`agency_code`, "
                     . "`org_function_code`, "
@@ -83,7 +82,6 @@ if ($form_submit == 1){
                     . "`email_address1`, "
                     . "`updated_by`) VALUES ("
                     . "\"$org_name\", "
-                    . "'0', "
                     . "'$org_type', "
                     . "'$org_agency', "
                     . "'$org_function', "
