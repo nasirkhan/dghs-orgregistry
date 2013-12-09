@@ -148,7 +148,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                 <div class="col-md-3">
                     <div class="well sidebar-nav">
 
-                        <div id="org_list" style="min-height:300px;">
+                        <div id="org_list" style="min-height:280px;">
                             <ul>
                                 <li id="tree_root">
                                     <a href="#" onclick="window.open('org_list.php?level=country', '_self');">Bangladesh</a>
@@ -210,6 +210,14 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                             </ul>
                         </div>
                     </div><!--/.well -->
+                    <div class="well sidebar-nav">
+                        <?php 
+                        $sql = "SELECT  org_code FROM organization WHERE active LIKE 1";
+                        $r = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>");
+                        $org_count = mysql_num_rows($r);
+                        ?>
+                        <strong><em>Total Organizations: <?php echo number_format($org_count); ?></em></strong>
+                    </div>
                 </div>
                 <div class="col-md-9">
                     <?php if ($showReportTable): ?>
