@@ -29,7 +29,7 @@ $site_name = "DGHS HRM";
 $copyright = "DGHS";
 
 
-$hrm_root_dir = "http://test.dghs.gov.bd/hrmnew";
+$hrm_root_dir = "http://app.dghs.gov.bd/hrm";
 require_once 'include/functions_app_specific.php';
 require_once 'include/functions_generic.php';
 
