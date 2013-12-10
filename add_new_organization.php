@@ -21,8 +21,8 @@ $form_submit = (int) mysql_real_escape_string(trim($_REQUEST['form_submit']));
 /**
  * PHP Email Configuration
  */
-$to  = 'sukhendu@mis.dghs.gov.bd , dr.bashar@mis.dghs.gov.bd , zillur@mis.dghs.gov.bd , rajib@mis.dghs.gov.bd , nasir.khan@activationltd.com , mahfuzur@mis.dghs.gov.bd , prince@mis.dghs.gov.bd , linkon@mis.dghs.gov.bd';
-$to  = "nasir8891@gmail.com";
+$to  = 'asm.sayem@mis.dghs.gov.bd, sukhendu@mis.dghs.gov.bd , dr.bashar@mis.dghs.gov.bd , zillur@mis.dghs.gov.bd , rajib@mis.dghs.gov.bd , nasir.khan@activationltd.com , mahfuzur@mis.dghs.gov.bd , prince@mis.dghs.gov.bd , linkon@mis.dghs.gov.bd';
+//$to  = "nasir8891@gmail.com";
 // To send HTML mail, the Content-type header must be set
 $headers  = 'MIME-Version: 1.0' . "\r\n";
 $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
