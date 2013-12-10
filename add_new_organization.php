@@ -1,24 +1,6 @@
 <?php
 require_once 'configuration.php';
 
-/**
- * PHP Mailer Configuration
- */
-require_once 'library/PHPMailer/PHPMailerAutoload.php';
-$mail = new PHPMailer;
-
-$mail->From = 'from@example.com';
-$mail->FromName = 'Mailer';
-$mail->addAddress('nasir8891@gmail.com', 'Nasir Khan');  // Add a recipient
-$mail->addAddress('ellen@example.com');               // Name is optional
-$mail->addReplyTo('info@example.com', 'Information');
-$mail->addCC('cc@example.com');
-$mail->addBCC('bcc@example.com');
-
-$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
-$mail->isHTML(true);                                  // Set email format to HTML
-
-
 $org_name = mysql_real_escape_string(trim($_REQUEST['org_name']));
 $org_type = (int) mysql_real_escape_string(trim($_REQUEST['org_type']));
 $org_agency = (int) mysql_real_escape_string(trim($_REQUEST['org_agency']));
@@ -32,7 +14,23 @@ $org_function = (int) mysql_real_escape_string(trim($_REQUEST['org_function']));
 $org_level = (int) mysql_real_escape_string(trim($_REQUEST['org_level']));
 $org_email = mysql_real_escape_string(trim($_REQUEST['org_email']));
 $org_contact_number = mysql_real_escape_string(trim($_REQUEST['org_contact_number']));
+$latitude = mysql_real_escape_string(trim($_REQUEST['latitude']));
+$longitude = mysql_real_escape_string(trim($_REQUEST['longitude']));
 $form_submit = (int) mysql_real_escape_string(trim($_REQUEST['form_submit']));
+
+/**
+ * PHP Email Configuration
+ */
+$to  = 'sukhendu@mis.dghs.gov.bd , dr.bashar@mis.dghs.gov.bd , zillur@mis.dghs.gov.bd , rajib@mis.dghs.gov.bd , nasir.khan@activationltd.com , mahfuzur@mis.dghs.gov.bd , prince@mis.dghs.gov.bd , linkon@mis.dghs.gov.bd';
+$to  = "nasir8891@gmail.com";
+// To send HTML mail, the Content-type header must be set
+$headers  = 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+$headers .= "To: $to \r\n";
+$headers .= "From: $org_name <$org_email>" . "\r\n";
+
+//$headers .= 'Cc: birthdayarchive@example.com' . "\r\n";
+//$headers .= 'Bcc: birthdaycheck@example.com' . "\r\n";
 
 if ($form_submit == 1){
     require_once('./library/recaptcha-php-1.11/recaptchalib.php');
@@ -45,9 +43,6 @@ if ($form_submit == 1){
     if (!$resp->is_valid) {
         $captcha_passed = FALSE;
     } else {
-//        echo "<pre>";
-//        print_r($_REQUEST);
-//        echo "</pre>";
         if($org_name != "" 
             && $org_type > 0 
             && $org_agency > 0 
@@ -102,27 +97,35 @@ if ($form_submit == 1){
                     . "\"" . $org_contact_number . "\", "
                     . "\"" . $org_email . "\", "
                     . "\"Pending\", "
-                    . "'nasirkhan') ";
+                    . "'') ";
             $result = mysql_query($sql) or die(mysql_error() . "<p>Code:<b>insert_new_org:1<br />Query:</b><br />___<br />$sql</p>");
             $captcha_passed = TRUE;
-//            echo "ok";
-            
-            $hrm_url = "http://test.dghs.gov.bd/hrm-dev";
-            $mail->Subject = "[Org Registry] New Organization Request for \"$org_name\"";
-            $mail->Body    = "A new organizaion creation request has been submitted."
+                        
+            $subject = "[Org Registry] New Organization Request for \"$org_name\"";
+            $message = "A new organizaion creation request has been submitted."
                             . "Please login to the HRM Software and review the submission."
-                            . "<br />$hrm_url";
-//            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+                            . "<br />$hrm_root_dir<br /><br />";
+            $message .= "<table>";
+            $message .= "<tr><td>Organization Name</td>" . "<td>$org_name</td></tr>";
+            $message .= "<tr><td>Organization Type</td>" . "<td>" . getOrgTypeNameFormOrgTypeCode($org_type) . "</td></tr>";
+            $message .= "<tr><td>Ownarship</td>" . "<td>" . getOrgOwnarshioNameFromCode($org_ownership) . "</td></tr>";
+            $message .= "<tr><td>Agency Name</td>" . "<td>" . getAgencyNameFromAgencyCode($org_agency) . "</td></tr>";
+            $message .= "<tr><td>Organization Function</td>" . "<td>" . getOrgFunctionNameFromCode($org_function) . "</td></tr>";
+            $message .= "<tr><td>Level Name</td>" . "<td>" . getOrgLevelNameFromCode($org_level) . "</td></tr>";
+            $message .= "<tr><td>Year Established</td>" . "<td>" . $year_established . "</td></tr>";
+            $message .= "<tr><td>Organization Location</td>" . "<td>" . $org_location . "</td></tr>";
+            $message .= "<tr><td>Division Name</td>" . "<td>" . getDivisionNameFromCode($org_division) . "</td></tr>";
+            $message .= "<tr><td>District Name</td>" . "<td>" . getDistrictNameFromCode($org_district) . "</td></tr>";
+            $message .= "<tr><td>Upazila Name</td>" . "<td>" . getUpazilaNamefromCode($org_upazila, $org_district) . "</td></tr>";
+            $message .= "<tr><td>Latitude</td>" . "<td>" . $latitude . "</td></tr>";
+            $message .= "<tr><td>Longitude</td>" . "<td>" . $longitude . "</td></tr>";
+            $message .= "<tr><td>Contact</td>" . "<td>" . $org_contact_number . "</td></tr>";
+            $message .= "<tr><td>Email</td>" . "<td>" . $org_email . "</td></tr>";
+            $message .= "</table>";
+            $message .= "<br /><br />Application submitted on: ". date("Y-m-d H:i:s");
+            // send mail
+            mail($to, $subject, $message, $headers);
             
-            
-            if (!$mail->send()) {
-                $mail_sent = TRUE;
-//                echo 'Message could not be sent.';
-//                echo 'Mailer Error: ' . $mail->ErrorInfo;
-                exit;
-            }
-
-
             unset_all_values();
         }        
     }
@@ -131,6 +134,8 @@ if ($form_submit == 1){
 
 function unset_all_values(){
     unset($_REQUEST);
+    unset($_GET);
+    unset($_POST);
     $org_name = "";
     $org_type = 0;
     $org_agency = 0;
@@ -388,11 +393,23 @@ function unset_all_values(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_email" class="col-md-3 control-label">Organization Contact Number</label>
+                            <label for="org_contact_number" class="col-md-3 control-label">Organization Contact Number</label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="org_contact_number" id="org_contact_number" placeholder="Mobile Number"  value="" required="">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="latitude" class="col-md-3 control-label">Latitude</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="latitude" id="latitude" placeholder="Example: 23.709921"  value="" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="longitude" class="col-md-3 control-label">Longitude</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="longitude" id="longitude" placeholder="Example: 90.407143"  value="" >
+                            </div>
+                        </div>                        
                         <div class="form-group">
                             <label for="org_email" class="col-md-3 control-label">Secutiry Text (CAPTCHA)</label>
                             <div class="col-md-6">
@@ -425,13 +442,15 @@ function unset_all_values(){
                 </p>
             </footer>
         </div> <!-- /container -->        
-<!--        <div class="container">
+        <!--        
+        <div class="container">
             
             <pre>
                 <?php print_r($_REQUEST); ?>
             </pre>
             
-        </div>-->
+        </div>
+        -->
 
         <!-- Bootstrap core JavaScript
         ================================================== -->

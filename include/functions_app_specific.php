@@ -155,6 +155,33 @@ function getOrgLevelNameFromCode($org_level_code) {
     }
 }
 
+/**
+ * Get organization function Name from code
+ * @param type $function_code
+ * @return string
+ */
+function getOrgFunctionNameFromCode($function_code) {
+    if(!$function_code > 0){
+        return "";
+    }
+    $sql = "SELECT
+                    org_organizational_functions_name
+            FROM
+                    `org_organizational_functions`
+            WHERE
+                    org_organizational_functions_code = $function_code
+            AND active LIKE 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getOrgFunctionNameFromCode || Query:</b><br />___<br />$sql</p>");
+
+    $data = mysql_fetch_assoc($result);
+    
+    if (mysql_num_rows($result) > 0) {
+        return $data['org_organizational_functions_name'];
+    } else {
+        return "";
+    }
+}
+
 function getDisDivNameCodeFromUpazilaAndDistrictCode($upa_code, $dis_code) {
     if(!$upa_code > 0 || !$dis_code > 0){
         return "";
