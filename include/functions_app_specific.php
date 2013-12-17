@@ -482,3 +482,26 @@ function getOrgOwnarshioNameFromCode($org_ownarship_code) {
 
     return $data['org_ownership_authority_name'];
 }
+
+/**
+ * Get Organization Location Type Form code
+ * @param INT $org_code
+ * @return ARRAY
+ */
+function getOrgLocationTypeFromCode ($org_location_code){
+    if (!$org_location_code > 0) {
+        return null;
+    }
+    $sql = "SELECT
+                    org_location_type_name
+            FROM
+                    org_location_type
+            WHERE
+                    org_location_type_code = $org_location_code
+            AND active LIKE 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getOrgLocationTypeFromCode:1</p><p>Query:</b></p>___<p>$sql</p>");
+    
+    $data = mysql_fetch_assoc($result);
+    
+    return $data['org_location_type_name'];
+}

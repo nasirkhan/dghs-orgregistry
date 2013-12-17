@@ -113,7 +113,7 @@ if ($form_submit == 1){
             $message .= "<tr><td>Organization Function</td>" . "<td>" . getOrgFunctionNameFromCode($org_function) . "</td></tr>";
             $message .= "<tr><td>Level Name</td>" . "<td>" . getOrgLevelNameFromCode($org_level) . "</td></tr>";
             $message .= "<tr><td>Year Established</td>" . "<td>" . $year_established . "</td></tr>";
-            $message .= "<tr><td>Organization Location</td>" . "<td>" . $org_location . "</td></tr>";
+            $message .= "<tr><td>Organization Location</td>" . "<td>" . getOrgLocationTypeFromCode($org_location) . "</td></tr>";
             $message .= "<tr><td>Division Name</td>" . "<td>" . getDivisionNameFromCode($org_division) . "</td></tr>";
             $message .= "<tr><td>District Name</td>" . "<td>" . getDistrictNameFromCode($org_district) . "</td></tr>";
             $message .= "<tr><td>Upazila Name</td>" . "<td>" . getUpazilaNamefromCode($org_upazila, $org_district) . "</td></tr>";
@@ -523,7 +523,9 @@ function unset_all_values(){
             $("#org_function").val("<?php echo "$org_function"; ?>");
             $("#org_level").val("<?php echo "$org_level"; ?>");
             $("#org_email").val("<?php echo "$org_email"; ?>");
-            $("#org_contact_number").val("<?php echo "$org_contact_number"; ?>");                        
+            $("#org_contact_number").val("<?php echo "$org_contact_number"; ?>");
+            $("#latitude").val("<?php echo "$latitude"; ?>");
+            $("#longitude").val("<?php echo "$longitude"; ?>");
             <?php endif; ?>
 
 
