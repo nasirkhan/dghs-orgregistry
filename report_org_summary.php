@@ -240,16 +240,22 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 </select>
                                 </select>
                             </div>
+                            <div class="col-md-4 form-group">
+                                <button id="btn_show_org_list" type="submit" class="btn btn-info btn-block"><strong>Show Report</strong></button>                                
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <a id="loading_content" href="#" class="btn btn-warning disabled" style="display: none;"><i class="fa fa-spinner fa-spin"></i> Loading content...</a>
+                            </div>
                             <input name="form_submit" value="1" type="hidden" />
                             <!--</div>-->
                         </div>
-                        <div class="row">
+<!--                        <div class="row">
                             <div class="col-md-12 form-group">
-                                <button id="btn_show_org_list" type="submit" class="btn btn-info btn-lg">Show Report</button>
+                                <button id="btn_show_org_list" type="submit" class="btn btn-info">Show Report</button>
 
                                 <a id="loading_content" href="#" class="btn btn-warning disabled  btn-lg" style="display:none;"><i class="fa fa-spinner fa-spin fa-lg"></i> Loading content...</a>
                             </div>
-                        </div>
+                        </div>-->
                     </form>
                     <?php if ($form_submit == 1 && isset($_REQUEST['form_submit'])) : ?>
                         <?php if ($showReportTable) : ?>
@@ -271,10 +277,12 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 }
                                 echo "$echo_string";
                                 ?>
+                                <!--
                                 <br />
                                 <blockquote>
                                     Total <strong><em><?php echo mysql_num_rows($org_list_result); ?></em></strong> result(s) found.<br />
                                 </blockquote>
+                                -->
                             </div>
                             <table class="table table-striped table-bordered">
                                 <thead>
