@@ -15,17 +15,23 @@ $div_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_division']));
 $dis_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_district']));
 $upa_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_upazila']));
 $agency_code = (int) mysql_real_escape_string(trim($_REQUEST['org_agency']));
-$type_code = (int) mysql_real_escape_string(trim($_REQUEST['org_type']));
+//$type_code = (int) mysql_real_escape_string(trim($_REQUEST['org_type']));
+$type_code = array();
+$type_code = $_REQUEST['org_type'];
+$type_code_count = count($type_code);
 $form_submit = (int) mysql_real_escape_string(trim($_REQUEST['form_submit']));
 
-if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
+
+if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
+//print_r($type_code);
+//die();
     /*
      * 
      * query builder to get the organizatino list
      */
     $query_string = "";
-    if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0 || $type_code > 0) {
+    if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0 || $type_code_count > 0) {
         $query_string .= " WHERE ";
 
         if ($agency_code > 0) {
@@ -49,14 +55,28 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             }
             $query_string .= "organization.division_id = $div_code";
         }
-        if ($type_code > 0) {
+        if ($type_code_count > 0) {
             if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0) {
                 $query_string .= " AND ";
             }
-            $query_string .= "organization.org_type_code = $type_code";
+            $org_type_selected_array = "";
+            for ($i = 0; $i < $type_code_count; $i++) {
+                $org_type_selected_array .= " organization.org_type_code = '" . $type_code[$i] . "'";                
+                if ($i >= 0 && $i != $type_code_count - 1) {
+                    $org_type_selected_array .= " OR ";
+                }
+            }
+            $query_string .= " ( $org_type_selected_array ) ";
         }
     } else if (($div_code == 0 && $dis_code == 0 && $upa_code == 0 && $agency_code == 0) && $type_code > 0) {
-        $query_string .= "organization.org_type_code = $type_code";
+        $org_type_selected_array = "";
+        for ($i = 0; $i < $type_code_count; $i++) {
+            $org_type_selected_array .= " organization.org_type_code = '" . $type_code[$i] . "'";                
+            if ($i >= 0 && $i != $type_code_count - 1) {
+                $org_type_selected_array .= " OR ";
+            }
+        }
+        $query_string .= " ( $org_type_selected_array ) ";
     }
     
     if($_REQUEST['export'] != "excel"){
@@ -122,16 +142,20 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code $query_string";
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
-    
+//        echo "<pre>";
+//        print_r($sql);
+//        echo "</pre>";
+//        die();
         error_reporting(E_ALL);
         ini_set('display_errors', TRUE);
         ini_set('display_startup_errors', TRUE);
         date_default_timezone_set('Asia/Dhaka');
         $report_export_datetime = date("Y-m-d H:i:s"); 
 
-        if (PHP_SAPI == 'cli')
-                die('This example should only be run from a Web Browser');
-
+        if (PHP_SAPI == 'cli'){
+            die('This example should only be run from a Web Browser');
+        }
+                
         /** Include PHPExcel */
         require_once 'library/PHPExcel/Classes/PHPExcel.php';
 
@@ -164,23 +188,25 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
          *          Start writing
          * *********************************
          */    
-        $echo_string = "";
-        if ($div_code > 0) {
-            $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
-        }
-        if ($dis_code > 0) {
-            $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
-        }
-        if ($upa_code > 0) {
-            $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
-        }
-        if ($agency_code > 0) {
-            $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
-        }
-        if ($type_code > 0) {
-            $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code) . "</strong><br>";
-        }
-//                                        echo "$echo_string";
+//        $echo_string = "";
+//        if ($div_code > 0) {
+//            $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
+//        }
+//        if ($dis_code > 0) {
+//            $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
+//        }
+//        if ($upa_code > 0) {
+//            $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
+//        }
+//        if ($agency_code > 0) {
+//            $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
+//        }
+//        if ($type_code > 0) {
+//            for ($i = 0; $i < $type_code_count; $i++) {
+//                $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code[$i]) . "</strong><br>";
+//            }
+//        }
+//        echo "$echo_string";
         $row_number =0;   
 //        Writing excel headings
         $objPHPExcel->setActiveSheetIndex(0)                   
@@ -295,6 +321,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="library/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="library/bootstrap-multiselect/css/bootstrap-multiselect.css">
         <link rel="stylesheet" href="library/slimbox-2.05/css/slimbox2.css">
         <link rel="stylesheet" href="css/main.css">
 
@@ -394,8 +421,8 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 </select>
                             </div>
                             <div class="col-md-4 form-group">
-                                <select id="org_type" name="org_type" class="form-control">
-                                    <option value="0">Select Org Type</option>
+                                <select id="org_type" name="org_type[]" class="form-control multiselect"  multiple="multiple">
+                                    <!--<option value="0">Select Org Type</option>-->
                                     <?php
                                     $sql = "SELECT
                                                 org_type.org_type_code,
@@ -444,7 +471,9 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                             $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
                                         }
                                         if ($type_code > 0) {
-                                            $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code) . "</strong><br>";
+                                            for ($i = 0; $i < $type_code_count; $i++) {
+                                                $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code[$i]) . "</strong><br>";
+                                            }
                                         }
                                         echo "$echo_string";
                                         ?>
@@ -461,24 +490,13 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                             <input type="hidden" name="admin_district" value="<?php echo $dis_code; ?>" >
                                             <input type="hidden" name="admin_upazila" value="<?php echo $upa_code; ?>" >
                                             <input type="hidden" name="org_agency" value=<?php echo $agency_code; ?>"" >
-                                            <input type="hidden" name="org_type" value="<?php echo $type_code; ?>" >
+                                            <?php for ($i = 0; $i < $type_code_count; $i++): ?>
+                                            <input type="hidden" name="org_type[]" value="<?php echo $type_code[$i]; ?>" >
+                                            <?php endfor; ?>
                                             <input type="hidden" name="form_submit" value="<?php echo $form_submit; ?>" >
                                             <button type="submit" class="btn btn-primary btn-block" name="export" value="excel">Export Excel</button>
                                         </form>
                                         </p>
-                                        <!--
-                                        <p>
-                                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" role="form">
-                                            <input type="hidden" name="admin_division" value="<?php echo $div_code; ?>" >
-                                            <input type="hidden" name="admin_district" value="<?php echo $dis_code; ?>" >
-                                            <input type="hidden" name="admin_upazila" value="<?php echo $upa_code; ?>" >
-                                            <input type="hidden" name="org_agency" value=<?php echo $agency_code; ?>"" >
-                                            <input type="hidden" name="org_type" value="<?php echo $type_code; ?>" >
-                                            <input type="hidden" name="form_submit" value="<?php echo $form_submit; ?>" >
-                                            <button type="submit" class="btn btn-default btn-block" name="export" value="csv">Export CSV</button>
-                                        </form>
-                                        </p>
-                                        -->
                                     </div>
                                 </div>
                             </div>
@@ -532,7 +550,10 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                     $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
                                 }
                                 if ($type_code > 0) {
-                                    $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code) . "</strong><br>";
+                                    for ($i = 0; $i < $type_code_count; $i++) {
+                                        $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code[$i]) . "</strong><br>";
+                                    }
+//                                    $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code) . "</strong><br>";
                                 }
                                 echo "$echo_string";
                                 ?>
@@ -562,15 +583,15 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         <!-- Bootstrap core JavaScript
         ================================================== -->
 
-        <!--        
+                
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
-        -->
+        
 
-        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.js"></script>
+<!--        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.js"></script>
         <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.cookie.js"></script>
         <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.hotkeys.js"></script>
-        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.jstree.js"></script>
+        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.jstree.js"></script>-->
 
         <script src="js/vendor/bootstrap.min.js"></script>
 
@@ -578,6 +599,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         <script src="js/main.js"></script>
         
         <script src="library/slimbox-2.05/js/slimbox2.js"></script> 
+        <script src="library/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
 
         <script type="text/javascript">
             // load division
@@ -623,6 +645,11 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     }
                 });
             });
+        </script>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $('.multiselect').multiselect();
+        });
         </script>
 
         <!-- Google Analytics Code-->
