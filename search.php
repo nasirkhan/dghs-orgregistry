@@ -14,6 +14,7 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                 organization.upazila_thana_code,
                 organization.email_address1,
                 organization.mobile_number1,
+                organization.land_phone1,
                 organization.org_photo
             FROM
                     organization
@@ -103,11 +104,6 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                                 <i class="fa fa-search"></i><em>Search Keyword :</em> <strong><?php echo "$query";?></strong>
                                 &nbsp;<br />
                             </p>
-                                
-<!--                            <p> 
-                                <i class="fa fa-search"></i><em>Search Keyword :</em> <strong><?php echo "$query";?></strong>
-                                &nbsp;<br />&nbsp;<br />
-                            </p>-->
                             <blockquote>
                                 Total <em><strong><?php echo mysql_num_rows($result); ?></strong></em> organization(s) found.
                             </blockquote>
@@ -116,14 +112,13 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                             <thead>
                                 <tr>
                                     <td><strong>#</strong></td>
-                                    <td><strong>Organization Name</strong></td>
-                                    <td><strong>Organization Code</strong></td>
+                                    <td><strong>Organization Name (Code)</strong></td>
                                     <td><strong>Org Type</strong></td>
                                     <td><strong>Division Name</strong></td>
                                     <td><strong>District Name</strong></td>
                                     <td><strong>Upazila Name</strong></td>
                                     <td><strong>Email</strong></td>
-                                    <td><strong>Phone</strong></td>
+                                    <td><strong>Phone / Mobile</strong></td>
                                     <td><strong>Photo</strong></td>
                                 </tr>
                             </thead>
@@ -133,14 +128,13 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                                     <?php $i++; ?>
                                     <tr>
                                         <td><?php echo $i; ?></td>
-                                        <td><a href="org_profile.php?org_code=<?php echo $row['org_code']; ?>" target="_blank"><?php echo $row['org_name']; ?></a></td>
-                                        <td><?php echo $row['org_code']; ?></td>
+                                        <td><a href="org_profile.php?org_code=<?php echo $row['org_code']; ?>" target="_blank"><?php echo $row['org_name']; ?> (Code:<?php echo $row['org_code']; ?>)</a></td>
                                         <td><?php echo $row['org_type_name']; ?></td>
                                         <td><?php echo getDivisionNameFromCode($row['division_code']); ?></td>
                                         <td><?php echo getDistrictNameFromCode($row['district_code']); ?></td>
                                         <td><?php echo getUpazilaNamefromCode($row['upazila_thana_code'],$row['district_code']); ?></td>
                                         <td><?php echo $row['email_address1']; ?></td>
-                                        <td><?php echo $row['mobile_number1']; ?></td>
+                                        <td><?php echo $row['land_phone1']; ?> / <?php echo $row['mobile_number1']; ?></td>
                                         <td>
                                             <?php if ($row['org_photo'] != ""): ?>
                                             <a href="<?php echo $hrm_root_dir; ?>/uploads/<?php echo $row['org_photo']; ?>" rel="lightbox" title="<?php echo $row['org_name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>

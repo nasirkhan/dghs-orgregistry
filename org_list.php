@@ -15,7 +15,10 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                     org_type.org_type_name,
                     org_level.org_level_name,
                     organization.org_level_code,
-                    organization.org_photo
+                    organization.org_photo,
+                    organization.email_address1,
+                    organization.mobile_number1,
+                    organization.land_phone1
                 FROM
                     `organization`
                 LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
@@ -38,7 +41,10 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                         org_type.org_type_name,	
                         organization.org_level_code,
                         org_level.org_level_name,
-                        organization.org_photo
+                        organization.org_photo,
+                        organization.email_address1,
+                        organization.mobile_number1,
+                        organization.land_phone1
                 FROM
                         `organization`
                 LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
@@ -66,7 +72,10 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                     org_type.org_type_name,	
                     organization.org_level_code,
                     org_level.org_level_name,
-                    organization.org_photo
+                    organization.org_photo,
+                    organization.email_address1,
+                    organization.mobile_number1,
+                    organization.land_phone1
                 FROM
                     `organization`
                 LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
@@ -254,10 +263,10 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                             <thead>
                                 <tr>
                                     <td><strong>#</strong></td>
-                                    <td><strong>Organization Name</strong></td>
-                                    <td><strong>Organization Code</strong></td>
+                                    <td><strong>Organization Name (Code)</strong></td>
                                     <td><strong>Org Type</strong></td>
-                                    <td><strong>Org Level</strong></td>
+                                    <td><strong>Email</strong></td>
+                                    <td><strong>Phone / Mobile</strong></td>
                                     <td><strong>Photo</strong></td>
                                 </tr>
                             </thead>
@@ -267,21 +276,15 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                                     <?php $i++; ?>
                                     <tr>
                                         <td><?php echo $i; ?></td>
-                                        <td><a href="org_profile.php?org_code=<?php echo $row['org_code']; ?>" target="_blank"><?php echo $row['org_name']; ?></a></td>
-                                        <td><?php echo $row['org_code']; ?></td>
+                                        <td><a href="org_profile.php?org_code=<?php echo $row['org_code']; ?>" target="_blank"><?php echo $row['org_name']; ?> (Code:<?php echo $row['org_code']; ?>)</a></td>
                                         <td><?php echo $row['org_type_name']; ?></td>
-                                        <td><?php echo $row['org_level_name']; ?></td>
+                                        <td><?php echo $row['email_address1']; ?></td>
+                                        <td><?php echo $row['land_phone1']; ?> / <?php echo $row['mobile_number1']; ?></td>
                                         <td>
                                             <?php if ($row['org_photo'] != ""): ?>
                                             <a href="<?php echo $hrm_root_dir; ?>/uploads/<?php echo $row['org_photo']; ?>" rel="lightbox" title="<?php echo $row['org_name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
                                             <?php endif; ?>
                                         </td>
-                                        
-                                        
-                                        <!-- 
-                                        <td></td>
-                                        <td></td>
-                                        -->
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>
