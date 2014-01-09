@@ -505,3 +505,20 @@ function getOrgLocationTypeFromCode ($org_location_code){
     
     return $data['org_location_type_name'];
 }
+
+function getTypeOfPostNameFromCode($type_of_post_code) {
+    if ($type_of_post_code <= 0) {
+        return null;
+    }
+    $sql = "SELECT
+                sanctioned_post_type_of_post.type_of_post_name
+            FROM
+                sanctioned_post_type_of_post
+            WHERE
+                sanctioned_post_type_of_post.type_of_post_code = $type_of_post_code
+            LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getTypeOfPostNameFromCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $data = mysql_fetch_assoc($result);
+    return $data['type_of_post_name'];
+}

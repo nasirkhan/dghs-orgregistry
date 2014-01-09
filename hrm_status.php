@@ -104,6 +104,9 @@ $org_name = getOrgNameFormOrgCode($org_code);
                         <thead>
                             <tr>
                                 <th>Designation</th>
+                                <th>Type of post</th>
+                                <th>Class</th>
+                                <th>Pay Scale</th>
                                 <th>Total Sanctioned Post(s)</th>
                                 <th>Filled up Post(s)</th>
                                 <th>Total Male</th>
@@ -152,6 +155,9 @@ $org_name = getOrgNameFormOrgCode($org_code);
                                 ?>
                                 <tr>
                                     <td><?php echo $row['designation']; ?></td>
+                                    <td><?php echo getTypeOfPostNameFromCode($row['type_of_post']); ?></td>
+                                    <td><?php echo $row['class']; ?></td>
+                                    <td><?php echo $row['payscale']; ?></td>
                                     <td><?php echo $row['sp_count']; ?></td>
                                     <td><?php echo $existing_total_count; ?></td>
                                     <td><?php echo $existing_male_count; ?></td>
@@ -160,7 +166,7 @@ $org_name = getOrgNameFormOrgCode($org_code);
                                 </tr>
                             <?php endwhile; ?>
                             <tr class="warning">
-                                <td><strong>Summary</strong></td>
+                                <td colspan="4"><strong>Summary</strong></td>
                                 <td><strong><?php echo $total_sanctioned_post_count_sum; ?></strong></td>
                                 <td><strong><?php echo $total_sanctioned_post_existing_sum; ?></strong></td>
                                 <td><strong><?php echo $total_existing_male_sum; ?></strong></td>
