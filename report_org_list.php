@@ -378,11 +378,11 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                     /**
                                      * @todo change old_visision_id to division_bbs_code
                                      */
-                                    $sql = "SELECT admin_division.division_name, admin_division.old_division_id FROM admin_division";
+                                    $sql = "SELECT admin_division.division_name, admin_division.division_bbs_code FROM admin_division";
                                     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadDivision:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
                                     while ($rows = mysql_fetch_assoc($result)) {
-                                        echo "<option value=\"" . $rows['old_division_id'] . "\">" . $rows['division_name'] . "</option>";
+                                        echo "<option value=\"" . $rows['division_code'] . "\">" . $rows['division_name'] . "</option>";
                                     }
                                     ?>
                                 </select>
@@ -444,9 +444,10 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
-                                <button id="btn_show_org_list" type="submit" class="btn btn-info btn-lg">Show Report</button>
+                                <button id="btn_show_org_list" type="submit" class="btn btn-info">Show Report</button>
+                                <a href="report_org_list.php" type="submit" class="btn btn-default">Reset</a>
 
-                                <a id="loading_content" href="#" class="btn btn-warning disabled  btn-lg" style="display:none;"><i class="fa fa-spinner fa-spin fa-lg"></i> Loading content...</a>
+                                <a id="loading_content" href="#" class="btn btn-warning disabled" style="display:none;"><i class="fa fa-spinner fa-spin fa-lg"></i> Loading content...</a>
                             </div>
                         </div>
                     </form>
@@ -608,7 +609,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 var div_id = $('#admin_division').val();
                 $.ajax({
                     type: "POST",
-                    url: 'get/get_district_list.php',
+                    url: 'get/get_districts.php',
                     data: {div_id: div_id},
                     dataType: 'json',
                     success: function(data)
@@ -630,7 +631,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 $("#loading_content").show();
                 $.ajax({
                     type: "POST",
-                    url: 'get/get_upazila_list.php',
+                    url: 'get/get_upazilas.php',
                     data: {dis_id: dis_id},
                     dataType: 'json',
                     success: function(data)
