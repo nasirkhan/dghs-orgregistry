@@ -41,19 +41,19 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             if ($agency_code > 0) {
                 $query_string .= " AND ";
             }
-            $query_string .= "organization.upazila_id = $upa_code";
+            $query_string .= "organization.upazila_thana_code = $upa_code";
         }
         if ($dis_code > 0) {
             if ($upa_code > 0 || $agency_code > 0) {
                 $query_string .= " AND ";
             }
-            $query_string .= "organization.district_id = $dis_code";
+            $query_string .= "organization.district_code = $dis_code";
         }
         if ($div_code > 0) {
             if ($dis_code > 0 || $upa_code > 0 || $agency_code > 0) {
                 $query_string .= " AND ";
             }
-            $query_string .= "organization.division_id = $div_code";
+            $query_string .= "organization.division_code = $div_code";
         }
         if ($type_code_count > 0) {
             if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0) {
@@ -382,7 +382,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadDivision:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
                                     while ($rows = mysql_fetch_assoc($result)) {
-                                        echo "<option value=\"" . $rows['division_code'] . "\">" . $rows['division_name'] . "</option>";
+                                        echo "<option value=\"" . $rows['division_bbs_code'] . "\">" . $rows['division_name'] . "</option>";
                                     }
                                     ?>
                                 </select>
@@ -539,10 +539,10 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 <?php
                                 $echo_string = "";
                                 if ($div_code > 0) {
-                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
+                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_code) . "</strong><br>";
                                 }
                                 if ($dis_code > 0) {
-                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
+                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_code) . "</strong><br>";
                                 }
                                 if ($upa_code > 0) {
                                     $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
@@ -606,11 +606,11 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             // load division
             $('#admin_division').change(function() {
                 $("#loading_content").show();
-                var div_id = $('#admin_division').val();
+                var div_code = $('#admin_division').val();
                 $.ajax({
                     type: "POST",
                     url: 'get/get_districts.php',
-                    data: {div_id: div_id},
+                    data: {div_code: div_code},
                     dataType: 'json',
                     success: function(data)
                     {
@@ -627,12 +627,12 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
             // load district 
             $('#admin_district').change(function() {
-                var dis_id = $('#admin_district').val();
+                var dis_code = $('#admin_district').val();
                 $("#loading_content").show();
                 $.ajax({
                     type: "POST",
                     url: 'get/get_upazilas.php',
-                    data: {dis_id: dis_id},
+                    data: {dis_code: dis_code},
                     dataType: 'json',
                     success: function(data)
                     {
