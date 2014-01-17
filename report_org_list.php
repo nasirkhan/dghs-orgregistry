@@ -649,7 +649,11 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         </script>
         <script type="text/javascript">
         $(document).ready(function() {
-            $('.multiselect').multiselect();
+            $('.multiselect').multiselect({
+                nonSelectedText: "Select Organization Type",
+                maxHeight: 300,
+                includeSelectAllOption: true
+            });
         });
         </script>
 
