@@ -291,10 +291,6 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 }
                                 echo "$echo_string";
                                 ?>
-                                <br />
-                                <blockquote>
-                                    Total <strong><em><?php echo mysql_num_rows($org_list_result); ?></em></strong> result(s) found.<br />
-                                </blockquote>
                             </div>
                             <table class="table table-striped table-bordered">
                                 <thead>
