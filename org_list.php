@@ -386,7 +386,7 @@ if ($page_current <= 3){
                         <li class="<?php if ($pages['4_num'] == $page_current) echo 'active'; ?>"><a href="<?php echo $page_path . "&page=" . $pages['4_num'] . "&rpp=10"; ?>"><?php echo $pages['4_num']; ?></a></li>
                         <li class="<?php if ($pages['5_num'] == $page_current) echo 'active'; ?>"><a href="<?php echo $page_path . "&page=" . $pages['5_num'] . "&rpp=10"; ?>"><?php echo $pages['5_num']; ?></a></li>
                         <?php if($page_next <= $total_pages): ?>
-                        <li class="next"><a href="<?php echo $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING'] . "&page=" . $page_next . "&rpp=10"; ?>">Newer &rarr;</a></li>
+                        <li class="next"><a href="<?php echo $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING'] . "&page=" . $page_next . "&rpp=10"; ?>">Next &rarr;</a></li>
                         <?php endif; ?>
                     </ul>
 
