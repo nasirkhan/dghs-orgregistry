@@ -104,7 +104,7 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                 <div class="col-md-12">
                     <h2>Search Organization Registry</h2>
                     <?php if ($showReportTable): ?>                 
-                        <div class="alert alert-info">
+                        <div class="alert alert-info" id="info-area">
                             <p class="lead">
                                 <i class="fa fa-search"></i><em>Search Keyword :</em> <strong><?php echo "$query";?></strong>
                                 &nbsp;<br />
