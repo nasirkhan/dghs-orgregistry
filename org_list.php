@@ -5,6 +5,38 @@ $level = mysql_real_escape_string(trim($_GET['level']));
 $code = (int) mysql_real_escape_string(trim($_GET['code']));
 $dis_code = (int) mysql_real_escape_string(trim($_GET['dis_code']));
 
+$page = (int) mysql_real_escape_string(trim($_GET['page']));
+$rows_per_page = (int) mysql_real_escape_string(trim($_GET['rpp']));
+
+
+if (empty($_GET['page'])){
+    $page = 1;
+}
+if (empty($_GET['rpp'])){
+    $rows_per_page = 10;
+}
+
+/**
+ * Set the pagination query limit
+ */
+if ($page == 1){
+    $limit_start = $page;
+    $limit_string = " LIMIT $limit_start,$rows_per_page";
+    
+    $page_first = 1;
+    $page_current = $page;
+    $page_next = $page + 1;
+    $page_prev = 0;
+} else if ($page > 1){
+    $limit_start = $page * $rows_per_page;
+    $limit_string = " LIMIT $limit_start,$rows_per_page";
+    
+    $page_current = $page;
+    $page_next = $page + 1;
+    $page_prev = $page - 1;
+}
+
+
 if (isset($_GET['level']) && isset($_GET['code'])) {
     if ($level == "div") {
         $division_name = getDivisionNameFromCode($code);
@@ -25,8 +57,12 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                 LEFT JOIN org_level ON organization.org_level_code = org_level.org_level_code
                 WHERE
                     organization.division_code = $code
-                AND organization.active LIKE 1";
+                AND organization.active LIKE 1 $limit_string";
         $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:divOrgList || Query:</b><br />___<br />$sql</p>");
+        
+        $code_array = array ('code' => $code);
+        $total_result_count = getTotalOrgListCount($level, $code_array);
+        
         if (mysql_num_rows($result) > 0) {
             $showReportTable = TRUE;
         }
@@ -51,8 +87,12 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                 LEFT JOIN org_level ON organization.org_level_code = org_level.org_level_code
                 WHERE
                         organization.district_code = $code
-                AND organization.active LIKE 1";
+                AND organization.active LIKE 1 $limit_string";
         $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:divOrgList || Query:</b><br />___<br />$sql</p>");
+        
+        $code_array = array ('code' => $code);
+        $total_result_count = getTotalOrgListCount($level, $code_array);
+        
         if (mysql_num_rows($result) > 0) {
             $showReportTable = TRUE;
         }
@@ -83,12 +123,53 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                 WHERE
                     organization.upazila_thana_code = $code
                 AND organization.district_code = $dis_code            
-                AND organization.active LIKE 1";
+                AND organization.active LIKE 1 $limit_string";
         $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:divOrgList || Query:</b><br />___<br />$sql</p>");
+        
+        $code_array = array ('code' => $code, 'dis_code' => $dis_code);
+        $total_result_count = getTotalOrgListCount($level, $code_array);
+        
         if (mysql_num_rows($result) > 0) {
             $showReportTable = TRUE;
         }
     }
+}
+
+$total_pages = floor($total_result_count / $rows_per_page);
+$_SESSION['total_pages'] = $total_pages;
+$total_pages = $_SESSION['total_pages'];
+if ($page_current <= 3){
+    $pages = array(
+        '1_num' => '1',
+        '2_num' => '2',
+        '3_num' => '3',
+        '4_num' => '4',
+        '5_num' => '5'
+    );
+} else if ($page_current == ($total_pages-1) || $page_current == $total_pages){
+    $pages = array(
+        '1_num' => $page_current - 4,
+        '2_num' => $page_current - 3,
+        '3_num' => $page_current - 2,
+        '4_num' => $page_current - 1,
+        '5_num' => $page_current
+    );
+} else if ($page_current > 3 && $page_current <= ($total_pages-2)){
+    $pages = array(
+        '1_num' => $page_current - 2,
+        '2_num' => $page_current - 1,
+        '3_num' => $page_current,
+        '4_num' => $page_current + 1,
+        '5_num' => $page_current + 2
+    );
+} else if ($page_current > $total_pages){
+    $pages = array(
+        '1_num' => '1',
+        '2_num' => '2',
+        '3_num' => '3',
+        '4_num' => '4',
+        '5_num' => '5'
+    );
 }
 ?>
 <!DOCTYPE html>
@@ -120,9 +201,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
 
             <!-- Page Header -->
             <?php include_once 'include/header_page_header.php'; ?>
-            
-            
-            
+                        
             <div class="navbar navbar-inverse navbar-default">
                 <!--<div class="container">-->
                 <div class="navbar-header">
@@ -252,7 +331,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                                 echo " under " . "<strong>" .  $upazila_name . "</strong> upazia"; 
                             } ?>
                         </em> <br />
-                        Total <em><strong><?php echo mysql_num_rows($result); ?></strong></em> organization(s) found.
+                        Total <em><strong><?php echo $total_result_count; ?></strong></em> organization(s) found.
                     </div>
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
@@ -284,6 +363,32 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
+                    
+                    <?php 
+                    $page_path = trim($_SERVER['PHP_SELF']) . "?" . "level=" . $_GET['level'] . "&code=" . $_GET['code'] . "&dis_code=" . $_GET['dis_code'];
+
+                    
+                    ?>
+                    
+                    <div class="row">
+                        <div class="col-sm-12">
+                            Displaying page <?php echo $page_current; ?> of <?php echo $total_pages; ?> pages
+                        </div>
+                    </div>
+                    
+                    <ul class="pagination">
+                        <?php if($page_prev > 0): ?>
+                        <li class="previous"><a href="<?php echo $page_path . "&page=" . $page_prev . "&rpp=10"; ?>">&larr; Previous</a></li>
+                        <?php endif; ?>
+                        <li class="<?php if ($pages['1_num'] == $page_current) echo 'active'; ?>"><a href="<?php echo $page_path . "&page=" . $pages['1_num'] . "&rpp=10"; ?>"><?php echo $pages['1_num']; ?></a></li>
+                        <li class="<?php if ($pages['2_num'] == $page_current) echo 'active'; ?>"><a href="<?php echo $page_path . "&page=" . $pages['2_num'] . "&rpp=10"; ?>"><?php echo $pages['2_num']; ?></a></li>
+                        <li class="<?php if ($pages['3_num'] == $page_current) echo 'active'; ?>"><a href="<?php echo $page_path . "&page=" . $pages['3_num'] . "&rpp=10"; ?>"><?php echo $pages['3_num']; ?></a></li>
+                        <li class="<?php if ($pages['4_num'] == $page_current) echo 'active'; ?>"><a href="<?php echo $page_path . "&page=" . $pages['4_num'] . "&rpp=10"; ?>"><?php echo $pages['4_num']; ?></a></li>
+                        <li class="<?php if ($pages['5_num'] == $page_current) echo 'active'; ?>"><a href="<?php echo $page_path . "&page=" . $pages['5_num'] . "&rpp=10"; ?>"><?php echo $pages['5_num']; ?></a></li>
+                        <?php if($page_next <= $total_pages): ?>
+                        <li class="next"><a href="<?php echo $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING'] . "&page=" . $page_next . "&rpp=10"; ?>">Newer &rarr;</a></li>
+                        <?php endif; ?>
+                    </ul>
 
                     <?php endif; ?>
 
