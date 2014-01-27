@@ -220,12 +220,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                         </div>
                     </div><!--/.well -->
                     <div class="well sidebar-nav">
-                        <?php 
-                        $sql = "SELECT  org_code FROM organization WHERE active LIKE 1";
-                        $r = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>");
-                        $org_count = mysql_num_rows($r);
-                        ?>
-                        <strong><em>Total Organizations: <?php echo number_format($org_count); ?></em></strong>
+                        <strong><em>Total Organizations: <?php echo getTotalOrgCount(); ?></em></strong>
                     </div>
                 </div>
                 <div class="col-md-9">

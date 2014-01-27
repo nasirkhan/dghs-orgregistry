@@ -522,3 +522,15 @@ function getTypeOfPostNameFromCode($type_of_post_code) {
     $data = mysql_fetch_assoc($result);
     return $data['type_of_post_name'];
 }
+
+/**
+ * Get total number of organizations 
+ * @return STRING org_count
+ */
+function getTotalOrgCount(){
+    $sql = "SELECT  org_code FROM organization WHERE active LIKE 1";
+    $r = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>");
+    $org_count = number_format(mysql_num_rows($r));
+    
+    return $org_count;
+}
