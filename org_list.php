@@ -254,7 +254,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                             <?php if ($level == "upa") { 
                                 echo "<strong>" . $division_name . "</strong> division";
                                 echo " under " . "<strong>" .  $district_name . "</strong> district"; 
-                                echo " under " . "<strong>" .  $district_name . "</strong> district"; 
+                                echo " under " . "<strong>" .  $upazila_name . "</strong> upazia"; 
                             } ?>
                         </em> <br />
                         Total <em><strong><?php echo mysql_num_rows($result); ?></strong></em> organization(s) found.
