@@ -460,10 +460,10 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                         <?php
                                         $echo_string = "";
                                         if ($div_code > 0) {
-                                            $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
+                                            $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_code) . "</strong><br>";
                                         }
                                         if ($dis_code > 0) {
-                                            $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
+                                            $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_code) . "</strong><br>";
                                         }
                                         if ($upa_code > 0) {
                                             $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
