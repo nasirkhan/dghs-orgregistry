@@ -115,7 +115,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
             
             <div class="navbar navbar-inverse navbar-default">
                 <!--<div class="container">-->
-                <div class="navbar-header">
+                <div class="navbar-header visible-xs">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
