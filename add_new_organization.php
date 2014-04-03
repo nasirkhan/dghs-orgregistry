@@ -215,6 +215,9 @@ function unset_all_values(){
 
                 <div class="col-md-12">
                     <h2>Apply for new organization</h2>
+                        <div class="alert alert-denger">
+                            <strong>Warning!</strong> (*) marks represents all required fields.
+                        </div>
                     <script type="text/javascript">
                     var RecaptchaOptions = {
                        theme : 'clean'
@@ -240,13 +243,14 @@ function unset_all_values(){
                     <?php endif; ?>
                     <form class="form-horizontal" role="form" action="" method="POST">
                         <div class="form-group">
-                            <label for="org_name" class="col-md-3 control-label">Organization Name</label>
+                           <label for="org_name" class="col-md-3 control-label">Organization Name <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" id="org_name" name="org_name" placeholder="Organization Name">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_type" class="col-md-3 control-label">Organization Type</label>
+                            
+                            <label for="org_type" class="col-md-3 control-label">Organization Type <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <select id="org_type" name="org_type" class="form-control">
                                     <option value="0">__ Select an organization type __</option>
@@ -263,7 +267,8 @@ function unset_all_values(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_agency" class="col-md-3 control-label">Agency Name</label>
+                           
+                            <label for="org_agency" class="col-md-3 control-label">Agency Name <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <select id="org_agency" name="org_agency" class="form-control">
                                     <option value="0">__ Select Agency Name __</option>
@@ -280,13 +285,15 @@ function unset_all_values(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="year_established" class="col-md-3 control-label">Year Established</label>
+                            
+                            <label for="year_established" class="col-md-3 control-label">Year Established <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="year_established" id="year_established" placeholder="Write the year only">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_location" class="col-md-3 control-label">Urban/Rural Location</label>
+                          
+                            <label for="org_location" class="col-md-3 control-label">Urban/Rural Location  <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <select id="org_location" name="org_location" class="form-control">
                                     <option value="0">__ Select Organization Location __</option>
@@ -303,7 +310,8 @@ function unset_all_values(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_division" class="col-md-3 control-label">Division</label>
+                            
+                            <label for="org_division" class="col-md-3 control-label">Division<span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <select id="org_division" name="org_division" class="form-control">
                                     <option value="0">__ Select Division __</option>
@@ -320,7 +328,8 @@ function unset_all_values(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_district" class="col-md-3 control-label">District</label>
+                            
+                            <label for="org_district" class="col-md-3 control-label">District <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <select id="org_district" name="org_district" class="form-control">
                                     <option value="0">__ Select District __</option>
@@ -328,7 +337,8 @@ function unset_all_values(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_upazila" class="col-md-3 control-label">Upazila</label>
+                            
+                            <label for="org_upazila" class="col-md-3 control-label">Upazila <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <select id="org_upazila" name="org_upazila" class="form-control">
                                     <option value="0">__ Select Upazila __</option>
@@ -336,7 +346,8 @@ function unset_all_values(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_ownership" class="col-md-3 control-label">Ownership Information</label>
+                           
+                            <label for="org_ownership" class="col-md-3 control-label">Ownership Information <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <select id="org_ownership" name="org_ownership" class="form-control">
                                     <option value="0">__ Select Ownership Type __</option>
@@ -353,7 +364,8 @@ function unset_all_values(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_function" class="col-md-3 control-label">Organization Function</label>
+                           
+                            <label for="org_function" class="col-md-3 control-label">Organization Function <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <select id="org_function" name="org_function" class="form-control">
                                     <option value="0">__ Select Organization Function __</option>
@@ -370,7 +382,8 @@ function unset_all_values(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_level" class="col-md-3 control-label"> Organization Level</label>
+                            
+                            <label for="org_level" class="col-md-3 control-label"> Organization Level <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <select id="org_level" name="org_level" class="form-control">
                                     <option value="0">__ Select Organization Level __</option>
@@ -387,13 +400,15 @@ function unset_all_values(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_email" class="col-md-3 control-label">Organization Email</label>
+                         
+                            <label for="org_email" class="col-md-3 control-label">Organization Email <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="org_email" id="org_email" placeholder="Email Address"  value="" required="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="org_contact_number" class="col-md-3 control-label">Organization Contact Number</label>
+                        
+                            <label for="org_contact_number" class="col-md-3 control-label">Organization Contact Number <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="org_contact_number" id="org_contact_number" placeholder="Mobile Number"  value="" required="">
                             </div>

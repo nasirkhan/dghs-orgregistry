@@ -1,1 +1,1 @@
-&copy; Ministry of Health and Family Welfare (MoHFW) 2013
+&copy; Ministry of Health and Family Welfare (MoHFW) <?php echo date('Y');?>

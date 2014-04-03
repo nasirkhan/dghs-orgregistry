@@ -522,3 +522,58 @@ function getTypeOfPostNameFromCode($type_of_post_code) {
     $data = mysql_fetch_assoc($result);
     return $data['type_of_post_name'];
 }
+
+/**
+ * Get total number of organizations 
+ * @return STRING org_count
+ */
+function getTotalOrgCount(){
+    $sql = "SELECT  org_code FROM organization WHERE active LIKE 1";
+    $r = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>");
+    $org_count = number_format(mysql_num_rows($r));
+    
+    return $org_count;
+}
+
+function getTotalOrgListCount($level, $code_array) {
+    if ($level == "div"){
+        $code = $code_array['code'];
+        $sql = "SELECT
+                    count(*) row_count
+                FROM
+                    `organization`
+                WHERE
+                    organization.division_code = $code
+                AND organization.active LIKE 1 ";
+    } else if ($level == "dis"){
+        $code = $code_array['code'];
+        $sql = "SELECT
+                    count(*) row_count
+                FROM
+                    `organization`
+                WHERE
+                    organization.district_code = $code
+                AND organization.active LIKE 1 ";
+    } else if ($level == "upa"){
+        $code = $code_array['code'];
+        $dis_code = $code_array['dis_code'];
+        $sql = "SELECT
+                    count(*) row_count
+                FROM
+                    `organization`
+                WHERE
+                    organization.upazila_thana_code = $code
+                AND organization.district_code = $dis_code            
+                AND organization.active LIKE 1 ";
+    }
+        
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getTotalOrgListCount || Query:</b><br />___<br />$sql</p>");
+
+    if (mysql_num_rows($result) > 0) {
+        $a = mysql_fetch_assoc($result);
+        $total_org_count = $a['row_count'];
+        return $total_org_count;
+    } else {
+        return FALSE;
+    }
+}

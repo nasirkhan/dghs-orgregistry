@@ -10,8 +10,11 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                 organization.org_type_code,
                 org_type.org_type_name,
                 organization.division_code,
+                organization.division_name,
                 organization.district_code,
+                organization.district_name,
                 organization.upazila_thana_code,
+                organization.upazila_thana_name,
                 organization.email_address1,
                 organization.mobile_number1,
                 organization.land_phone1,
@@ -27,7 +30,9 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
         OR organization.district_name LIKE \"%$query%\"
         OR organization.upazila_thana_name LIKE \"%$query%\"    
         ORDER BY
-                org_name";
+                organization.division_name,
+                organization.district_name,
+                organization.upazila_thana_name";
     $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:orgSearch || Query:</b><br />___<br />$sql</p>");
 
 
@@ -99,7 +104,7 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                 <div class="col-md-12">
                     <h2>Search Organization Registry</h2>
                     <?php if ($showReportTable): ?>                 
-                        <div class="alert alert-info">
+                        <div class="alert alert-info" id="info-area">
                             <p class="lead">
                                 <i class="fa fa-search"></i><em>Search Keyword :</em> <strong><?php echo "$query";?></strong>
                                 &nbsp;<br />
@@ -130,9 +135,9 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                                         <td><?php echo $i; ?></td>
                                         <td><a href="org_profile.php?org_code=<?php echo $row['org_code']; ?>" target="_blank"><?php echo $row['org_name']; ?> (Code:<?php echo $row['org_code']; ?>)</a></td>
                                         <td><?php echo $row['org_type_name']; ?></td>
-                                        <td><?php echo getDivisionNameFromCode($row['division_code']); ?></td>
-                                        <td><?php echo getDistrictNameFromCode($row['district_code']); ?></td>
-                                        <td><?php echo getUpazilaNamefromCode($row['upazila_thana_code'],$row['district_code']); ?></td>
+                                        <td><?php echo $row['division_name']; ?></td>
+                                        <td><?php echo $row['district_name']; ?></td>
+                                        <td><?php echo $row['upazila_thana_name']; ?></td>
                                         <td><?php echo $row['email_address1']; ?></td>
                                         <td><?php echo $row['land_phone1']; ?> / <?php echo $row['mobile_number1']; ?></td>
                                         <td>

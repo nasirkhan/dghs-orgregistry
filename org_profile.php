@@ -188,7 +188,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                                 </tr>
                                                 <tr>
                                                     <td width="50%"><strong>Upazilla Name</strong></td>
-                                                    <td width="50%"><?php echo $data['upazila_thana_name']; ?></td>
+                                                    <td width="50%"><?php echo getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_code']); ?></td>
                                                 </tr>
                                                 <tr>
                                                     <td width="50%"><strong>Union Name</strong></td>
@@ -274,7 +274,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Upazila Name</strong></td>
-                                    <td><?php echo $data['upazila_thana_name']; ?></td>
+                                    <td><?php echo getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_code']); ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Upazila Code</strong></td>

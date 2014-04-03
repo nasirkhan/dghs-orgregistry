@@ -453,17 +453,17 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     </form>
                     <?php if ($form_submit == 1 && isset($_REQUEST['form_submit'])) : ?>
                         <?php if ($showReportTable) : ?>
-                            <div class="alert alert-success"> 
+                            <div class="alert alert-success" id="info-area"> 
                                 <div class="row">
                                     <div class="col-md-10">
                                         Report displaying form:<br>
                                         <?php
                                         $echo_string = "";
                                         if ($div_code > 0) {
-                                            $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
+                                            $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_code) . "</strong><br>";
                                         }
                                         if ($dis_code > 0) {
-                                            $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
+                                            $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_code) . "</strong><br>";
                                         }
                                         if ($upa_code > 0) {
                                             $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
@@ -534,7 +534,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 </tbody>
                             </table>
                         <?php else: ?>
-                            <div class="alert alert-warning"> 
+                            <div class="alert alert-warning" id="info-area"> 
                                 Report displaying form:<br>
                                 <?php
                                 $echo_string = "";
