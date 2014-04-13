@@ -55,7 +55,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             }
             $query_string .= "organization.division_code = $div_code";
         }
-        if ($type_code_count > 0) {
+        if ($type_code_count > 0 && $type_code[0] != "multiselect-all") {
             if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0) {
                 $query_string .= " AND ";
             }
@@ -67,6 +67,11 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 }
             }
             $query_string .= " ( $org_type_selected_array ) ";
+        } else if ($type_code[0] == "multiselect-all"){
+//            if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0) {
+//                $query_string .= " AND ";
+//            }
+//            $query_string .= "";
         }
     } else if (($div_code == 0 && $dis_code == 0 && $upa_code == 0 && $agency_code == 0) && $type_code > 0) {
         $org_type_selected_array = "";
@@ -456,7 +461,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             <div class="alert alert-success" id="info-area"> 
                                 <div class="row">
                                     <div class="col-md-10">
-                                        Report displaying form:<br>
+                                        Report displaying form: <br>
                                         <?php
                                         $echo_string = "";
                                         if ($div_code > 0) {
@@ -471,10 +476,12 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                         if ($agency_code > 0) {
                                             $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
                                         }
-                                        if ($type_code > 0) {
+                                        if ($type_code > 0 && $type_code[0] != "multiselect-all") {
                                             for ($i = 0; $i < $type_code_count; $i++) {
                                                 $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code[$i]) . "</strong><br>";
                                             }
+                                        } else {
+                                            $echo_string .= " Org Type: <strong>All Types</strong><br>";
                                         }
                                         echo "$echo_string";
                                         ?>
@@ -550,11 +557,12 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 if ($agency_code > 0) {
                                     $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
                                 }
-                                if ($type_code > 0) {
+                                if ($type_code > 0 && $type_code[0] != "multiselect-all") {
                                     for ($i = 0; $i < $type_code_count; $i++) {
                                         $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code[$i]) . "</strong><br>";
                                     }
-//                                    $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code) . "</strong><br>";
+                                } else {
+                                    $echo_string .= " Org Type: <strong>All Types</strong><br>";
                                 }
                                 echo "$echo_string";
                                 ?>
