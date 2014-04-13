@@ -61,13 +61,13 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             }
             $org_type_selected_array = "";
             for ($i = 0; $i < $type_code_count; $i++) {
-                $org_type_selected_array .= " organization.org_type_code = '" . $type_code[$i] . "'";                
+                $org_type_selected_array .= " organization.org_type_code = '" . $type_code[$i] . "'";
                 if ($i >= 0 && $i != $type_code_count - 1) {
                     $org_type_selected_array .= " OR ";
                 }
             }
             $query_string .= " ( $org_type_selected_array ) ";
-        } else if ($type_code[0] == "multiselect-all"){
+        } else if ($type_code[0] == "multiselect-all") {
 //            if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0) {
 //                $query_string .= " AND ";
 //            }
@@ -76,15 +76,15 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
     } else if (($div_code == 0 && $dis_code == 0 && $upa_code == 0 && $agency_code == 0) && $type_code > 0) {
         $org_type_selected_array = "";
         for ($i = 0; $i < $type_code_count; $i++) {
-            $org_type_selected_array .= " organization.org_type_code = '" . $type_code[$i] . "'";                
+            $org_type_selected_array .= " organization.org_type_code = '" . $type_code[$i] . "'";
             if ($i >= 0 && $i != $type_code_count - 1) {
                 $org_type_selected_array .= " OR ";
             }
         }
         $query_string .= " ( $org_type_selected_array ) ";
     }
-    
-    if($_REQUEST['export'] != "excel"){
+
+    if ($_REQUEST['export'] != "excel") {
         $sql = "SELECT
                 organization.org_name,
                 organization.org_code,
@@ -114,7 +114,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             $showReportTable = TRUE;
         }
     }
-    
+
 
 
     if ($export == "excel" && $form_submit == 1 && isset($_REQUEST['export'])) {
@@ -155,12 +155,12 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         ini_set('display_errors', TRUE);
         ini_set('display_startup_errors', TRUE);
         date_default_timezone_set('Asia/Dhaka');
-        $report_export_datetime = date("Y-m-d H:i:s"); 
+        $report_export_datetime = date("Y-m-d H:i:s");
 
-        if (PHP_SAPI == 'cli'){
+        if (PHP_SAPI == 'cli') {
             die('This example should only be run from a Web Browser');
         }
-                
+
         /** Include PHPExcel */
         require_once 'library/PHPExcel/Classes/PHPExcel.php';
 
@@ -170,12 +170,12 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("Nasir Khan Saikat")
-                                    ->setLastModifiedBy("Nasir Khan Saikat")
-                                    ->setTitle("Organization Registry Report Export")
-                                    ->setSubject("Organization Registry Report Export")
-                                    ->setDescription("Ministry of Health and Family Welfare Organization Registry Report Export")
-                                    ->setKeywords("office 2007 openxml php")
-                                    ->setCategory("Organization Registry Export");
+                ->setLastModifiedBy("Nasir Khan Saikat")
+                ->setTitle("Organization Registry Report Export")
+                ->setSubject("Organization Registry Report Export")
+                ->setDescription("Ministry of Health and Family Welfare Organization Registry Report Export")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Organization Registry Export");
 
         /**
          * --------------------------------------------------------------------
@@ -186,13 +186,12 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
          * @todo Enable cache
          * @todo set print header and footer
          * --------------------------------------------------------------------
-         */ 
-        
+         */
         /**
          * 
          *          Start writing
          * *********************************
-         */    
+         */
 //        $echo_string = "";
 //        if ($div_code > 0) {
 //            $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
@@ -212,16 +211,16 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 //            }
 //        }
 //        echo "$echo_string";
-        $row_number =0;   
+        $row_number = 0;
 //        Writing excel headings
-        $objPHPExcel->setActiveSheetIndex(0)                   
-                    ->setCellValue('A3', 'Government of People\'s Republic of Bangladesh')
-                    ->setCellValue('A4', 'Ministry of Health and Family Welfare')
-                    ->setCellValue('A6', 'Report Exported on:')
-                    ->setCellValue('B6', "$report_export_datetime"); 
-        
-        
-        
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A3', 'Government of People\'s Republic of Bangladesh')
+                ->setCellValue('A4', 'Ministry of Health and Family Welfare')
+                ->setCellValue('A6', 'Report Exported on:')
+                ->setCellValue('B6', "$report_export_datetime");
+
+
+
         $objRichText = new PHPExcel_RichText();
         $objRichText->createText(' ');
 
@@ -240,26 +239,26 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         $objPHPExcel->getActiveSheet()->mergeCells('A4:G4');
 //        writing report infromation
         $row_number = 8;
-        
+
         // start writing data values
         $row_number++;
-      
-        $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue("A$row_number", "Organization Name")
-                    ->setCellValue("B$row_number", "Organization Code")
-                    ->setCellValue("C$row_number", "Division")
-                    ->setCellValue("D$row_number", "District")
-                    ->setCellValue("E$row_number", "Upazila")
-                    ->setCellValue("F$row_number", "Agency")
-                    ->setCellValue("G$row_number", "Org Type")
-                    ->setCellValue("H$row_number", "Org Function")
-                    ->setCellValue("I$row_number", "Org Level")
-                    ->setCellValue("J$row_number", "Mobile Number")
-                    ->setCellValue("K$row_number", "Email Address")
-                    ->setCellValue("L$row_number", "Bed Number")
-                    ->setCellValue("M$row_number", "Electricity Source");
 
-        while ($data = mysql_fetch_assoc($org_list_result)){
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue("A$row_number", "Organization Name")
+                ->setCellValue("B$row_number", "Organization Code")
+                ->setCellValue("C$row_number", "Division")
+                ->setCellValue("D$row_number", "District")
+                ->setCellValue("E$row_number", "Upazila")
+                ->setCellValue("F$row_number", "Agency")
+                ->setCellValue("G$row_number", "Org Type")
+                ->setCellValue("H$row_number", "Org Function")
+                ->setCellValue("I$row_number", "Org Level")
+                ->setCellValue("J$row_number", "Mobile Number")
+                ->setCellValue("K$row_number", "Email Address")
+                ->setCellValue("L$row_number", "Bed Number")
+                ->setCellValue("M$row_number", "Electricity Source");
+
+        while ($data = mysql_fetch_assoc($org_list_result)) {
             $row_number++;
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue("A$row_number", $data['org_name'])
@@ -282,8 +281,6 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
          *          END writing
          * *********************************
          */
-        
-        
         // Rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('Organization Registry Report');
 
@@ -300,10 +297,10 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         header('Cache-Control: max-age=1');
 
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1990 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1990 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
@@ -499,7 +496,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                             <input type="hidden" name="admin_upazila" value="<?php echo $upa_code; ?>" >
                                             <input type="hidden" name="org_agency" value=<?php echo $agency_code; ?>"" >
                                             <?php for ($i = 0; $i < $type_code_count; $i++): ?>
-                                            <input type="hidden" name="org_type[]" value="<?php echo $type_code[$i]; ?>" >
+                                                <input type="hidden" name="org_type[]" value="<?php echo $type_code[$i]; ?>" >
                                             <?php endfor; ?>
                                             <input type="hidden" name="form_submit" value="<?php echo $form_submit; ?>" >
                                             <button type="submit" class="btn btn-primary btn-block" name="export" value="excel">Export Excel</button>
@@ -533,7 +530,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                             <td><?php echo $data['org_type_name']; ?></td>
                                             <td>
                                                 <?php if ($data['org_photo'] != ""): ?>
-                                                <a href="<?php echo $hrm_root_dir; ?>/uploads/<?php echo $data['org_photo']; ?>" rel="lightbox" title="<?php echo $data['org_name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
+                                                    <a href="<?php echo $hrm_root_dir; ?>/uploads/<?php echo $data['org_photo']; ?>" rel="lightbox" title="<?php echo $data['org_name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
@@ -592,10 +589,10 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         <!-- Bootstrap core JavaScript
         ================================================== -->
 
-                
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
-        
+
 
 <!--        <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.js"></script>
         <script type="text/javascript" src="library/jstree-bootstrap-theme-master/jquery.cookie.js"></script>
@@ -606,7 +603,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
-        
+
         <script src="library/slimbox-2.05/js/slimbox2.js"></script> 
         <script src="library/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
 
@@ -656,13 +653,13 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             });
         </script>
         <script type="text/javascript">
-        $(document).ready(function() {
-            $('.multiselect').multiselect({
-                nonSelectedText: "Select Organization Type",
-                maxHeight: 300,
-                includeSelectAllOption: true
+            $(document).ready(function() {
+                $('.multiselect').multiselect({
+                    nonSelectedText: "Select Organization Type",
+                    maxHeight: 300,
+                    includeSelectAllOption: true
+                });
             });
-        });
         </script>
 
         <!-- Google Analytics Code-->
