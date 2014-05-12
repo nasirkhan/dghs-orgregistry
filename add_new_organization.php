@@ -354,7 +354,7 @@ function unset_all_values(){
                             </div>
                         </div>
                         <div class="form-group">                            
-                            <label for="org_union" class="col-md-3 control-label">Union <span style="color: #FF0000;">*</span></label>
+                            <label for="org_union" class="col-md-3 control-label">Union/Union/City Corporation - Municipality Word <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <select id="org_union" name="org_union" class="form-control">
                                     <option value="0">__ Select union __</option>
