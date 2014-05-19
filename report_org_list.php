@@ -107,11 +107,16 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             LEFT JOIN admin_division ON organization.division_code = admin_division.division_bbs_code
             LEFT JOIN admin_district ON organization.district_code = admin_district.district_bbs_code
             LEFT JOIN org_agency_code ON organization.agency_code = org_agency_code.org_agency_code
-            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code $query_string";
+            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code 
+                $query_string  ORDER BY org_name";
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
         $org_list_result_count = mysql_num_rows($org_list_result);
         if ($org_list_result_count > 0) {
             $showReportTable = TRUE;
+//        echo "<pre>";
+//        print_r($sql);
+//        echo "</pre>";
+//        die();
         }
     }
 
