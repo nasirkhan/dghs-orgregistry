@@ -577,3 +577,27 @@ function getTotalOrgListCount($level, $code_array) {
         return FALSE;
     }
 }
+function getUnionNameFromBBSCode($union_code, $upazila_code, $district_code){
+    if (empty($union_code) || empty($upazila_code) || empty($district_code)) {
+        return FALSE;
+    }
+    
+    $sql = "SELECT
+                    union_name
+            FROM
+                    `admin_union`
+            WHERE
+                    union_code = '$union_code'
+            AND upazila_code = '$upazila_code'
+            AND district_code = '$district_code'
+            LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<p>getUnionNameFromBBSCode:1</p><p>$sql</p>");
+    
+    if (mysql_num_rows($result)){
+        $data = mysql_fetch_assoc($result);
+
+        return $data['union_name'];
+    } else{
+        return FALSE;
+    }
+}

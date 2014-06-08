@@ -9,6 +9,8 @@ $org_location = (int) mysql_real_escape_string(trim($_REQUEST['org_location']));
 $org_division = (int) mysql_real_escape_string(trim($_REQUEST['org_division']));
 $org_district = (int) mysql_real_escape_string(trim($_REQUEST['org_district']));
 $org_upazila = (int) mysql_real_escape_string(trim($_REQUEST['org_upazila']));
+$org_union = (int) mysql_real_escape_string(trim($_REQUEST['org_union']));
+$org_ward = (int) mysql_real_escape_string(trim($_REQUEST['org_ward']));
 $org_ownership = (int) mysql_real_escape_string(trim($_REQUEST['org_ownership']));
 $org_function = (int) mysql_real_escape_string(trim($_REQUEST['org_function']));
 $org_level = (int) mysql_real_escape_string(trim($_REQUEST['org_level']));
@@ -39,7 +41,6 @@ if ($form_submit == 1){
                                     $_SERVER["REMOTE_ADDR"],
                                     $_POST["recaptcha_challenge_field"],
                                     $_POST["recaptcha_response_field"]);
-
     if (!$resp->is_valid) {
         $captcha_passed = FALSE;
     } else {
@@ -49,7 +50,8 @@ if ($form_submit == 1){
             && $year_established > 0 
             && $org_division > 0 
             && $org_district > 0     
-            && $org_upazila > 0     
+            && $org_upazila > 0  
+            && $org_union > 0 
             && $org_ownership > 0 
             && $org_function > 0  
             && $org_level > 0
@@ -70,6 +72,9 @@ if ($form_submit == 1){
                     . "`district_name`, "
                     . "`upazila_thana_code`, "
                     . "`upazila_thana_name`, "
+                    . "`union_code`, "
+                    . "`union_name`, "
+                    . "`ward_code`, "
                     . "`latitude`, "
                     . "`longitude`, "
                     . "`ownership_code`, "
@@ -91,6 +96,9 @@ if ($form_submit == 1){
                     . "\"" . getDistrictNameFromCode($org_district) . "\", "
                     . "'$org_upazila', "
                     . "\"" . getUpazilaNamefromCode($org_upazila, $org_district) . "\", "                    
+                    . "'$org_union', "
+                    . "\"" . getUnionNameFromBBSCode($org_union, $org_upazila, $org_district) . "\", "
+                    . "'$org_ward', "
                     . "'$latitude', "
                     . "'$longitude', "
                     . "'$org_ownership', "
@@ -117,6 +125,7 @@ if ($form_submit == 1){
             $message .= "<tr><td>Division Name</td>" . "<td>" . getDivisionNameFromCode($org_division) . "</td></tr>";
             $message .= "<tr><td>District Name</td>" . "<td>" . getDistrictNameFromCode($org_district) . "</td></tr>";
             $message .= "<tr><td>Upazila Name</td>" . "<td>" . getUpazilaNamefromCode($org_upazila, $org_district) . "</td></tr>";
+            $message .= "<tr><td>Union Name</td>" . "<td>" . getUnionNameFromBBSCode($org_union, $org_upazila, $org_district) . "</td></tr>";
             $message .= "<tr><td>Latitude</td>" . "<td>" . $latitude . "</td></tr>";
             $message .= "<tr><td>Longitude</td>" . "<td>" . $longitude . "</td></tr>";
             $message .= "<tr><td>Contact</td>" . "<td>" . $org_contact_number . "</td></tr>";
@@ -336,12 +345,37 @@ function unset_all_values(){
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            
+                        <div class="form-group">                            
                             <label for="org_upazila" class="col-md-3 control-label">Upazila <span style="color: #FF0000;">*</span></label>
                             <div class="col-md-6">
                                 <select id="org_upazila" name="org_upazila" class="form-control">
                                     <option value="0">__ Select Upazila __</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">                            
+                            <label for="org_union" class="col-md-3 control-label">Union/Union/City Corporation - Municipality Word <span style="color: #FF0000;">*</span></label>
+                            <div class="col-md-6">
+                                <select id="org_union" name="org_union" class="form-control">
+                                    <option value="0">__ Select union __</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">                            
+                            <label for="org_ward" class="col-md-3 control-label">Ward <span style="color: #FF0000;">*</span></label>
+                            <div class="col-md-6">
+                                <select id="org_ward" name="org_ward" class="form-control">
+                                    <option value="0">__ Select Ward __</option>
+                                    <option value="1">Ward 1</option>
+                                    <option value="2">Ward 2</option>
+                                    <option value="3">Ward 3</option>
+                                    <option value="4">Ward 4</option>
+                                    <option value="5">Ward 5</option>
+                                    <option value="6">Ward 6</option>
+                                    <option value="7">Ward 7</option>
+                                    <option value="8">Ward 8</option>
+                                    <option value="9">Ward 9</option>
+                                    <option value="9999">Not Applicable</option>
                                 </select>
                             </div>
                         </div>
@@ -456,16 +490,7 @@ function unset_all_values(){
                     <?php include_once 'include/footer_copyright_info.php'; ?>
                 </p>
             </footer>
-        </div> <!-- /container -->        
-        <!--        
-        <div class="container">
-            
-            <pre>
-                <?php print_r($_REQUEST); ?>
-            </pre>
-            
-        </div>
-        -->
+        </div> <!-- /container -->
 
         <!-- Bootstrap core JavaScript
         ================================================== -->
@@ -525,6 +550,28 @@ function unset_all_values(){
                         for (var i = 0; i < data.length; i++) {
                             var d = data[i];
                             admin_upazila.options.add(new Option(d.text, d.value));
+                        }
+                    }
+                });
+            });
+            // load union
+            $('#org_upazila').change(function() {
+                var dis_code = $('#org_district').val();
+                var upa_code = $('#org_upazila').val();
+                $("#loading_content").show();
+                $.ajax({
+                    type: "POST",
+                    url: 'get/get_unions.php',
+                    data: {dis_code: dis_code, upa_code: upa_code},
+                    dataType: 'json',
+                    success: function(data)
+                    {
+                        $("#loading_content").hide();
+                        var admin_union = document.getElementById('org_union');
+                        admin_union.options.length = 0;
+                        for (var i = 0; i < data.length; i++) {
+                            var d = data[i];
+                            admin_union.options.add(new Option(d.text, d.value));
                         }
                     }
                 });
