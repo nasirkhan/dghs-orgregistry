@@ -205,7 +205,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                                 <?php if($showSanctionedBed): ?>
                                                     <tr>
                                                         <td width="50%"><strong>Approved Bed No.</strong></td>
-                                                        <td><?php echo $data['sanctioned_bed_number']; ?></td>
+                                                        <td><?php echo $data['approved_bed_number']; ?></td>
                                                     </tr>
 													<tr>
                                                         <td width="50%"><strong>Revenue Bed No</strong></td>
@@ -594,7 +594,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 <?php if($showSanctionedBed): ?>
                                                     <tr>
                                                         <td width="50%"><strong>Approved Bed No.</strong></td>
-                                                        <td><?php echo $data['sanctioned_bed_number']; ?></td>
+                                                        <td><?php echo $data['approved_bed_number']; ?></td>
                                                     </tr>
 													<tr>
                                                         <td width="50%"><strong>Revenue Bed No</strong></td>
