@@ -202,10 +202,18 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                                     <td width="50%"><strong>Mobile Number</strong></td>
                                                     <td width="50%"><?php echo $data['mobile_number1']; ?></td>
                                                 </tr>                                                
-                                                <?php if ($showSanctionedBed): ?>
+                                                <?php if($showSanctionedBed): ?>
                                                     <tr>
-                                                        <td width="50%"><strong>Sanctioned Bed No</strong></td>
-                                                        <td><?php echo $data['sanctioned_bed_number']; ?></td>
+                                                        <td width="50%"><strong>Approved Bed No.</strong></td>
+                                                        <td><?php echo $data['approved_bed_number']; ?></td>
+                                                    </tr>
+													<tr>
+                                                        <td width="50%"><strong>Revenue Bed No</strong></td>
+                                                        <td><?php echo $data['revenue_bed_number']; ?></td>
+                                                    </tr>
+														<tr>
+                                                        <td width="50%"><strong>Development Bed No</strong></td>
+                                                        <td><?php echo $data['development_bed_number']; ?></td>
                                                     </tr>
                                                 <?php endif; ?>
                                                 <tr>
@@ -583,12 +591,20 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                     <td width="50%">Sanctioned vehicles</td>
                                     <td><?php echo $data['sanctioned_vehicles']; ?></td>
                                 </tr>
-                                <?php if ($showSanctionedBed): ?>
-                                    <tr>
-                                        <td width="50%">Sanctioned Bed No</td>
-                                        <td><?php echo $data['sanctioned_bed_number']; ?></td>
-                                    </tr>
-                                <?php endif; ?>
+                                <?php if($showSanctionedBed): ?>
+                                                    <tr>
+                                                        <td width="50%"><strong>Approved Bed No.</strong></td>
+                                                        <td><?php echo $data['approved_bed_number']; ?></td>
+                                                    </tr>
+													<tr>
+                                                        <td width="50%"><strong>Revenue Bed No</strong></td>
+                                                        <td><?php echo $data['revenue_bed_number']; ?></td>
+                                                    </tr>
+														<tr>
+                                                        <td width="50%"><strong>Development Bed No</strong></td>
+                                                        <td><?php echo $data['development_bed_number']; ?></td>
+                                                    </tr>
+                                 <?php endif; ?>
                                 <tr>
                                     <td width="50%">Other miscellaneous issues</td>
                                     <td><?php echo $data['other_miscellaneous_issues']; ?></td>
