@@ -137,6 +137,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 organization.mobile_number1,
                 organization.email_address1,
                 org_source_of_electricity_main.electricity_source_name,
+                organization.approved_bed_number,
                 org_type.org_type_name,
                 org_type.org_type_code,
                 organization.org_photo
@@ -276,7 +277,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     ->setCellValue("I$row_number", $data['org_level_name'])
                     ->setCellValue("J$row_number", $data['mobile_number1'])
                     ->setCellValue("K$row_number", $data['email_address1'])
-                    ->setCellValue("L$row_number", $data['sanctioned_bed_number'])
+                    ->setCellValue("L$row_number", $data['approved_bed_number'])
                     ->setCellValue("M$row_number", $data['electricity_source_name']);
         }
 
