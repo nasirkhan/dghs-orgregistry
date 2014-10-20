@@ -138,6 +138,8 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 organization.email_address1,
                 org_source_of_electricity_main.electricity_source_name,
                 organization.approved_bed_number,
+				organization.revenue_bed_number,
+				organization.development_bed_number,
                 org_type.org_type_name,
                 org_type.org_type_code,
                 organization.org_photo
@@ -260,8 +262,10 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 ->setCellValue("I$row_number", "Org Level")
                 ->setCellValue("J$row_number", "Mobile Number")
                 ->setCellValue("K$row_number", "Email Address")
-                ->setCellValue("L$row_number", "Bed Number")
-                ->setCellValue("M$row_number", "Electricity Source");
+                ->setCellValue("L$row_number", "Approved Bed Number")
+				 ->setCellValue("M$row_number", "Revenue Bed Number")
+				  ->setCellValue("N$row_number", "Development Bed Number")
+                ->setCellValue("O$row_number", "Electricity Source");
 
         while ($data = mysql_fetch_assoc($org_list_result)) {
             $row_number++;
@@ -278,7 +282,9 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     ->setCellValue("J$row_number", $data['mobile_number1'])
                     ->setCellValue("K$row_number", $data['email_address1'])
                     ->setCellValue("L$row_number", $data['approved_bed_number'])
-                    ->setCellValue("M$row_number", $data['electricity_source_name']);
+					->setCellValue("M$row_number", $data['revenue_bed Number'])
+					->setCellValue("N$row_number", $data['development_bed_number'])
+                    ->setCellValue("O$row_number", $data['electricity_source_name']);
         }
 
         /**
