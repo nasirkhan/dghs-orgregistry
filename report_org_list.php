@@ -282,7 +282,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     ->setCellValue("J$row_number", $data['mobile_number1'])
                     ->setCellValue("K$row_number", $data['email_address1'])
                     ->setCellValue("L$row_number", $data['approved_bed_number'])
-					->setCellValue("M$row_number", $data['revenue_bed Number'])
+					->setCellValue("M$row_number", $data['revenue_bed_number'])
 					->setCellValue("N$row_number", $data['development_bed_number'])
                     ->setCellValue("O$row_number", $data['electricity_source_name']);
         }
