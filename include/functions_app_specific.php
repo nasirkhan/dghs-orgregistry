@@ -360,7 +360,17 @@ function showSanctionedBed($org_type_code) {
 		}
 	else if ($org_type_code == 1005) {        // added by rajib
         return TRUE;	
-    } else if ($org_type_code == 1062) {
+    }
+	else if ($org_type_code == 1007) {        // added by rajib
+        return TRUE;	
+    } 
+	else if ($org_type_code == 1009) {        // added by rajib
+        return TRUE;	
+    }  
+	else if ($org_type_code == 1062) {
+        return FALSE;
+    }
+	else if ($org_type_code == 1062) {
         return FALSE;
     }
 }
