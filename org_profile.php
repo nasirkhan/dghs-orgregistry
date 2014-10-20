@@ -138,6 +138,9 @@ if (!($latitude > 0) || !($longitude > 0)) {
                         <li class="">
                             <a href="#facility-info" data-toggle="tab"><i class="fa fa-shield"></i> Facility Info</a>
                         </li>
+						  <li class="">
+                            <a href="#other-info" data-toggle="tab"><i class="fa fa-book"></i> Other miscellaneous issues</a>
+                        </li>
                         <li class="">
                             <a href="#org-hrm-status" data-toggle="tab"><i class="fa fa-group"></i> HRM Status</a>
                         </li>
@@ -605,10 +608,10 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                                         <td><?php echo $data['development_bed_number']; ?></td>
                                                     </tr>
                                  <?php endif; ?>
-                                <tr>
+                              <!--  <tr>
                                     <td width="50%">Other miscellaneous issues</td>
                                     <td><?php echo $data['other_miscellaneous_issues']; ?></td>
-                                </tr>
+                                </tr> -->
                             </table>
                         </div>
                         <div class="tab-pane" id="land-info">
@@ -678,6 +681,16 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </div>
                             </div>
                         </div>
+						      <div class="tab-pane" id="other-info">
+                               <table class="table table-striped table-hover table-bordered">
+							   <tr>
+                                    <td width="50%">Other miscellaneous issues</td>
+                                    <td><?php echo $data['other_miscellaneous_issues']; ?></td>
+                                </tr>
+							   </table>
+							   </div>
+						
+						
                     </div>
                 </div>
             </div>
