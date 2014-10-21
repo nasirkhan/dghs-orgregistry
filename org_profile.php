@@ -11,7 +11,7 @@ if (isset($_GET['org_code']) && $_GET['org_code'] != "") {
     $isAdmin = TRUE;
 }
 
-$sql = "SELECT * FROM organization WHERE  org_code =$org_code LIMIT 1";
+$sql = "SELECT * FROM organization WHERE  org_code=$org_code LIMIT 1";
 $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>sql:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
 // data fetched form organization table
@@ -522,6 +522,12 @@ if (!($latitude > 0) || !($longitude > 0)) {
                         </div>
                         <div class="tab-pane" id="facility-info">
                             <table class="table table-striped table-hover table-bordered table-bordered">
+							     <tr>
+                                        <td width="50%">Physical Structure</td>
+                                        <td><?php
+										echo getPhysicalStructure($data['physical_structure']); ?></td>
+                                </tr>
+								
                                 <tr class="success">
                                     <td width="50%" colspan="2"><strong>Source of Electricity</strong></td>
                                 </tr>

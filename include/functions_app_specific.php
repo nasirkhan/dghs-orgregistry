@@ -317,7 +317,21 @@ function getOrgTypeCodeFromOrgCode($org_code) {
     $org_type_data = mysql_fetch_assoc($result);
     return $org_type_data['org_type_code'];
 }
+function getPhysicalStructure($id) {
+   if (!$id > 0)
+       return 0;
+    $sql = "SELECT
+                org_physical_structure.id,org_physical_structure.physical_structure_value
+            FROM
+                org_physical_structure
+            WHERE
+               org_physical_structure.id = $id LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getSalaryDrawTypeNameFromID:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
+    $data = mysql_fetch_assoc($result);
+
+    return $data['physical_structure_value'];
+}
 /**
  * Sanctioned bed input field will be displayed for some specific organization
  * types, here it checks the organization by org_code
