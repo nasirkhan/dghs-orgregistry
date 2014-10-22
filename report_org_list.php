@@ -108,7 +108,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             LEFT JOIN admin_district ON organization.district_code = admin_district.district_bbs_code
             LEFT JOIN org_agency_code ON organization.agency_code = org_agency_code.org_agency_code
             LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code 
-                $query_string  ORDER BY org_name";
+                $query_string  ORDER BY division_name ,district_name ,upazila_thana_name";
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
         $org_list_result_count = mysql_num_rows($org_list_result);
         if ($org_list_result_count > 0) {
@@ -151,7 +151,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             LEFT JOIN org_level ON organization.org_level_code = org_level.org_level_code
             LEFT JOIN org_source_of_electricity_main ON organization.source_of_electricity_main_code = org_source_of_electricity_main.electricity_source_code
             LEFT JOIN org_organizational_functions ON organization.org_function_code = org_organizational_functions.org_organizational_functions_code
-            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code $query_string";
+            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code $query_string ORDER BY division_name ,district_name,upazila_thana_name ASC";
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
 //        echo "<pre>";
