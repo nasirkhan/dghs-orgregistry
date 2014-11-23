@@ -91,6 +91,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 organization.upazila_thana_code,
 				organization.union_code,
 				organization.union_name,
+				organization.ward_code,
                 admin_division.division_name,
                 admin_division.division_bbs_code,
                 admin_district.district_name,
@@ -135,6 +136,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 organization.division_code,
                 organization.district_name,
                 organization.district_code,
+                organization.ward_code,
                 organization.agency_name,
                 organization.org_function_name,
                 organization.org_level_name,
@@ -256,16 +258,17 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 ->setCellValue("D$row_number", "District")
                 ->setCellValue("E$row_number", "Upazila")
 				->setCellValue("F$row_number", "Union")
-                ->setCellValue("G$row_number", "Agency")
-                ->setCellValue("H$row_number", "Org Type")
-                ->setCellValue("I$row_number", "Org Function")
-                ->setCellValue("J$row_number", "Org Level")
-                ->setCellValue("K$row_number", "Mobile Number")
-                ->setCellValue("L$row_number", "Email Address")
-                ->setCellValue("M$row_number", "Approved Bed Number")
-				 ->setCellValue("N$row_number", "Revenue Bed Number")
-				  ->setCellValue("O$row_number", "Development Bed Number")
-                ->setCellValue("P$row_number", "Electricity Source");
+				->setCellValue("G$row_number", "Ward")
+                ->setCellValue("H$row_number", "Agency")
+                ->setCellValue("I$row_number", "Org Type")
+                ->setCellValue("J$row_number", "Org Function")
+                ->setCellValue("K$row_number", "Org Level")
+                ->setCellValue("L$row_number", "Mobile Number")
+                ->setCellValue("M$row_number", "Email Address")
+                ->setCellValue("N$row_number", "Approved Bed Number")
+				 ->setCellValue("O$row_number", "Revenue Bed Number")
+				  ->setCellValue("P$row_number", "Development Bed Number")
+                ->setCellValue("Q$row_number", "Electricity Source");
 
         while ($data = mysql_fetch_assoc($org_list_result)) {
             $row_number++;
@@ -276,16 +279,17 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     ->setCellValue("D$row_number", $data['district_name'])
                     ->setCellValue("E$row_number", $data['upazila_thana_name'])
 					->setCellValue("F$row_number", $data['union_name'])
-                    ->setCellValue("G$row_number", $data['agency_name'])
-                    ->setCellValue("H$row_number", $data['org_type_name'])
-                    ->setCellValue("I$row_number", $data['org_function_name'])
-                    ->setCellValue("J$row_number", $data['org_level_name'])
-                    ->setCellValue("K$row_number", $data['mobile_number1'])
-                    ->setCellValue("L$row_number", $data['email_address1'])
-                    ->setCellValue("M$row_number", $data['approved_bed_number'])
-					->setCellValue("N$row_number", $data['revenue_bed_number'])
-					->setCellValue("O$row_number", $data['development_bed_number'])
-                    ->setCellValue("P$row_number", $data['electricity_source_name']);
+					->setCellValue("G$row_number", $data['ward_code'])
+                    ->setCellValue("H$row_number", $data['agency_name'])
+                    ->setCellValue("I$row_number", $data['org_type_name'])
+                    ->setCellValue("J$row_number", $data['org_function_name'])
+                    ->setCellValue("K$row_number", $data['org_level_name'])
+                    ->setCellValue("L$row_number", $data['mobile_number1'])
+                    ->setCellValue("M$row_number", $data['email_address1'])
+                    ->setCellValue("N$row_number", $data['approved_bed_number'])
+					->setCellValue("O$row_number", $data['revenue_bed_number'])
+					->setCellValue("P$row_number", $data['development_bed_number'])
+                    ->setCellValue("Q$row_number", $data['electricity_source_name']);
         }
 
         /**
@@ -526,6 +530,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                         <td><strong>District</strong></td>
                                         <td><strong>Upazila</strong></td>
                                         <td><strong>Union</strong></td>
+                                        <td><strong>Ward</strong></td>
                                         <td><strong>Agency</strong></td>
                                         <td><strong>Org Type</strong></td>
                                         <td><strong>Photo</strong></td>
@@ -540,6 +545,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                             <td><?php echo $data['district_name']; ?></td>
                                             <td><?php echo getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']); ?></td>
                                             <td><?php echo $data['union_name']; ?></td>
+                                            <td><?php echo $data['ward_code']; ?></td>
                                             <td><?php echo $data['org_agency_name']; ?></td>
                                             <td><?php echo $data['org_type_name']; ?></td>
                                             <td>
