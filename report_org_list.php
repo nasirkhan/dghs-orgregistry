@@ -132,6 +132,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 organization.upazila_thana_code,
 				organization.upazila_thana_name,
 				organization.union_name,
+                organization.union_code,
                 organization.division_name,
                 organization.division_code,
                 organization.district_name,
@@ -277,8 +278,8 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     ->setCellValue("B$row_number", $data['org_code'])
                     ->setCellValue("C$row_number", $data['division_name'])
                     ->setCellValue("D$row_number", $data['district_name'])
-                    ->setCellValue("E$row_number", $data['upazila_thana_name'])
-					->setCellValue("F$row_number", $data['union_name'])
+                    ->setCellValue("E$row_number", getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_code']))
+					->setCellValue("F$row_number", getUnionNameFromBBSCode($data['union_code'], $data['upazila_thana_code'],$data['district_code']))
 					->setCellValue("G$row_number", $data['ward_code'])
                     ->setCellValue("H$row_number", $data['agency_name'])
                     ->setCellValue("I$row_number", $data['org_type_name'])
@@ -544,7 +545,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                             <td><?php echo $data['division_name']; ?></td>
                                             <td><?php echo $data['district_name']; ?></td>
                                             <td><?php echo getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']); ?></td>
-                                            <td><?php echo $data['union_name']; ?></td>
+                                            <td><?php echo getUnionNameFromBBSCode($data['union_code'], $data['upazila_thana_code'],$data['district_bbs_code']); ?></td>
                                             <td><?php echo $data['ward_code']; ?></td>
                                             <td><?php echo $data['org_agency_name']; ?></td>
                                             <td><?php echo $data['org_type_name']; ?></td>
