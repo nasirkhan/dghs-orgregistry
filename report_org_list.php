@@ -1,6 +1,6 @@
 <?php
 require_once 'configuration.php';
-
+set_time_limit(6000); ini_set("memory_limit", -1);
 
 
 /* * *
@@ -89,6 +89,9 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 organization.org_name,
                 organization.org_code,
                 organization.upazila_thana_code,
+				organization.union_code,
+				organization.union_name,
+				organization.ward_code,
                 admin_division.division_name,
                 admin_division.division_bbs_code,
                 admin_district.district_name,
@@ -127,28 +130,30 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 organization.org_name,
                 organization.org_code,
                 organization.upazila_thana_code,
-                admin_division.division_name,
-                admin_division.division_bbs_code,
-                admin_district.district_name,
-                admin_district.district_bbs_code,
-                org_agency_code.org_agency_name,
-                org_organizational_functions.org_organizational_functions_name,
-                org_level.org_level_name,
+				organization.upazila_thana_name,
+				organization.union_name,
+                organization.union_code,
+                organization.division_name,
+                organization.division_code,
+                organization.district_name,
+                organization.district_code,
+                organization.ward_code,
+                organization.agency_name,
+                organization.org_function_name,
+                organization.org_level_name,
                 organization.mobile_number1,
                 organization.email_address1,
                 org_source_of_electricity_main.electricity_source_name,
-                org_type.org_type_name,
-                org_type.org_type_code,
+                organization.approved_bed_number,
+				organization.revenue_bed_number,
+				organization.development_bed_number,
+                organization.org_type_name,
+                organization.org_type_code,
                 organization.org_photo
             FROM
                 organization
-            LEFT JOIN admin_division ON organization.division_code = admin_division.division_bbs_code
-            LEFT JOIN admin_district ON organization.district_code = admin_district.district_bbs_code
-            LEFT JOIN org_agency_code ON organization.agency_code = org_agency_code.org_agency_code
-            LEFT JOIN org_level ON organization.org_level_code = org_level.org_level_code
             LEFT JOIN org_source_of_electricity_main ON organization.source_of_electricity_main_code = org_source_of_electricity_main.electricity_source_code
-            LEFT JOIN org_organizational_functions ON organization.org_function_code = org_organizational_functions.org_organizational_functions_code
-            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code $query_string";
+            $query_string";
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
 //        echo "<pre>";
@@ -253,14 +258,18 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 ->setCellValue("C$row_number", "Division")
                 ->setCellValue("D$row_number", "District")
                 ->setCellValue("E$row_number", "Upazila")
-                ->setCellValue("F$row_number", "Agency")
-                ->setCellValue("G$row_number", "Org Type")
-                ->setCellValue("H$row_number", "Org Function")
-                ->setCellValue("I$row_number", "Org Level")
-                ->setCellValue("J$row_number", "Mobile Number")
-                ->setCellValue("K$row_number", "Email Address")
-                ->setCellValue("L$row_number", "Bed Number")
-                ->setCellValue("M$row_number", "Electricity Source");
+				->setCellValue("F$row_number", "Union")
+				->setCellValue("G$row_number", "Ward")
+                ->setCellValue("H$row_number", "Agency")
+                ->setCellValue("I$row_number", "Org Type")
+                ->setCellValue("J$row_number", "Org Function")
+                ->setCellValue("K$row_number", "Org Level")
+                ->setCellValue("L$row_number", "Mobile Number")
+                ->setCellValue("M$row_number", "Email Address")
+                ->setCellValue("N$row_number", "Approved Bed Number")
+				 ->setCellValue("O$row_number", "Revenue Bed Number")
+				  ->setCellValue("P$row_number", "Development Bed Number")
+                ->setCellValue("Q$row_number", "Electricity Source");
 
         while ($data = mysql_fetch_assoc($org_list_result)) {
             $row_number++;
@@ -269,15 +278,19 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     ->setCellValue("B$row_number", $data['org_code'])
                     ->setCellValue("C$row_number", $data['division_name'])
                     ->setCellValue("D$row_number", $data['district_name'])
-                    ->setCellValue("E$row_number", getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']))
-                    ->setCellValue("F$row_number", $data['org_agency_name'])
-                    ->setCellValue("G$row_number", $data['org_type_name'])
-                    ->setCellValue("H$row_number", $data['org_organizational_functions_name'])
-                    ->setCellValue("I$row_number", $data['org_level_name'])
-                    ->setCellValue("J$row_number", $data['mobile_number1'])
-                    ->setCellValue("K$row_number", $data['email_address1'])
-                    ->setCellValue("L$row_number", $data['sanctioned_bed_number'])
-                    ->setCellValue("M$row_number", $data['electricity_source_name']);
+                    ->setCellValue("E$row_number", getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_code']))
+					->setCellValue("F$row_number", getUnionNameFromBBSCode($data['union_code'], $data['upazila_thana_code'],$data['district_code']))
+					->setCellValue("G$row_number", $data['ward_code'])
+                    ->setCellValue("H$row_number", $data['agency_name'])
+                    ->setCellValue("I$row_number", $data['org_type_name'])
+                    ->setCellValue("J$row_number", $data['org_function_name'])
+                    ->setCellValue("K$row_number", $data['org_level_name'])
+                    ->setCellValue("L$row_number", $data['mobile_number1'])
+                    ->setCellValue("M$row_number", $data['email_address1'])
+                    ->setCellValue("N$row_number", $data['approved_bed_number'])
+					->setCellValue("O$row_number", $data['revenue_bed_number'])
+					->setCellValue("P$row_number", $data['development_bed_number'])
+                    ->setCellValue("Q$row_number", $data['electricity_source_name']);
         }
 
         /**
@@ -517,6 +530,8 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                         <td><strong>Division</strong></td>
                                         <td><strong>District</strong></td>
                                         <td><strong>Upazila</strong></td>
+                                        <td><strong>Union</strong></td>
+                                        <td><strong>Ward</strong></td>
                                         <td><strong>Agency</strong></td>
                                         <td><strong>Org Type</strong></td>
                                         <td><strong>Photo</strong></td>
@@ -530,6 +545,8 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                             <td><?php echo $data['division_name']; ?></td>
                                             <td><?php echo $data['district_name']; ?></td>
                                             <td><?php echo getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']); ?></td>
+                                            <td><?php echo getUnionNameFromBBSCode($data['union_code'], $data['upazila_thana_code'],$data['district_bbs_code']); ?></td>
+                                            <td><?php echo $data['ward_code']; ?></td>
                                             <td><?php echo $data['org_agency_name']; ?></td>
                                             <td><?php echo $data['org_type_name']; ?></td>
                                             <td>
