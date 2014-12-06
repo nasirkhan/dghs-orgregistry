@@ -11,7 +11,7 @@ if (isset($_GET['org_code']) && $_GET['org_code'] != "") {
     $isAdmin = TRUE;
 }
 
-$sql = "SELECT * FROM organization WHERE  org_code =$org_code LIMIT 1";
+$sql = "SELECT * FROM organization WHERE  org_code=$org_code LIMIT 1";
 $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>sql:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
 // data fetched form organization table
@@ -137,6 +137,9 @@ if (!($latitude > 0) || !($longitude > 0)) {
                         </li>                            
                         <li class="">
                             <a href="#facility-info" data-toggle="tab"><i class="fa fa-shield"></i> Facility Info</a>
+                        </li>
+						  <li class="">
+                            <a href="#other-info" data-toggle="tab"><i class="fa fa-book"></i> Other miscellaneous issues</a>
                         </li>
                         <li class="">
                             <a href="#org-hrm-status" data-toggle="tab"><i class="fa fa-group"></i> HRM Status</a>
@@ -519,6 +522,12 @@ if (!($latitude > 0) || !($longitude > 0)) {
                         </div>
                         <div class="tab-pane" id="facility-info">
                             <table class="table table-striped table-hover table-bordered table-bordered">
+							     <tr>
+                                        <td width="50%">Physical Structure</td>
+                                        <td><?php
+										echo getPhysicalStructure($data['physical_structure']); ?></td>
+                                </tr>
+								
                                 <tr class="success">
                                     <td width="50%" colspan="2"><strong>Source of Electricity</strong></td>
                                 </tr>
@@ -605,10 +614,10 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                                         <td><?php echo $data['development_bed_number']; ?></td>
                                                     </tr>
                                  <?php endif; ?>
-                                <tr>
+                              <!--  <tr>
                                     <td width="50%">Other miscellaneous issues</td>
                                     <td><?php echo $data['other_miscellaneous_issues']; ?></td>
-                                </tr>
+                                </tr> -->
                             </table>
                         </div>
                         <div class="tab-pane" id="land-info">
@@ -678,6 +687,16 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </div>
                             </div>
                         </div>
+						      <div class="tab-pane" id="other-info">
+                               <table class="table table-striped table-hover table-bordered">
+							   <tr>
+                                    <td width="50%">Other miscellaneous issues</td>
+                                    <td><?php echo $data['other_miscellaneous_issues']; ?></td>
+                                </tr>
+							   </table>
+							   </div>
+						
+						
                     </div>
                 </div>
             </div>

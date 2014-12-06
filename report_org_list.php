@@ -111,7 +111,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
             LEFT JOIN admin_district ON organization.district_code = admin_district.district_bbs_code
             LEFT JOIN org_agency_code ON organization.agency_code = org_agency_code.org_agency_code
             LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code 
-                $query_string  ORDER BY org_name";
+                $query_string  ORDER BY division_name ,district_name ,upazila_thana_name";
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
         $org_list_result_count = mysql_num_rows($org_list_result);
         if ($org_list_result_count > 0) {
@@ -147,13 +147,14 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 organization.approved_bed_number,
 				organization.revenue_bed_number,
 				organization.development_bed_number,
-                organization.org_type_name,
-                organization.org_type_code,
+                org_type.org_type_name,
+                org_type.org_type_code,
                 organization.org_photo
             FROM
                 organization
             LEFT JOIN org_source_of_electricity_main ON organization.source_of_electricity_main_code = org_source_of_electricity_main.electricity_source_code
-            $query_string";
+            LEFT JOIN org_organizational_functions ON organization.org_function_code = org_organizational_functions.org_organizational_functions_code
+            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code $query_string ORDER BY division_name ,district_name,upazila_thana_name ASC";
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
 //        echo "<pre>";
@@ -258,18 +259,16 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 ->setCellValue("C$row_number", "Division")
                 ->setCellValue("D$row_number", "District")
                 ->setCellValue("E$row_number", "Upazila")
-				->setCellValue("F$row_number", "Union")
-				->setCellValue("G$row_number", "Ward")
-                ->setCellValue("H$row_number", "Agency")
-                ->setCellValue("I$row_number", "Org Type")
-                ->setCellValue("J$row_number", "Org Function")
-                ->setCellValue("K$row_number", "Org Level")
-                ->setCellValue("L$row_number", "Mobile Number")
-                ->setCellValue("M$row_number", "Email Address")
-                ->setCellValue("N$row_number", "Approved Bed Number")
-				 ->setCellValue("O$row_number", "Revenue Bed Number")
-				  ->setCellValue("P$row_number", "Development Bed Number")
-                ->setCellValue("Q$row_number", "Electricity Source");
+                ->setCellValue("F$row_number", "Agency")
+                ->setCellValue("G$row_number", "Org Type")
+                ->setCellValue("H$row_number", "Org Function")
+                ->setCellValue("I$row_number", "Org Level")
+                ->setCellValue("J$row_number", "Mobile Number")
+                ->setCellValue("K$row_number", "Email Address")
+                ->setCellValue("L$row_number", "Approved Bed Number")
+				 ->setCellValue("M$row_number", "Revenue Bed Number")
+				  ->setCellValue("N$row_number", "Development Bed Number")
+                ->setCellValue("O$row_number", "Electricity Source");
 
         while ($data = mysql_fetch_assoc($org_list_result)) {
             $row_number++;
@@ -278,19 +277,17 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     ->setCellValue("B$row_number", $data['org_code'])
                     ->setCellValue("C$row_number", $data['division_name'])
                     ->setCellValue("D$row_number", $data['district_name'])
-                    ->setCellValue("E$row_number", getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_code']))
-					->setCellValue("F$row_number", getUnionNameFromBBSCode($data['union_code'], $data['upazila_thana_code'],$data['district_code']))
-					->setCellValue("G$row_number", $data['ward_code'])
-                    ->setCellValue("H$row_number", $data['agency_name'])
-                    ->setCellValue("I$row_number", $data['org_type_name'])
-                    ->setCellValue("J$row_number", $data['org_function_name'])
-                    ->setCellValue("K$row_number", $data['org_level_name'])
-                    ->setCellValue("L$row_number", $data['mobile_number1'])
-                    ->setCellValue("M$row_number", $data['email_address1'])
-                    ->setCellValue("N$row_number", $data['approved_bed_number'])
-					->setCellValue("O$row_number", $data['revenue_bed_number'])
-					->setCellValue("P$row_number", $data['development_bed_number'])
-                    ->setCellValue("Q$row_number", $data['electricity_source_name']);
+                    ->setCellValue("E$row_number", getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']))
+                    ->setCellValue("F$row_number", $data['org_agency_name'])
+                    ->setCellValue("G$row_number", $data['org_type_name'])
+                    ->setCellValue("H$row_number", $data['org_organizational_functions_name'])
+                    ->setCellValue("I$row_number", $data['org_level_name'])
+                    ->setCellValue("J$row_number", $data['mobile_number1'])
+                    ->setCellValue("K$row_number", $data['email_address1'])
+                    ->setCellValue("L$row_number", $data['approved_bed_number'])
+					->setCellValue("M$row_number", $data['revenue_bed_number'])
+					->setCellValue("N$row_number", $data['development_bed_number'])
+                    ->setCellValue("O$row_number", $data['electricity_source_name']);
         }
 
         /**
