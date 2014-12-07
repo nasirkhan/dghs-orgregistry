@@ -11,7 +11,13 @@ if (isset($_GET['org_code']) && $_GET['org_code'] != "") {
     $isAdmin = TRUE;
 }
 
-$sql = "SELECT * FROM organization WHERE  org_code=$org_code LIMIT 1";
+$sql = "SELECT
+            *
+        FROM
+            `dghshrml4_facilities`
+        WHERE
+            `code` = '$org_code'
+        AND is_active = 1  LIMIT 1";
 $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>sql:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
 // data fetched form organization table
@@ -141,9 +147,11 @@ if (!($latitude > 0) || !($longitude > 0)) {
 						  <li class="">
                             <a href="#other-info" data-toggle="tab"><i class="fa fa-book"></i> Other miscellaneous issues</a>
                         </li>
+                        <!-- 
                         <li class="">
                             <a href="#org-hrm-status" data-toggle="tab"><i class="fa fa-group"></i> HRM Status</a>
                         </li>
+                         -->
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="org-profile-home">
@@ -199,11 +207,11 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                                 </tr>
                                                 <tr>
                                                     <td width="50%"><strong>Email Address</strong></td>
-                                                    <td width="50%"><?php echo $data['email_address1']; ?></td>
+                                                    <td width="50%"><?php echo $data['email1']; ?></td>
                                                 </tr>                                                
                                                 <tr>
                                                     <td width="50%"><strong>Mobile Number</strong></td>
-                                                    <td width="50%"><?php echo $data['mobile_number1']; ?></td>
+                                                    <td width="50%"><?php echo $data['mobile1']; ?></td>
                                                 </tr>                                                
                                                 <?php if($showSanctionedBed): ?>
                                                     <tr>
@@ -221,7 +229,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                                 <?php endif; ?>
                                                 <tr>
                                                     <td width="50%"><strong>Last updated on</strong></td>
-                                                    <td width="50%"><?php echo $data['updated_datetime']; ?></td>
+                                                    <td width="50%"><?php echo $data['updated_at']; ?></td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -237,15 +245,15 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Organization Code</strong></td>
-                                    <td><?php echo $data['org_code']; ?></td>
+                                    <td><?php echo $data['code']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Agency code</strong></td>
-                                    <td><?php echo $data['agency_code']; ?></td>
+                                    <td><?php echo $data['facilityagency_code']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Agency Name</strong></td>
-                                    <td><?php echo getAgencyNameFromAgencyCode($data['agency_code']); ?></td>
+                                    <td><?php echo $data['facilityagency_name']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Financial Code (Revenue Code)</strong></td>
@@ -253,7 +261,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Year Established</strong></td>
-                                    <td><?php echo $data['year_established']; ?></td>
+                                    <td><?php echo $data['establishmentyear']; ?></td>
                                 </tr>
                                 <tr  class="success">
                                     <td width="50%" colspan="2"><strong>Urban/Rural Location Information of the Organization</strong></td>
@@ -285,11 +293,11 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Upazila Name</strong></td>
-                                    <td><?php echo getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_code']); ?></td>
+                                    <td><?php echo $data['upazila_name']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Upazila Code</strong></td>
-                                    <td><?php echo $data['upazila_thana_code']; ?></td>
+                                    <td><?php echo $data['upazila_code']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Union Name</strong></td>
@@ -325,23 +333,23 @@ if (!($latitude > 0) || !($longitude > 0)) {
                             <table class="table table-striped table-hover table-bordered">
                                 <tr>
                                     <td width="50%"><strong>Ownership</strong></td>
-                                    <td width="50%"><?php echo getOrgOwnarshioNameFromCode($data['ownership_code']); ?></td>
+                                    <td width="50%"><?php echo $data['facilityownership_name']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Organization Type</strong></td>
-                                    <td width="50%"><?php echo getOrgTypeNameFormOrgTypeCode($data['org_type_code']); ?></td>
+                                    <td width="50%"><?php echo $data['facilitytype_name']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Organization Function</strong></td>
-                                    <td width="50%"></td>
+                                    <td width="50%"><?php echo $data['facilityfunction_name']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Organization Level</strong></td>
-                                    <td width="50%"><?php echo getOrgLevelNamefromCode($data['org_level_code']); ?></td>
+                                    <td width="50%"><?php echo $data['facilitylevel_name']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Health Care Level</strong></td>
-                                    <td width="50%"><?php echo $data['org_healthcare_level_code']; ?></td>
+                                    <td width="50%"><?php echo $data['facilityhealthcarelevel_name']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Special service / status of the hospital / clinic</strong></td>
@@ -396,55 +404,55 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Land Phone Number 1</strong></td>
-                                    <td><?php echo $data['land_phone1']; ?></td>
+                                    <td><?php echo $data['landphone1']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Land Phone Number 2</strong></td>
-                                    <td><?php echo $data['land_phone2']; ?></td>
+                                    <td><?php echo $data['landphone2']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Land Phone Number 3</strong></td>
-                                    <td><?php echo $data['land_phone3']; ?></td>
+                                    <td><?php echo $data['landphone3']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Mobile Phone Number 1</strong></td>
-                                    <td><?php echo $data['mobile_number1']; ?></td>
+                                    <td><?php echo $data['mobile1']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Mobile Phone Number 2</strong></td>
-                                    <td><?php echo $data['mobile_number2']; ?></td>
+                                    <td><?php echo $data['mobile2']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Mobile Phone Number 3</strong></td>
-                                    <td><?php echo $data['mobile_number3']; ?></td>
+                                    <td><?php echo $data['mobile3']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Email Address 1</strong></td>
-                                    <td><?php echo $data['email_address1']; ?></td>
+                                    <td><?php echo $data['email1']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Email Address 2</strong></td>
-                                    <td><?php echo $data['email_address2']; ?></td>
+                                    <td><?php echo $data['email2']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Email Address 3</strong></td>
-                                    <td><?php echo $data['email_address3']; ?></td>
+                                    <td><?php echo $data['email3']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Fax Number 1</strong></td>
-                                    <td><?php echo $data['fax_number1']; ?></td>
+                                    <td><?php echo $data['fax1']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Fax Number 2</strong></td>
-                                    <td><?php echo $data['fax_number2']; ?></td>
+                                    <td><?php echo $data['fax2']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Fax Number 3</strong></td>
-                                    <td><?php echo $data['fax_number3']; ?></td>
+                                    <td><?php echo $data['fax3']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Website URL</strong></td>
-                                    <td><?php echo $data['website_address']; ?></td>
+                                    <td><?php echo $data['websiteurl']; ?></td>
                                 </tr>
                                 <!--
                                 <tr>
@@ -458,19 +466,19 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 -->
                                 <tr>
                                     <td width="50%"><strong>Facebook</strong></td>
-                                    <td><?php echo $data['facebook_page']; ?></td>
+                                    <td><?php echo $data['facebookurl']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Google+</strong></td>
-                                    <td><?php echo $data['google_plus_page']; ?></td>
+                                    <td><?php echo $data['googleplusurl']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Twitter</strong></td>
-                                    <td><?php echo $data['twitter_page']; ?></td>
+                                    <td><?php echo $data['twitterurl']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Youtube</strong></td>
-                                    <td><?php echo $data['youtube_page']; ?></td>
+                                    <td><?php echo $data['youtubeurl']; ?></td>
                                 </tr>
                                 <?php if ($isCommunityClinic): ?>
                                     <tr class="success">
@@ -523,9 +531,9 @@ if (!($latitude > 0) || !($longitude > 0)) {
                         <div class="tab-pane" id="facility-info">
                             <table class="table table-striped table-hover table-bordered table-bordered">
 							     <tr>
-                                        <td width="50%">Physical Structure</td>
-                                        <td><?php
-										echo getPhysicalStructure($data['physical_structure']); ?></td>
+                                    <td width="50%">Physical Structure</td>
+                                    <td><?php
+									echo getPhysicalStructure($data['physical_structure_value']); ?></td>
                                 </tr>
 								
                                 <tr class="success">
@@ -533,33 +541,33 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </tr>
                                 <tr>
                                     <td width="50%">Main source of electricity</td>
-                                    <td><?php echo getElectricityMainSourceNameFromCode($data['source_of_electricity_main_code']); ?></td>
+                                    <td><?php echo getElectricityMainSourceNameFromCode($data['main_electricitysourceoption_code']); ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%">Alternate source of electricity</td>
-                                    <td><?php echo getElectricityAlterSourceNameFromCode($data['source_of_electricity_alternate_code']); ?></td>
+                                    <td><?php echo getElectricityAlterSourceNameFromCode($data['alt_electricitysourceoption_code']); ?></td>
                                 </tr>
                                 <tr class="success">
                                     <td width="50%" colspan="2"><strong>Source of water Supply</strong></td>
                                 </tr>
                                 <tr>
                                     <td width="50%">Main water supply</td>
-                                    <td><?php echo getWaterMainSourceNameFromCode($data['source_of_water_supply_main_code']); ?></td>
+                                    <td><?php echo getWaterMainSourceNameFromCode($data['main_watersourceoption_code']); ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%">Alternate water supply</td>
-                                    <td><?php echo getWaterAlterSourceNameFromCode($data['source_of_water_supply_alternate_code']); ?></td>
+                                    <td><?php echo getWaterAlterSourceNameFromCode($data['alt_watersourceoption_code']); ?></td>
                                 </tr>
                                 <tr class="success">
                                     <td width="50%" colspan="2"><strong>Toilet Facility</strong></td>
                                 </tr>
                                 <tr>
                                     <td width="50%">Toilet type</td>
-                                    <td><?php echo getToiletTypeNameFromCode($data['toilet_type_code']); ?></td>
+                                    <td><?php echo getToiletTypeNameFromCode($data['toiletoption_code']); ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%">Toilet adequacy</td>
-                                    <td><?php echo getToiletAdequacyNameFromCode($data['toilet_adequacy_code']); ?></td>
+                                    <td><?php echo getToiletAdequacyNameFromCode($data['toiletadequacytype_code']); ?></td>
                                 </tr>
                                 <tr class="success">
                                     <td width="50%" colspan="2"><strong>Fuel Source</strong></td>
@@ -630,7 +638,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 -->
                                 <tr>
                                     <td width="50%"><strong>Land size (in decimal)</strong></td>
-                                    <td><?php echo $data['land_size']; ?></td>
+                                    <td><?php echo $data['land_size_decimal']; ?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><strong>Mouza name</strong></td>
@@ -650,7 +658,6 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                     <td><?php echo $data['land_functional_code']; ?></td>
                                 </tr>
                                 -->
-
                                 <tr>
                                     <td width="50%"><strong>SA Dag No</strong></td>
                                     <td><?php echo $data['land_ss_dag_number']; ?></td>
@@ -673,6 +680,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </tr>
                             </table>
                         </div>
+                        <!--
                         <div class="tab-pane" id="org-hrm-status">
                             <div class="panel panel-default">
                                 <div class="panel-body">                                    
@@ -687,6 +695,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </div>
                             </div>
                         </div>
+                        -->
 						      <div class="tab-pane" id="other-info">
                                <table class="table table-striped table-hover table-bordered">
 							   <tr>
