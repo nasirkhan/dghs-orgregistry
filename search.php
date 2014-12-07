@@ -5,34 +5,69 @@ $query = mysql_real_escape_string(trim($_REQUEST['query']));
 
 if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") {
     $sql = "SELECT
-                organization.org_name,
-                organization.org_code,
-                organization.org_type_code,
-                org_type.org_type_name,
-                organization.division_code,
-                organization.division_name,
-                organization.district_code,
-                organization.district_name,
-                organization.upazila_thana_code,
-                organization.upazila_thana_name,
-                organization.email_address1,
-                organization.mobile_number1,
-                organization.land_phone1,
-                organization.org_photo
+                    dghshrml4_facilities.id,
+                    dghshrml4_facilities.`name`,
+                    dghshrml4_facilities.`code`,
+                    dghshrml4_facilities.division_id,
+                    dghshrml4_facilities.division_code,
+                    dghshrml4_facilities.division_name,
+                    dghshrml4_facilities.district_id,
+                    dghshrml4_facilities.district_code,
+                    dghshrml4_facilities.district_name,
+                    dghshrml4_facilities.upazila_id,
+                    dghshrml4_facilities.upazila_code,
+                    dghshrml4_facilities.upazila_name,
+                    dghshrml4_facilities.photo,
+                    dghshrml4_facilities.mobile1,
+                    dghshrml4_facilities.email1,
+                    dghshrml4_facilities.landphone1,
+                    dghshrml4_facilities.facilitytype_id,
+                    dghshrml4_facilities.facilitytype_code,
+                    dghshrml4_facilities.facilitytype_name
             FROM
-                    organization
-            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
-            LEFT JOIN admin_division ON admin_division.division_bbs_code = organization.division_code
-        WHERE
-                organization.org_code = \"$query\"
-        OR organization.org_name LIKE \"%$query%\"
-        OR organization.division_name LIKE \"%$query%\"
-        OR organization.district_name LIKE \"%$query%\"
-        OR organization.upazila_thana_name LIKE \"%$query%\"    
-        ORDER BY
-                organization.division_name,
-                organization.district_name,
-                organization.upazila_thana_name";
+                    `dghshrml4_facilities`
+            WHERE
+                    `code` =  \"$query\"
+            OR `name` LIKE  \"%$query%\"
+            OR `facilitytype_name` LIKE  \"%$query%\"
+            OR division_name LIKE  \"%$query%\"
+            OR district_name LIKE  \"%$query%\"
+            OR upazila_name LIKE  \"%$query%\"
+            OR email1 LIKE  \"%$query%\"
+            AND is_active = 1
+            ORDER BY
+                    division_name,
+                    district_name,
+                    upazila_name";
+//    $sql = "SELECT
+//                organization.org_name,
+//                organization.org_code,
+//                organization.org_type_code,
+//                org_type.org_type_name,
+//                organization.division_code,
+//                organization.division_name,
+//                organization.district_code,
+//                organization.district_name,
+//                organization.upazila_thana_code,
+//                organization.upazila_thana_name,
+//                organization.email_address1,
+//                organization.mobile_number1,
+//                organization.land_phone1,
+//                organization.org_photo
+//            FROM
+//                    organization
+//            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
+//            LEFT JOIN admin_division ON admin_division.division_bbs_code = organization.division_code
+//        WHERE
+//                organization.org_code = \"$query\"
+//        OR organization.org_name LIKE \"%$query%\"
+//        OR organization.division_name LIKE \"%$query%\"
+//        OR organization.district_name LIKE \"%$query%\"
+//        OR organization.upazila_thana_name LIKE \"%$query%\"    
+//        ORDER BY
+//                organization.division_name,
+//                organization.district_name,
+//                organization.upazila_thana_name";
     $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:orgSearch || Query:</b><br />___<br />$sql</p>");
 
 
@@ -133,16 +168,16 @@ if (isset($_REQUEST['query']) && count($_REQUEST['query']) > 0 && $query != "") 
                                     <?php $i++; ?>
                                     <tr>
                                         <td><?php echo $i; ?></td>
-                                        <td><a href="org_profile.php?org_code=<?php echo $row['org_code']; ?>" target="_blank"><?php echo $row['org_name']; ?> (Code:<?php echo $row['org_code']; ?>)</a></td>
-                                        <td><?php echo $row['org_type_name']; ?></td>
+                                        <td><a href="org_profile.php?org_code=<?php echo $row['code']; ?>" target="_blank"><?php echo $row['name']; ?> (Code:<?php echo $row['code']; ?>)</a></td>
+                                        <td><?php echo $row['facilitytype_name']; ?></td>
                                         <td><?php echo $row['division_name']; ?></td>
                                         <td><?php echo $row['district_name']; ?></td>
-                                        <td><?php echo $row['upazila_thana_name']; ?></td>
-                                        <td><?php echo $row['email_address1']; ?></td>
-                                        <td><?php echo $row['land_phone1']; ?> / <?php echo $row['mobile_number1']; ?></td>
+                                        <td><?php echo $row['upazila_name']; ?></td>
+                                        <td><?php echo $row['email1']; ?></td>
+                                        <td><?php echo $row['landphone1']; ?> / <?php echo $row['mobile1']; ?></td>
                                         <td>
                                             <?php if ($row['org_photo'] != ""): ?>
-                                            <a href="<?php echo $hrm_root_dir; ?>/uploads/<?php echo $row['org_photo']; ?>" rel="lightbox" title="<?php echo $row['org_name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
+                                            <a href="<?php echo $hrm_root_dir; ?>/uploads/<?php echo $row['photo']; ?>" rel="lightbox" title="<?php echo $row['name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
