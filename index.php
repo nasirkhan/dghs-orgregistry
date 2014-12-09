@@ -111,7 +111,7 @@ if (isset($_GET['level']) && isset($_GET['id'])) {
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Organization Registry</title>
+        <title>Facility Registry</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -236,7 +236,7 @@ if (isset($_GET['level']) && isset($_GET['id'])) {
                         $r = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>");
                         $org_count = mysql_num_rows($r);
                         ?>
-                        <strong><em>Total Organizations: <?php echo number_format($org_count); ?></em></strong>
+                        <strong><em>Total Facilities: <?php echo number_format($org_count); ?></em></strong>
                     </div>
                 </div>
                 <div class="col-md-9">
@@ -258,7 +258,7 @@ if (isset($_GET['level']) && isset($_GET['id'])) {
                         </ol>
                         <!--<h2><?php echo $division_name; ?></h2>-->
                     <div class="alert alert-info">
-                        All Organizations under 
+                        All Facilities under 
                         <em>
                             <?php if ($level == "div") { echo "<strong>" . $division_name . "</strong> division"; } ?>
                             <?php if ($level == "dis") { echo "<strong>" . $division_name . "</strong> division" . " under " . "<strong>" .  $district_name . "</strong> district"; } ?>
@@ -274,8 +274,8 @@ if (isset($_GET['level']) && isset($_GET['id'])) {
                             <thead>
                                 <tr>
                                     <td><strong>#</strong></td>
-                                    <td><strong>Organization Name</strong></td>
-                                    <td><strong>Organization Code</strong></td>
+                                    <td><strong>Facility Name</strong></td>
+                                    <td><strong>Facility Code</strong></td>
                                     <td><strong>Org Type</strong></td>
                                     <td><strong>Org Level</strong></td>
                                     <td><strong>Photo</strong></td>
