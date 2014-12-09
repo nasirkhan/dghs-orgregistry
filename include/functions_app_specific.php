@@ -1,5 +1,102 @@
 <?php
 
+
+
+/**
+ * Get Division Name form id (Division id)
+ * 
+ * @param INT $div_code
+ * @return string division_name
+ */
+function getDivisionNameFromId($id) {
+    if(!$id > 0){
+        return "";
+    }
+    $sql = "SELECT `name` FROM dghshrml4_divisions WHERE id = $id AND is_active LIKE 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getDivisionNameFromid || Query:</b><br />___<br />$sql</p>");
+
+    $data = mysql_fetch_assoc($result);
+
+    if (mysql_num_rows($result) > 0) {
+        return $data['name'];
+    } else {
+        return "";
+    }    
+}
+
+/**
+ * Get Location Name form Id (Location Id)
+ * 
+ * @param INT $id Location ID
+ * @param STRING $level_name Options: divisions, districts, upazilas
+ * @return string division_name
+ */
+function getLocationNameFromId($id, $level_name) {
+    if(!$id > 0 || $level_name == ""){
+        return "";
+    }
+    $sql = "SELECT `name` FROM dghshrml4_$level_name WHERE id = $id AND is_active LIKE 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:get$level_name NameFromid || Query:</b><br />___<br />$sql</p>");
+
+    $data = mysql_fetch_assoc($result);
+
+    if (mysql_num_rows($result) > 0) {
+        return $data['name'];
+    } else {
+        return "";
+    }    
+}
+
+
+/**
+ * Get Division Name form id (Division id)
+ * 
+ * @param INT $div_code
+ * @return string division_name
+ */
+function getDivisionIdFromDistrictId($id) {
+    if(!$id > 0){
+        return "";
+    }
+    $sql = "SELECT * FROM dghshrml4_districts WHERE id = $id AND is_active LIKE 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getDivisionNameFromid || Query:</b><br />___<br />$sql</p>");
+
+    $data = mysql_fetch_assoc($result);
+
+    if (mysql_num_rows($result) > 0) {
+        return $data['division_id'];
+    } else {
+        return "";
+    }    
+}
+
+
+/**
+ * Get Division Name form id (Division id)
+ * 
+ * @param INT $div_code
+ * @return string division_name
+ */
+function getDistrictIdFromUpazilaId($id) {
+    if(!$id > 0){
+        return "";
+    }
+    $sql = "SELECT * FROM dghshrml4_upazilas WHERE id = $id AND is_active LIKE 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getDistrictIdFromUpazilaId || Query:</b><br />___<br />$sql</p>");
+
+    $data = mysql_fetch_assoc($result);
+
+    if (mysql_num_rows($result) > 0) {
+        return $data['district_id'];
+    } else {
+        return "";
+    }    
+}
+
+/**
+ * ----------------------------------------------------------------------------
+ */
+
 /**
  * Get Division Name form division_code (Division BBS Code)
  * 
