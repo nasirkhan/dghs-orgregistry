@@ -232,7 +232,12 @@ if (isset($_GET['level']) && isset($_GET['id'])) {
                         </div>
                     </div><!--/.well -->
                     <div class="well sidebar-nav">
-                        <strong><em>Total Facilities: <?php echo getTotalOrgCount(); ?></em></strong>
+                        <?php 
+                        $sql = "SELECT id FROM `dghshrml4_facilities` WHERE is_active = 1";
+                        $r = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>");
+                        $org_count = mysql_num_rows($r);
+                        ?>
+                        <strong><em>Total Organizations: <?php echo number_format($org_count); ?></em></strong>
                     </div>
                 </div>
                 <div class="col-md-9">
