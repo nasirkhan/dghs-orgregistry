@@ -17,8 +17,6 @@ if (isset($_GET['level']) && isset($_GET['id'])) {
                 AND is_active = 1";
         $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:divOrgList || Query:</b><br />___<br />$sql</p>");
         
-//        $code_array = array ('code' => $code);
-//        $total_result_count = getTotalOrgListCount($level, $code_array);
         $total_result_count = mysql_num_rows($result);
         
         
@@ -36,29 +34,9 @@ if (isset($_GET['level']) && isset($_GET['id'])) {
                 WHERE
                         district_id = '$id'
                 AND is_active = 1";
-//        $sql = "SELECT
-//                        organization.org_code,
-//                        organization.org_name,
-//                        organization.org_type_code,
-//                        org_type.org_type_name,	
-//                        organization.org_level_code,
-//                        org_level.org_level_name,
-//                        organization.org_photo,
-//                        organization.email_address1,
-//                        organization.mobile_number1,
-//                        organization.land_phone1
-//                FROM
-//                        `organization`
-//                LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
-//                LEFT JOIN org_level ON organization.org_level_code = org_level.org_level_code
-//                WHERE
-//                        organization.district_code = $code
-//                AND organization.active LIKE 1 ";
+
         $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:divOrgList || Query:</b><br />___<br />$sql</p>");
-        
-//        $code_array = array ('code' => $code);
-//        $total_result_count = getTotalOrgListCount($level, $code_array);
-        
+                
         $total_result_count = mysql_num_rows($result);
         
         if (mysql_num_rows($result) > 0) {
@@ -72,15 +50,6 @@ if (isset($_GET['level']) && isset($_GET['id'])) {
         $division_id = getDivisionIdFromDistrictId($district_id); 
         $division_name = getLocationNameFromId($division_id, 'divisions');
         
-//        $district_name = getLocationNameFromId($id, 'districts');
-        
-//        $upa_info = getDisDivNameCodeFromUpazilaAndDistrictCode($code, $dis_code);
-//        $division_name = $upa_info['district_name'];
-//        $division_code = $upa_info['upazila_division_code'];
-//        $district_name = $upa_info['division_name'];
-//        $district_code = $upa_info['upazila_district_code'];
-//        $upazila_name = $upa_info['upazila_name'];
-        
         $sql = "SELECT
                         *
                 FROM
@@ -89,10 +58,7 @@ if (isset($_GET['level']) && isset($_GET['id'])) {
                         upazila_id =  '$id'
                 AND is_active = 1";
         $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:divOrgList || Query:</b><br />___<br />$sql</p>");
-        
-//        $code_array = array ('code' => $code, 'dis_code' => $dis_code);
-//        $total_result_count = getTotalOrgListCount($level, $code_array);
-        
+                
         $total_result_count = mysql_num_rows($result);
         
         
