@@ -1,7 +1,64 @@
 <?php
 
 
+/**
+ * Get the <b>Organization Name</b> from the <b>Organization Code</b><b></b>
+ * @param int $org_code Organization Code
+ * @return String org_name Organization Name
+ */
+function getOrgNameFromCode($org_code) {
+    if(!$org_code > 0){
+        return "";
+    }
+    $sql = "SELECT
+                    *
+            FROM
+                    `dghshrml4_facilities`
+            WHERE
+                    dghshrml4_facilities.`code` = $org_code";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgNameFormOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
+    $org_data = mysql_fetch_assoc($result);
+    return $org_data['name'];
+}
+
+function getOrgTypeNameFromOrgCode($org_code) {
+    if (!$org_code > 0) {
+        return "";
+    }
+
+    $sql = "SELECT
+                    facilitytype_name
+            FROM
+                    `dghshrml4_facilities`
+            WHERE
+                    dghshrml4_facilities.`code` = $org_code  LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeNameFromOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_type_data = mysql_fetch_assoc($result);
+    $org_type_name = $org_type_data['facilitytype_name'];
+    return $org_type_name;
+}
+/**
+ * Get <b>Organizaition Type Code</b> form the <b>Organization Code</b>
+ * @param INT $org_code
+ * @return INT org_type_code
+ */
+function getOrgTypeCodeFromOrgCode($org_code) {
+    if(!$org_code > 0){
+        return "";
+    }
+    $sql = "SELECT
+                    facilitytype_code
+            FROM
+                    `dghshrml4_facilities`
+            WHERE
+                    dghshrml4_facilities.`code` = $org_code  LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeCodeFromOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_type_data = mysql_fetch_assoc($result);
+    return $org_type_data['org_type_code'];
+}
 /**
  * Get Division Name form id (Division id)
  * 
@@ -450,16 +507,16 @@ function getOrgNameFormOrgCode($org_code) {
  * @param INT $org_code
  * @return INT org_type_code
  */
-function getOrgTypeCodeFromOrgCode($org_code) {
-    if(!$org_code > 0){
-        return "";
-    }
-    $sql = "SELECT organization.org_type_code FROM organization WHERE organization.org_code = $org_code LIMIT 1";
-    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeCodeFromOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
-
-    $org_type_data = mysql_fetch_assoc($result);
-    return $org_type_data['org_type_code'];
-}
+//function getOrgTypeCodeFromOrgCode($org_code) {
+//    if(!$org_code > 0){
+//        return "";
+//    }
+//    $sql = "SELECT organization.org_type_code FROM organization WHERE organization.org_code = $org_code LIMIT 1";
+//    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeCodeFromOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+//
+//    $org_type_data = mysql_fetch_assoc($result);
+//    return $org_type_data['org_type_code'];
+//}
 function getPhysicalStructure($id) {
    if (!$id > 0)
        return 0;

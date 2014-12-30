@@ -5,8 +5,8 @@ $start_time = microtime(true);
 
 if (isset($_GET['org_code']) && $_GET['org_code'] != "") {
     $org_code = (int) mysql_real_escape_string(trim($_GET['org_code']));
-    $org_name = getOrgNameFormOrgCode($org_code);
-    $org_type_name = getOrgTypeNameFormOrgCode($org_code);
+    $org_name = getOrgNameFromCode($org_code);
+    $org_type_name = getOrgTypeNameFromOrgCode($org_code);
     $echoAdminInfo = " | Administrator";
     $isAdmin = TRUE;
 }
