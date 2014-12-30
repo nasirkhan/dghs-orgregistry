@@ -797,18 +797,17 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             <div class="alert alert-warning" id="info-area"> 
                                 Report displaying form:<br>
                                 <?php
-                                $echo_string = "";
                                 if ($div_id > 0) {
-                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_id) . "</strong><br>";
+                                    $echo_string .= " Division: <strong>" . getLocationNameFromId($div_id, 'divisions') . "</strong><br>";
                                 }
                                 if ($dis_id > 0) {
-                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_id) . "</strong><br>";
+                                    $echo_string .= " District: <strong>" . getLocationNameFromId($dis_id, 'districts') . "</strong><br>";
                                 }
                                 if ($upa_id > 0) {
-                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_id, $dis_id) . "</strong><br>";
+                                    $echo_string .= " Upazila: <strong>" . getLocationNameFromId($upa_id, 'upazilas') . "</strong><br>";
                                 }
                                 if ($agency_id > 0) {
-                                    $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_id) . "</strong><br>";
+                                    $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyId($agency_id) . "</strong><br>";
                                 }
                                 if ($type_id > 0 && $type_id[0] != "multiselect-all") {
                                     for ($i = 0; $i < $type_id_count; $i++) {
@@ -817,6 +816,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 } else {
                                     $echo_string .= " Org Type: <strong>All Types</strong><br>";
                                 }
+                                echo "$echo_string";
                                 echo "$echo_string";
                                 ?>
                                 <br />
