@@ -71,6 +71,7 @@ require_once 'configuration.php';
                             </tr>
                         </thead>
                         <tbody>
+                                                       
                             <tr>
                                 <td><a href="report_org_list.php">Organization list</a></td>
                                 <td>
@@ -85,12 +86,7 @@ require_once 'configuration.php';
                                     Number of organization type wise
                                 </td>
                             </tr>
-<!--                            <tr>
-                                <td><a href="report_org_summary.php">Organization Summary Report</a></td>
-                                <td>
 
-                                </td>
-                            </tr>-->
                         </tbody>
                     </table>
                 </div>
