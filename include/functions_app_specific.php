@@ -1,6 +1,22 @@
 <?php
 
 
+function getFacilityIdFromCode($code){
+    if(!$code > 0){
+        return "";
+    }
+    $sql = "SELECT
+                    id
+            FROM
+                    `dghshrml4_facilities`
+            WHERE
+                    `code` = $code";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getFacilityIdFromCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_data = mysql_fetch_assoc($result);
+    return $org_data['id'];
+}
+
 /**
  * Get the <b>Organization Name</b> from the <b>Organization Code</b><b></b>
  * @param int $org_code Organization Code

@@ -146,12 +146,11 @@ if (!($latitude > 0) || !($longitude > 0)) {
                         </li>
 						  <li class="">
                             <a href="#other-info" data-toggle="tab"><i class="fa fa-book"></i> Other miscellaneous issues</a>
-                        </li>
-                        <!-- 
+                        </li>                        
                         <li class="">
                             <a href="#org-hrm-status" data-toggle="tab"><i class="fa fa-group"></i> HRM Status</a>
                         </li>
-                         -->
+                         
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="org-profile-home">
@@ -680,7 +679,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </tr>
                             </table>
                         </div>
-                        <!--
+                        
                         <div class="tab-pane" id="org-hrm-status">
                             <div class="panel panel-default">
                                 <div class="panel-body">                                    
@@ -695,7 +694,7 @@ if (!($latitude > 0) || !($longitude > 0)) {
                                 </div>
                             </div>
                         </div>
-                        -->
+                        
 						      <div class="tab-pane" id="other-info">
                                <table class="table table-striped table-hover table-bordered">
 							   <tr>

@@ -79,7 +79,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             $org_type_selected_array
                             AND district_id = '$dis_id'
                     GROUP BY
-                            upazila_thana_code";
+                            upazila_code";
         } else if ($div_id > 0) {
             $sql = "SELECT
                             division_name,
