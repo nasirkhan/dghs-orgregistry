@@ -42,7 +42,7 @@ require_once 'configuration.php';
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="index.php"><i class="fa fa-home fa-lg"></i> Home</a></li>
-                        <li><a href="add_new_organization.php"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>
+                        <!--<li><a href="add_new_organization.php"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>-->
                         <li class="active"><a href="report.php"><i class="fa fa-calendar-o fa-lg"></i> Reports</a></li>
                         <li><a href="search.php"><i class="fa fa-search fa-lg"></i> Search</a></li>
                     </ul>
@@ -71,6 +71,7 @@ require_once 'configuration.php';
                             </tr>
                         </thead>
                         <tbody>
+                                                       
                             <tr>
                                 <td><a href="report_org_list.php">Organization list</a></td>
                                 <td>
@@ -85,12 +86,7 @@ require_once 'configuration.php';
                                     Number of organization type wise
                                 </td>
                             </tr>
-<!--                            <tr>
-                                <td><a href="report_org_summary.php">Organization Summary Report</a></td>
-                                <td>
 
-                                </td>
-                            </tr>-->
                         </tbody>
                     </table>
                 </div>

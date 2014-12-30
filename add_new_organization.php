@@ -1,4 +1,7 @@
 <?php
+$newURL = "index.php";
+header('Location: '.$newURL);
+
 require_once 'configuration.php';
 
 $org_name = mysql_real_escape_string(trim($_REQUEST['org_name']));

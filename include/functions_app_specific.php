@@ -1,5 +1,221 @@
 <?php
 
+
+function getFacilityIdFromCode($code){
+    if(!$code > 0){
+        return "";
+    }
+    $sql = "SELECT
+                    id
+            FROM
+                    `dghshrml4_facilities`
+            WHERE
+                    `code` = $code";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getFacilityIdFromCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_data = mysql_fetch_assoc($result);
+    return $org_data['id'];
+}
+
+/**
+ * Get the <b>Organization Name</b> from the <b>Organization Code</b><b></b>
+ * @param int $org_code Organization Code
+ * @return String org_name Organization Name
+ */
+function getOrgNameFromCode($org_code) {
+    if(!$org_code > 0){
+        return "";
+    }
+    $sql = "SELECT
+                    *
+            FROM
+                    `dghshrml4_facilities`
+            WHERE
+                    dghshrml4_facilities.`code` = $org_code";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgNameFormOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_data = mysql_fetch_assoc($result);
+    return $org_data['name'];
+}
+
+function getOrgTypeNameFromOrgCode($org_code) {
+    if (!$org_code > 0) {
+        return "";
+    }
+
+    $sql = "SELECT
+                    facilitytype_name
+            FROM
+                    `dghshrml4_facilities`
+            WHERE
+                    dghshrml4_facilities.`code` = $org_code  LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeNameFromOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_type_data = mysql_fetch_assoc($result);
+    $org_type_name = $org_type_data['facilitytype_name'];
+    return $org_type_name;
+}
+/**
+ * Get <b>Organizaition Type Code</b> form the <b>Organization Code</b>
+ * @param INT $org_code
+ * @return INT org_type_code
+ */
+function getOrgTypeCodeFromOrgCode($org_code) {
+    if(!$org_code > 0){
+        return "";
+    }
+    $sql = "SELECT
+                    facilitytype_code
+            FROM
+                    `dghshrml4_facilities`
+            WHERE
+                    dghshrml4_facilities.`code` = $org_code  LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeCodeFromOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_type_data = mysql_fetch_assoc($result);
+    return $org_type_data['org_type_code'];
+}
+/**
+ * Get Division Name form id (Division id)
+ * 
+ * @param INT $id
+ * @return string name
+ */
+function getDivisionNameFromId($id) {
+    if(!$id > 0){
+        return "";
+    }
+    $sql = "SELECT `name` FROM dghshrml4_divisions WHERE id = $id AND is_active LIKE 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getDivisionNameFromid || Query:</b><br />___<br />$sql</p>");
+
+    $data = mysql_fetch_assoc($result);
+
+    if (mysql_num_rows($result) > 0) {
+        return $data['name'];
+    } else {
+        return "";
+    }    
+}
+
+/**
+ * Get Location Name form Id (Location Id)
+ * 
+ * @param INT $id Location ID
+ * @param STRING $level_name Options: divisions, districts, upazilas
+ * @return string division_name
+ */
+function getLocationNameFromId($id, $level_name) {
+    if(!$id > 0 || $level_name == ""){
+        return "";
+    }
+    $sql = "SELECT `name` FROM dghshrml4_$level_name WHERE id = $id AND is_active LIKE 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:get$level_name NameFromid || Query:</b><br />___<br />$sql</p>");
+
+    $data = mysql_fetch_assoc($result);
+
+    if (mysql_num_rows($result) > 0) {
+        return $data['name'];
+    } else {
+        return "";
+    }    
+}
+
+/**
+ * Get the Agency Name form the Agency Code
+ * @param type $agency_id
+ * @return type
+ */
+function getAgencyNameFromAgencyId($agency_id) {
+    if(!$agency_id > 0){
+        return "";
+    }
+    $sql = "SELECT
+                    *
+            FROM
+                    `dghshrml4_facilityagencies`
+            WHERE
+                    id = $agency_id
+            ORDER BY
+                    `name`";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getAgencyNameFromAgencyCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_data = mysql_fetch_assoc($result);
+    $org_agency_code_name = $org_data['name'];
+    return $org_agency_code_name;
+}
+
+/**
+ * Get the organization type Name form the Organization type Id
+ * @param type $org_type_id
+ * @return string org_type_name
+ */
+function getOrgTypeNameFormOrgTypeId($org_type_id) {
+    if(!$org_type_id > 0){
+        return "";
+    }
+    $sql = "SELECT
+                    *
+            FROM
+                    `dghshrml4_facilitytypes`
+            WHERE
+                    id = $org_type_id
+            LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeNameFormOrgTypeCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_type_data = mysql_fetch_assoc($result);
+    $org_type_name = $org_type_data['name'];
+    return $org_type_name;
+}
+
+/**
+ * Get Division Name form id (Division id)
+ * 
+ * @param INT $div_code
+ * @return string division_name
+ */
+function getDivisionIdFromDistrictId($id) {
+    if(!$id > 0){
+        return "";
+    }
+    $sql = "SELECT * FROM dghshrml4_districts WHERE id = $id AND is_active LIKE 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getDivisionNameFromid || Query:</b><br />___<br />$sql</p>");
+
+    $data = mysql_fetch_assoc($result);
+
+    if (mysql_num_rows($result) > 0) {
+        return $data['division_id'];
+    } else {
+        return "";
+    }    
+}
+
+
+/**
+ * Get Division Name form id (Division id)
+ * 
+ * @param INT $div_code
+ * @return string division_name
+ */
+function getDistrictIdFromUpazilaId($id) {
+    if(!$id > 0){
+        return "";
+    }
+    $sql = "SELECT * FROM dghshrml4_upazilas WHERE id = $id AND is_active LIKE 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getDistrictIdFromUpazilaId || Query:</b><br />___<br />$sql</p>");
+
+    $data = mysql_fetch_assoc($result);
+
+    if (mysql_num_rows($result) > 0) {
+        return $data['district_id'];
+    } else {
+        return "";
+    }    
+}
+
+/**
+ * ----------------------------------------------------------------------------
+ */
+
 /**
  * Get Division Name form division_code (Division BBS Code)
  * 
@@ -127,13 +343,28 @@ function getOrgTypeNameFromCode($org_type_code) {
     if(!$org_type_code > 0){
         return "";
     }
-    $sql = "SELECT org_type_name FROM `org_type` WHERE org_type_code = $org_type_code AND active LIKE 1;";
+    $sql = "SELECT name FROM `dghshrml4_facilitytypes` WHERE code = $org_type_code;";
     $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getOrgTypeNameFromCode || Query:</b><br />___<br />$sql</p>");
 
     $data = mysql_fetch_assoc($result);
     
     if (mysql_num_rows($result) > 0) {
-        return $data['org_type_name'];
+        return $data['name'];
+    } else {
+        return "";
+    }
+}
+function getOrgTypeNameFromId($org_type_id) {
+    if(!$org_type_id > 0){
+        return "";
+    }
+    $sql = "SELECT name FROM `dghshrml4_facilitytypes` WHERE id = $org_type_id;";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getOrgTypeNameFromId || Query:</b><br />___<br />$sql</p>");
+
+    $data = mysql_fetch_assoc($result);
+    
+    if (mysql_num_rows($result) > 0) {
+        return $data['name'];
     } else {
         return "";
     }
@@ -307,16 +538,16 @@ function getOrgNameFormOrgCode($org_code) {
  * @param INT $org_code
  * @return INT org_type_code
  */
-function getOrgTypeCodeFromOrgCode($org_code) {
-    if(!$org_code > 0){
-        return "";
-    }
-    $sql = "SELECT organization.org_type_code FROM organization WHERE organization.org_code = $org_code LIMIT 1";
-    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeCodeFromOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
-
-    $org_type_data = mysql_fetch_assoc($result);
-    return $org_type_data['org_type_code'];
-}
+//function getOrgTypeCodeFromOrgCode($org_code) {
+//    if(!$org_code > 0){
+//        return "";
+//    }
+//    $sql = "SELECT organization.org_type_code FROM organization WHERE organization.org_code = $org_code LIMIT 1";
+//    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeCodeFromOrgCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+//
+//    $org_type_data = mysql_fetch_assoc($result);
+//    return $org_type_data['org_type_code'];
+//}
 function getPhysicalStructure($id) {
    if (!$id > 0)
        return 0;

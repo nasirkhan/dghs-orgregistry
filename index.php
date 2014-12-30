@@ -2,85 +2,72 @@
 require_once 'configuration.php';
 
 $level = mysql_real_escape_string(trim($_GET['level']));
-$code = (int) mysql_real_escape_string(trim($_GET['code']));
-$dis_code = (int) mysql_real_escape_string(trim($_GET['dis_code']));
+$id = (int) mysql_real_escape_string(trim($_GET['id']));
 
-if (isset($_GET['level']) && isset($_GET['code'])) {
+
+if (isset($_GET['level']) && isset($_GET['id'])) {
     if ($level == "div") {
-        $division_name = getDivisionNameFromCode($code);
+        $division_name = getDivisionNameFromId($id);
         $sql = "SELECT
-                    organization.org_name,
-                    organization.org_code,
-                    organization.org_type_code,
-                    org_type.org_type_name,
-                    org_level.org_level_name,
-                    organization.org_level_code,
-                    organization.org_photo
+                        *
                 FROM
-                    `organization`
-                LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
-                LEFT JOIN org_level ON organization.org_level_code = org_level.org_level_code
+                        `dghshrml4_facilities`
                 WHERE
-                    organization.division_code = $code
-                AND organization.active LIKE 1";
+                        division_id = '$id'
+                AND is_active = 1";
         $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:divOrgList || Query:</b><br />___<br />$sql</p>");
+        
+        $total_result_count = mysql_num_rows($result);
+        
+        
         if (mysql_num_rows($result) > 0) {
             $showReportTable = TRUE;
         }
     } else if ($level == "dis") {
-        $division_name = getDivisionNameFromDistrictCode($code);
-        $division_code = getDivisionCodeFromDistrictCode($code);
-        $district_name = getDistrictNameFromCode($code);
+        $division_id = getDivisionIdFromDistrictId($id); 
+        $division_name = getLocationNameFromId($division_id, 'divisions');
+        $district_name = getLocationNameFromId($id, 'districts');
         $sql = "SELECT
-                        organization.org_code,
-                        organization.org_name,
-                        organization.org_type_code,
-                        org_type.org_type_name,	
-                        organization.org_level_code,
-                        org_level.org_level_name,
-                        organization.org_photo
+                        *
                 FROM
-                        `organization`
-                LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
-                LEFT JOIN org_level ON organization.org_level_code = org_level.org_level_code
+                        `dghshrml4_facilities`
                 WHERE
-                        organization.district_code = $code
-                AND organization.active LIKE 1";
+                        district_id = '$id'
+                AND is_active = 1";
+        
         $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:divOrgList || Query:</b><br />___<br />$sql</p>");
+        
+        $total_result_count = mysql_num_rows($result);
+        
         if (mysql_num_rows($result) > 0) {
             $showReportTable = TRUE;
         }
     } else if ($level == "upa") {
         
-        $upa_info = getDisDivNameCodeFromUpazilaAndDistrictCode($code, $dis_code);
-        $division_name = $upa_info['district_name'];
-        $division_code = $upa_info['upazila_division_code'];
-        $district_name = $upa_info['division_name'];
-        $district_code = $upa_info['upazila_district_code'];
-        $upazila_name = $upa_info['upazila_name'];
+        $upazila_name = getLocationNameFromId($id, 'upazilas');
+        $district_id = getDistrictIdFromUpazilaId($id);
+        $district_name = getLocationNameFromId($district_id, 'districts');        
+        $division_id = getDivisionIdFromDistrictId($district_id); 
+        $division_name = getLocationNameFromId($division_id, 'divisions');
         
         $sql = "SELECT
-                    organization.org_code,
-                    organization.org_name,
-                    organization.org_type_code,
-                    org_type.org_type_name,	
-                    organization.org_level_code,
-                    org_level.org_level_name,
-                    organization.org_photo
+                        *
                 FROM
-                    `organization`
-                LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code
-                LEFT JOIN org_level ON organization.org_level_code = org_level.org_level_code
+                        `dghshrml4_facilities`
                 WHERE
-                    organization.upazila_thana_code = $code
-                AND organization.district_code = $dis_code            
-                AND organization.active LIKE 1";
+                        upazila_id =  '$id'
+                AND is_active = 1";
         $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:divOrgList || Query:</b><br />___<br />$sql</p>");
+        
+        $total_result_count = mysql_num_rows($result);
+        
+        
         if (mysql_num_rows($result) > 0) {
             $showReportTable = TRUE;
         }
     }
 }
+
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -90,7 +77,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Organization Registry</title>
+        <title>Facility Registry</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -110,9 +97,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
 
             <!-- Page Header -->
             <?php include_once 'include/header_page_header.php'; ?>
-            
-            
-            
+
             <div class="navbar navbar-inverse navbar-default">
                 <!--<div class="container">-->
                 <div class="navbar-header visible-xs">
@@ -121,12 +106,11 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">DGHS</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="index.php"><i class="fa fa-home fa-lg"></i> Home</a></li>
-                        <li><a href="add_new_organization.php"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>
+                        <!--<li><a href="add_new_organization.php"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>-->
                         <li><a href="report.php"><i class="fa fa-calendar-o fa-lg"></i> Reports</a></li>
                         <li><a href="search.php"><i class="fa fa-search fa-lg"></i> Search</a></li>
                     </ul>
@@ -154,48 +138,51 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                                     <ul>
                                         <?php
                                         $sql = "SELECT
-                                                    admin_division.division_name,
-                                                    admin_division.division_bbs_code
+                                                    `id`,
+                                                    `name`,
+                                                    `code`
                                                 FROM
-                                                    `admin_division`
+                                                    `dghshrml4_divisions`
                                                 WHERE
-                                                    admin_division.division_active LIKE 1";
+                                                    is_active = 1";
                                         $div_result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>");
                                         while ($div_data = mysql_fetch_assoc($div_result)):
                                             ?>
-                                            <li id="div_<?php echo $div_data['division_bbs_code']; ?>">
-                                                <a href="#" onclick="window.open('org_list.php?level=div&code=<?php echo $div_data['division_bbs_code']; ?>', '_self');"><?php echo $div_data['division_name']; ?></a>
+                                            <li id="div_<?php echo $div_data['id']; ?>">
+                                                <a href="#" onclick="window.open('org_list.php?level=div&id=<?php echo $div_data['id']; ?>', '_self');"><?php echo $div_data['name']; ?></a>
                                                 <ul>
                                                     <?php
                                                     $sql = "SELECT
-                                                                district_name,
-                                                                district_bbs_code
+                                                                    `id`,
+                                                                    `name`,
+                                                                    `code`,
+                                                                    `division_id`
                                                             FROM
-                                                                `admin_district`
+                                                                    `dghshrml4_districts`
                                                             WHERE
-                                                                division_bbs_code = " . $div_data['division_bbs_code'] . "
-                                                            AND active LIKE 1";
+                                                                    division_id = " . $div_data['id'] . "
+                                                                AND is_active = 1";
                                                     $dis_result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:2 || Query:</b><br />___<br />$sql</p>");
                                                     while ($dis_data = mysql_fetch_assoc($dis_result)):
                                                         ?>
-                                                        <li id="div_<?php echo $dis_data['district_bbs_code']; ?>">
-                                                            <a href="#" onclick="window.open('org_list.php?level=dis&code=<?php echo $dis_data['district_bbs_code']; ?>', '_self');"><?php echo $dis_data['district_name']; ?></a>
+                                                        <li id="div_<?php echo $dis_data['id']; ?>">
+                                                            <a href="#" onclick="window.open('org_list.php?level=dis&id=<?php echo $dis_data['id']; ?>', '_self');"><?php echo $dis_data['name']; ?></a>
                                                             <ul>
                                                                 <?php
                                                                 $sql = "SELECT
-                                                                            upazila_name,
-                                                                            upazila_bbs_code,
-                                                                            upazila_district_code
+                                                                                `id`,
+                                                                                `name`,
+                                                                                `code`
                                                                         FROM
-                                                                            `admin_upazila`
+                                                                                `dghshrml4_upazilas`
                                                                         WHERE
-                                                                            upazila_district_code = " . $dis_data['district_bbs_code'] . "
-                                                                        AND upazila_active LIKE 1;";
+                                                                                district_id = " . $dis_data['id'] . "
+                                                                        AND is_active = 1";
                                                                 $uni_result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:3 || Query:</b><br />___<br />$sql</p>");
                                                                 while ($uni_data = mysql_fetch_assoc($uni_result)):
                                                                     ?>
-                                                                    <li id="upa_<?php echo $uni_data['upazila_bbs_code']; ?>">
-                                                                        <a href="#" onclick="window.open('org_list.php?level=upa&code=<?php echo $uni_data['upazila_bbs_code']; ?>&dis_code=<?php echo $uni_data['upazila_district_code']; ?>', '_self');"><?php echo $uni_data['upazila_name']; ?></a>
+                                                                    <li id="upa_<?php echo $uni_data['id']; ?>">
+                                                                        <a href="#" onclick="window.open('org_list.php?level=upa&id=<?php echo $uni_data['id']; ?>', '_self');"><?php echo $uni_data['name']; ?></a>
                                                                     </li>
                                                                 <?php endwhile; ?>
                                                             </ul>
@@ -211,11 +198,11 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                     </div><!--/.well -->
                     <div class="well sidebar-nav">
                         <?php 
-                        $sql = "SELECT  org_code FROM organization WHERE active LIKE 1";
+                        $sql = "SELECT id FROM `dghshrml4_facilities` WHERE is_active = 1";
                         $r = mysql_query($sql) or die(mysql_error() . "<p><b>Code:1 || Query:</b><br />___<br />$sql</p>");
                         $org_count = mysql_num_rows($r);
                         ?>
-                        <strong><em>Total Organizations: <?php echo number_format($org_count); ?></em></strong>
+                        <strong><em>Total Facilities: <?php echo number_format($org_count); ?></em></strong>
                     </div>
                 </div>
                 <div class="col-md-9">
@@ -237,7 +224,7 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                         </ol>
                         <!--<h2><?php echo $division_name; ?></h2>-->
                     <div class="alert alert-info">
-                        All Organizations under 
+                        All Facilities under 
                         <em>
                             <?php if ($level == "div") { echo "<strong>" . $division_name . "</strong> division"; } ?>
                             <?php if ($level == "dis") { echo "<strong>" . $division_name . "</strong> division" . " under " . "<strong>" .  $district_name . "</strong> district"; } ?>
@@ -253,8 +240,8 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                             <thead>
                                 <tr>
                                     <td><strong>#</strong></td>
-                                    <td><strong>Organization Name</strong></td>
-                                    <td><strong>Organization Code</strong></td>
+                                    <td><strong>Facility Name</strong></td>
+                                    <td><strong>Facility Code</strong></td>
                                     <td><strong>Org Type</strong></td>
                                     <td><strong>Org Level</strong></td>
                                     <td><strong>Photo</strong></td>
@@ -320,7 +307,6 @@ if (isset($_GET['level']) && isset($_GET['code'])) {
                     </div>
 
                     <?php endif; ?>
-
 
                 </div>
 

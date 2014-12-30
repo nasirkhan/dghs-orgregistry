@@ -1,6 +1,7 @@
 <?php
 require_once 'configuration.php';
-
+set_time_limit(6000); 
+ini_set("memory_limit", -1);
 
 
 /* * *
@@ -11,73 +12,73 @@ require_once 'configuration.php';
 $export = (int) mysql_real_escape_string(trim($_REQUEST['export']));
 
 
-$div_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_division']));
-$dis_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_district']));
-$upa_code = (int) mysql_real_escape_string(trim($_REQUEST['admin_upazila']));
-$agency_code = (int) mysql_real_escape_string(trim($_REQUEST['org_agency']));
-//$type_code = (int) mysql_real_escape_string(trim($_REQUEST['org_type']));
-$type_code = array();
-$type_code = $_REQUEST['org_type'];
-$type_code_count = count($type_code);
+$div_id = (int) mysql_real_escape_string(trim($_REQUEST['admin_division']));
+$dis_id = (int) mysql_real_escape_string(trim($_REQUEST['admin_district']));
+$upa_id = (int) mysql_real_escape_string(trim($_REQUEST['admin_upazila']));
+$agency_id = (int) mysql_real_escape_string(trim($_REQUEST['org_agency']));
+//$type_id = (int) mysql_real_escape_string(trim($_REQUEST['org_type']));
+$type_id = array();
+$type_id = $_REQUEST['org_type'];
+$type_id_count = count($type_id);
 $form_submit = (int) mysql_real_escape_string(trim($_REQUEST['form_submit']));
 
 
 
 if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
-//print_r($type_code);
+//print_r($type_id);
 //die();
     /*
      * 
      * query builder to get the organizatino list
      */
     $query_string = "";
-    if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0 || $type_code_count > 0) {
+    if ($div_id > 0 || $dis_id > 0 || $upa_id > 0 || $agency_id > 0 || $type_id_count > 0) {
         $query_string .= " WHERE ";
 
-        if ($agency_code > 0) {
-            $query_string .= "organization.agency_code = $agency_code";
+        if ($agency_id > 0) {
+            $query_string .= "dghshrml4_facilities.facilityagency_id = $agency_id";
         }
-        if ($upa_code > 0) {
-            if ($agency_code > 0) {
+        if ($upa_id > 0) {
+            if ($agency_id > 0) {
                 $query_string .= " AND ";
             }
-            $query_string .= "organization.upazila_thana_code = $upa_code";
+            $query_string .= "dghshrml4_facilities.upazila_id = $upa_id";
         }
-        if ($dis_code > 0) {
-            if ($upa_code > 0 || $agency_code > 0) {
+        if ($dis_id > 0) {
+            if ($upa_id > 0 || $agency_id > 0) {
                 $query_string .= " AND ";
             }
-            $query_string .= "organization.district_code = $dis_code";
+            $query_string .= "dghshrml4_facilities.district_id = $dis_id";
         }
-        if ($div_code > 0) {
-            if ($dis_code > 0 || $upa_code > 0 || $agency_code > 0) {
+        if ($div_id > 0) {
+            if ($dis_id > 0 || $upa_id > 0 || $agency_id > 0) {
                 $query_string .= " AND ";
             }
-            $query_string .= "organization.division_code = $div_code";
+            $query_string .= "dghshrml4_facilities.division_id = $div_id";
         }
-        if ($type_code_count > 0 && $type_code[0] != "multiselect-all") {
-            if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0) {
+        if ($type_id_count > 0 && $type_id[0] != "multiselect-all") {
+            if ($div_id > 0 || $dis_id > 0 || $upa_id > 0 || $agency_id > 0) {
                 $query_string .= " AND ";
             }
             $org_type_selected_array = "";
-            for ($i = 0; $i < $type_code_count; $i++) {
-                $org_type_selected_array .= " organization.org_type_code = '" . $type_code[$i] . "'";
-                if ($i >= 0 && $i != $type_code_count - 1) {
+            for ($i = 0; $i < $type_id_count; $i++) {
+                $org_type_selected_array .= " dghshrml4_facilities.facilitytype_id = '" . $type_id[$i] . "'";
+                if ($i >= 0 && $i != $type_id_count - 1) {
                     $org_type_selected_array .= " OR ";
                 }
             }
             $query_string .= " ( $org_type_selected_array ) ";
-        } else if ($type_code[0] == "multiselect-all") {
-//            if ($div_code > 0 || $dis_code > 0 || $upa_code > 0 || $agency_code > 0) {
+        } else if ($type_id[0] == "multiselect-all") {
+//            if ($div_id > 0 || $dis_id > 0 || $upa_id > 0 || $agency_id > 0) {
 //                $query_string .= " AND ";
 //            }
 //            $query_string .= "";
         }
-    } else if (($div_code == 0 && $dis_code == 0 && $upa_code == 0 && $agency_code == 0) && $type_code > 0) {
+    } else if (($div_id == 0 && $dis_id == 0 && $upa_id == 0 && $agency_id == 0) && $type_id > 0) {
         $org_type_selected_array = "";
-        for ($i = 0; $i < $type_code_count; $i++) {
-            $org_type_selected_array .= " organization.org_type_code = '" . $type_code[$i] . "'";
-            if ($i >= 0 && $i != $type_code_count - 1) {
+        for ($i = 0; $i < $type_id_count; $i++) {
+            $org_type_selected_array .= " dghshrml4_facilities.facilitytype_id = '" . $type_id[$i] . "'";
+            if ($i >= 0 && $i != $type_id_count - 1) {
                 $org_type_selected_array .= " OR ";
             }
         }
@@ -86,29 +87,149 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
     if ($_REQUEST['export'] != "excel") {
         $sql = "SELECT
-                organization.org_name,
-                organization.org_code,
-                organization.upazila_thana_code,
-                admin_division.division_name,
-                admin_division.division_bbs_code,
-                admin_district.district_name,
-                admin_district.district_bbs_code,
-                org_agency_code.org_agency_name,
-                org_agency_code.org_agency_code,
-                organization.org_function_code,
-                organization.org_level_code,
-                organization.mobile_number1,
-                organization.email_address1,
-                org_type.org_type_name,
-                org_type.org_type_code,
-                organization.org_photo
-            FROM
-                organization
-            LEFT JOIN admin_division ON organization.division_code = admin_division.division_bbs_code
-            LEFT JOIN admin_district ON organization.district_code = admin_district.district_bbs_code
-            LEFT JOIN org_agency_code ON organization.agency_code = org_agency_code.org_agency_code
-            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code 
-                $query_string  ORDER BY division_name ,district_name ,upazila_thana_name";
+                        dghshrml4_facilities.id,
+                        dghshrml4_facilities.`name`,
+                        dghshrml4_facilities.`code`,
+                        dghshrml4_facilities.division_id,
+                        dghshrml4_facilities.division_code,
+                        dghshrml4_facilities.division_name,
+                        dghshrml4_facilities.district_id,
+                        dghshrml4_facilities.district_code,
+                        dghshrml4_facilities.district_name,
+                        dghshrml4_facilities.upazila_id,
+                        dghshrml4_facilities.upazila_code,
+                        dghshrml4_facilities.upazila_name,
+                        dghshrml4_facilities.paurasava_id,
+                        dghshrml4_facilities.paurasava_code,
+                        dghshrml4_facilities.paurasava_name,
+                        dghshrml4_facilities.union_id,
+                        dghshrml4_facilities.union_code,
+                        dghshrml4_facilities.union_name,
+                        dghshrml4_facilities.ward_id,
+                        dghshrml4_facilities.ward_code,
+                        dghshrml4_facilities.ward_name,
+                        dghshrml4_facilities.village_code,
+                        dghshrml4_facilities.house_number,
+                        dghshrml4_facilities.latitude,
+                        dghshrml4_facilities.longitude,
+                        dghshrml4_facilities.photo,
+                        dghshrml4_facilities.mailing_address,
+                        dghshrml4_facilities.landphone1,
+                        dghshrml4_facilities.landphone2,
+                        dghshrml4_facilities.landphone3,
+                        dghshrml4_facilities.mobile1,
+                        dghshrml4_facilities.mobile2,
+                        dghshrml4_facilities.mobile3,
+                        dghshrml4_facilities.email1,
+                        dghshrml4_facilities.email2,
+                        dghshrml4_facilities.email3,
+                        dghshrml4_facilities.fax1,
+                        dghshrml4_facilities.fax2,
+                        dghshrml4_facilities.fax3,
+                        dghshrml4_facilities.websiteurl,
+                        dghshrml4_facilities.facebookurl,
+                        dghshrml4_facilities.googleplusurl,
+                        dghshrml4_facilities.twitterurl,
+                        dghshrml4_facilities.youtubeurl,
+                        dghshrml4_facilities.facilitytype_id,
+                        dghshrml4_facilities.facilitytype_code,
+                        dghshrml4_facilities.facilitytype_name,
+                        dghshrml4_facilities.facilityagency_id,
+                        dghshrml4_facilities.facilityagency_code,
+                        dghshrml4_facilities.facilityagency_name,
+                        dghshrml4_facilities.facilityfunction_id,
+                        dghshrml4_facilities.facilityfunction_code,
+                        dghshrml4_facilities.facilityfunction_name,
+                        dghshrml4_facilities.facilitylevel_id,
+                        dghshrml4_facilities.facilitylevel_code,
+                        dghshrml4_facilities.facilitylevel_name,
+                        dghshrml4_facilities.facilityhealthcarelevel_id,
+                        dghshrml4_facilities.facilityhealthcarelevel_code,
+                        dghshrml4_facilities.facilityhealthcarelevel_name,
+                        dghshrml4_facilities.facilitylocationtype_id,
+                        dghshrml4_facilities.facilitylocationtype_code,
+                        dghshrml4_facilities.facilitylocationtype_name,
+                        dghshrml4_facilities.facilityownership_id,
+                        dghshrml4_facilities.facilityownership_code,
+                        dghshrml4_facilities.facilityownership_name,
+                        dghshrml4_facilities.main_electricitysourceoption_id,
+                        dghshrml4_facilities.main_electricitysourceoption_code,
+                        dghshrml4_facilities.main_electricitysourceoption_name,
+                        dghshrml4_facilities.alt_electricitysourceoption_id,
+                        dghshrml4_facilities.alt_electricitysourceoption_code,
+                        dghshrml4_facilities.alt_electricitysourceoption_name,
+                        dghshrml4_facilities.main_watersourceoption_id,
+                        dghshrml4_facilities.main_watersourceoption_code,
+                        dghshrml4_facilities.main_watersourceoption_name,
+                        dghshrml4_facilities.alt_watersourceoption_id,
+                        dghshrml4_facilities.alt_watersourceoption_code,
+                        dghshrml4_facilities.alt_watersourceoption_name,
+                        dghshrml4_facilities.toiletoption_id,
+                        dghshrml4_facilities.toiletoption_code,
+                        dghshrml4_facilities.toiletoption_name,
+                        dghshrml4_facilities.toiletadequacytype_id,
+                        dghshrml4_facilities.toiletadequacytype_code,
+                        dghshrml4_facilities.toiletadequacytype_name,
+                        dghshrml4_facilities.fuelsourceoption_id,
+                        dghshrml4_facilities.fuelsourceoption_code,
+                        dghshrml4_facilities.fuelsourceoption_name,
+                        dghshrml4_facilities.laundrysystemoption_id,
+                        dghshrml4_facilities.laundrysystemoption_code,
+                        dghshrml4_facilities.laundrysystemoption_name,
+                        dghshrml4_facilities.autoclavesystemoption_id,
+                        dghshrml4_facilities.autoclavesystemoption_code,
+                        dghshrml4_facilities.autoclavesystemoption_name,
+                        dghshrml4_facilities.wastedisposeoption_id,
+                        dghshrml4_facilities.wastedisposeoption_code,
+                        dghshrml4_facilities.wastedisposeoption_name,
+                        dghshrml4_facilities.permission_approval_license_number,
+                        dghshrml4_facilities.permission_approval_license_next_renewal_date,
+                        dghshrml4_facilities.permission_approval_license_conditions,
+                        dghshrml4_facilities.permission_approval_license_info_code,
+                        dghshrml4_facilities.permission_approval_license_info_date,
+                        dghshrml4_facilities.permission_approval_license_type,
+                        dghshrml4_facilities.permission_approval_license_aithority,
+                        dghshrml4_facilities.land_info_code,
+                        dghshrml4_facilities.land_size_decimal,
+                        dghshrml4_facilities.land_mouza_name,
+                        dghshrml4_facilities.land_mouza_geo_code,
+                        dghshrml4_facilities.land_jl_number,
+                        dghshrml4_facilities.land_functional_code,
+                        dghshrml4_facilities.land_rs_dag_number,
+                        dghshrml4_facilities.land_ss_dag_number,
+                        dghshrml4_facilities.land_kharian_number,
+                        dghshrml4_facilities.land_other_info,
+                        dghshrml4_facilities.land_mutation_number,
+                        dghshrml4_facilities.additional_chcp_name,
+                        dghshrml4_facilities.additional_chcp_contact,
+                        dghshrml4_facilities.additional_community_group_info,
+                        dghshrml4_facilities.additional_chairnam_name,
+                        dghshrml4_facilities.additional_chairman_contact,
+                        dghshrml4_facilities.additional_chairman_community_support_info,
+                        dghshrml4_facilities.additional_csg_1_name,
+                        dghshrml4_facilities.additional_csg_1_contact,
+                        dghshrml4_facilities.additional_csg_2_name,
+                        dghshrml4_facilities.additional_csg_2_contact,
+                        dghshrml4_facilities.sanctioned_office_equipment,
+                        dghshrml4_facilities.sanctioned_vehicles,
+                        dghshrml4_facilities.approved_bed_number,
+                        dghshrml4_facilities.revenue_bed_number,
+                        dghshrml4_facilities.development_bed_number,
+                        dghshrml4_facilities.physical_structure_value,
+                        dghshrml4_facilities.other_miscellaneous_issues,
+                        dghshrml4_facilities.financial_revenue_code,
+                        dghshrml4_facilities.establishmentyear,
+                        dghshrml4_facilities.updated_by,
+                        dghshrml4_facilities.created_at,
+                        dghshrml4_facilities.updated_at,
+                        dghshrml4_facilities.is_active
+                FROM
+                        `dghshrml4_facilities`
+                        
+                $query_string
+                    
+                ORDER BY
+                        `name`";
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
         $org_list_result_count = mysql_num_rows($org_list_result);
         if ($org_list_result_count > 0) {
@@ -124,34 +245,149 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
     if ($export == "excel" && $form_submit == 1 && isset($_REQUEST['export'])) {
         $sql = "SELECT
-                organization.org_name,
-                organization.org_code,
-                organization.upazila_thana_code,
-                admin_division.division_name,
-                admin_division.division_bbs_code,
-                admin_district.district_name,
-                admin_district.district_bbs_code,
-                org_agency_code.org_agency_name,
-                org_organizational_functions.org_organizational_functions_name,
-                org_level.org_level_name,
-                organization.mobile_number1,
-                organization.email_address1,
-                org_source_of_electricity_main.electricity_source_name,
-                organization.approved_bed_number,
-				organization.revenue_bed_number,
-				organization.development_bed_number,
-                org_type.org_type_name,
-                org_type.org_type_code,
-                organization.org_photo
-            FROM
-                organization
-            LEFT JOIN admin_division ON organization.division_code = admin_division.division_bbs_code
-            LEFT JOIN admin_district ON organization.district_code = admin_district.district_bbs_code
-            LEFT JOIN org_agency_code ON organization.agency_code = org_agency_code.org_agency_code
-            LEFT JOIN org_level ON organization.org_level_code = org_level.org_level_code
-            LEFT JOIN org_source_of_electricity_main ON organization.source_of_electricity_main_code = org_source_of_electricity_main.electricity_source_code
-            LEFT JOIN org_organizational_functions ON organization.org_function_code = org_organizational_functions.org_organizational_functions_code
-            LEFT JOIN org_type ON organization.org_type_code = org_type.org_type_code $query_string ORDER BY division_name ,district_name,upazila_thana_name ASC";
+                        dghshrml4_facilities.id,
+                        dghshrml4_facilities.`name`,
+                        dghshrml4_facilities.`code`,
+                        dghshrml4_facilities.division_id,
+                        dghshrml4_facilities.division_code,
+                        dghshrml4_facilities.division_name,
+                        dghshrml4_facilities.district_id,
+                        dghshrml4_facilities.district_code,
+                        dghshrml4_facilities.district_name,
+                        dghshrml4_facilities.upazila_id,
+                        dghshrml4_facilities.upazila_code,
+                        dghshrml4_facilities.upazila_name,
+                        dghshrml4_facilities.paurasava_id,
+                        dghshrml4_facilities.paurasava_code,
+                        dghshrml4_facilities.paurasava_name,
+                        dghshrml4_facilities.union_id,
+                        dghshrml4_facilities.union_code,
+                        dghshrml4_facilities.union_name,
+                        dghshrml4_facilities.ward_id,
+                        dghshrml4_facilities.ward_code,
+                        dghshrml4_facilities.ward_name,
+                        dghshrml4_facilities.village_code,
+                        dghshrml4_facilities.house_number,
+                        dghshrml4_facilities.latitude,
+                        dghshrml4_facilities.longitude,
+                        dghshrml4_facilities.photo,
+                        dghshrml4_facilities.mailing_address,
+                        dghshrml4_facilities.landphone1,
+                        dghshrml4_facilities.landphone2,
+                        dghshrml4_facilities.landphone3,
+                        dghshrml4_facilities.mobile1,
+                        dghshrml4_facilities.mobile2,
+                        dghshrml4_facilities.mobile3,
+                        dghshrml4_facilities.email1,
+                        dghshrml4_facilities.email2,
+                        dghshrml4_facilities.email3,
+                        dghshrml4_facilities.fax1,
+                        dghshrml4_facilities.fax2,
+                        dghshrml4_facilities.fax3,
+                        dghshrml4_facilities.websiteurl,
+                        dghshrml4_facilities.facebookurl,
+                        dghshrml4_facilities.googleplusurl,
+                        dghshrml4_facilities.twitterurl,
+                        dghshrml4_facilities.youtubeurl,
+                        dghshrml4_facilities.facilitytype_id,
+                        dghshrml4_facilities.facilitytype_code,
+                        dghshrml4_facilities.facilitytype_name,
+                        dghshrml4_facilities.facilityagency_id,
+                        dghshrml4_facilities.facilityagency_code,
+                        dghshrml4_facilities.facilityagency_name,
+                        dghshrml4_facilities.facilityfunction_id,
+                        dghshrml4_facilities.facilityfunction_code,
+                        dghshrml4_facilities.facilityfunction_name,
+                        dghshrml4_facilities.facilitylevel_id,
+                        dghshrml4_facilities.facilitylevel_code,
+                        dghshrml4_facilities.facilitylevel_name,
+                        dghshrml4_facilities.facilityhealthcarelevel_id,
+                        dghshrml4_facilities.facilityhealthcarelevel_code,
+                        dghshrml4_facilities.facilityhealthcarelevel_name,
+                        dghshrml4_facilities.facilitylocationtype_id,
+                        dghshrml4_facilities.facilitylocationtype_code,
+                        dghshrml4_facilities.facilitylocationtype_name,
+                        dghshrml4_facilities.facilityownership_id,
+                        dghshrml4_facilities.facilityownership_code,
+                        dghshrml4_facilities.facilityownership_name,
+                        dghshrml4_facilities.main_electricitysourceoption_id,
+                        dghshrml4_facilities.main_electricitysourceoption_code,
+                        dghshrml4_facilities.main_electricitysourceoption_name,
+                        dghshrml4_facilities.alt_electricitysourceoption_id,
+                        dghshrml4_facilities.alt_electricitysourceoption_code,
+                        dghshrml4_facilities.alt_electricitysourceoption_name,
+                        dghshrml4_facilities.main_watersourceoption_id,
+                        dghshrml4_facilities.main_watersourceoption_code,
+                        dghshrml4_facilities.main_watersourceoption_name,
+                        dghshrml4_facilities.alt_watersourceoption_id,
+                        dghshrml4_facilities.alt_watersourceoption_code,
+                        dghshrml4_facilities.alt_watersourceoption_name,
+                        dghshrml4_facilities.toiletoption_id,
+                        dghshrml4_facilities.toiletoption_code,
+                        dghshrml4_facilities.toiletoption_name,
+                        dghshrml4_facilities.toiletadequacytype_id,
+                        dghshrml4_facilities.toiletadequacytype_code,
+                        dghshrml4_facilities.toiletadequacytype_name,
+                        dghshrml4_facilities.fuelsourceoption_id,
+                        dghshrml4_facilities.fuelsourceoption_code,
+                        dghshrml4_facilities.fuelsourceoption_name,
+                        dghshrml4_facilities.laundrysystemoption_id,
+                        dghshrml4_facilities.laundrysystemoption_code,
+                        dghshrml4_facilities.laundrysystemoption_name,
+                        dghshrml4_facilities.autoclavesystemoption_id,
+                        dghshrml4_facilities.autoclavesystemoption_code,
+                        dghshrml4_facilities.autoclavesystemoption_name,
+                        dghshrml4_facilities.wastedisposeoption_id,
+                        dghshrml4_facilities.wastedisposeoption_code,
+                        dghshrml4_facilities.wastedisposeoption_name,
+                        dghshrml4_facilities.permission_approval_license_number,
+                        dghshrml4_facilities.permission_approval_license_next_renewal_date,
+                        dghshrml4_facilities.permission_approval_license_conditions,
+                        dghshrml4_facilities.permission_approval_license_info_code,
+                        dghshrml4_facilities.permission_approval_license_info_date,
+                        dghshrml4_facilities.permission_approval_license_type,
+                        dghshrml4_facilities.permission_approval_license_aithority,
+                        dghshrml4_facilities.land_info_code,
+                        dghshrml4_facilities.land_size_decimal,
+                        dghshrml4_facilities.land_mouza_name,
+                        dghshrml4_facilities.land_mouza_geo_code,
+                        dghshrml4_facilities.land_jl_number,
+                        dghshrml4_facilities.land_functional_code,
+                        dghshrml4_facilities.land_rs_dag_number,
+                        dghshrml4_facilities.land_ss_dag_number,
+                        dghshrml4_facilities.land_kharian_number,
+                        dghshrml4_facilities.land_other_info,
+                        dghshrml4_facilities.land_mutation_number,
+                        dghshrml4_facilities.additional_chcp_name,
+                        dghshrml4_facilities.additional_chcp_contact,
+                        dghshrml4_facilities.additional_community_group_info,
+                        dghshrml4_facilities.additional_chairnam_name,
+                        dghshrml4_facilities.additional_chairman_contact,
+                        dghshrml4_facilities.additional_chairman_community_support_info,
+                        dghshrml4_facilities.additional_csg_1_name,
+                        dghshrml4_facilities.additional_csg_1_contact,
+                        dghshrml4_facilities.additional_csg_2_name,
+                        dghshrml4_facilities.additional_csg_2_contact,
+                        dghshrml4_facilities.sanctioned_office_equipment,
+                        dghshrml4_facilities.sanctioned_vehicles,
+                        dghshrml4_facilities.approved_bed_number,
+                        dghshrml4_facilities.revenue_bed_number,
+                        dghshrml4_facilities.development_bed_number,
+                        dghshrml4_facilities.physical_structure_value,
+                        dghshrml4_facilities.other_miscellaneous_issues,
+                        dghshrml4_facilities.financial_revenue_code,
+                        dghshrml4_facilities.establishmentyear,
+                        dghshrml4_facilities.updated_by,
+                        dghshrml4_facilities.created_at,
+                        dghshrml4_facilities.updated_at,
+                        dghshrml4_facilities.is_active
+                FROM
+                        `dghshrml4_facilities`
+                        
+                $query_string
+                    
+                ORDER BY
+                        `name`";
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
 //        echo "<pre>";
@@ -200,21 +436,21 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
          * *********************************
          */
 //        $echo_string = "";
-//        if ($div_code > 0) {
-//            $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_code)) . "</strong><br>";
+//        if ($div_id > 0) {
+//            $echo_string .= " Division: <strong>" . getDivisionNamefromCode(getDivisionCodeFormId($div_id)) . "</strong><br>";
 //        }
-//        if ($dis_code > 0) {
-//            $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_code)) . "</strong><br>";
+//        if ($dis_id > 0) {
+//            $echo_string .= " District: <strong>" . getDistrictNamefromCode(getDistrictCodeFormId($dis_id)) . "</strong><br>";
 //        }
-//        if ($upa_code > 0) {
-//            $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
+//        if ($upa_id > 0) {
+//            $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_id, $dis_id) . "</strong><br>";
 //        }
-//        if ($agency_code > 0) {
-//            $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
+//        if ($agency_id > 0) {
+//            $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_id) . "</strong><br>";
 //        }
-//        if ($type_code > 0) {
-//            for ($i = 0; $i < $type_code_count; $i++) {
-//                $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code[$i]) . "</strong><br>";
+//        if ($type_id > 0) {
+//            for ($i = 0; $i < $type_id_count; $i++) {
+//                $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_id[$i]) . "</strong><br>";
 //            }
 //        }
 //        echo "$echo_string";
@@ -270,21 +506,21 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         while ($data = mysql_fetch_assoc($org_list_result)) {
             $row_number++;
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue("A$row_number", $data['org_name'])
-                    ->setCellValue("B$row_number", $data['org_code'])
+                    ->setCellValue("A$row_number", $data['name'])
+                    ->setCellValue("B$row_number", $data['code'])
                     ->setCellValue("C$row_number", $data['division_name'])
                     ->setCellValue("D$row_number", $data['district_name'])
-                    ->setCellValue("E$row_number", getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']))
-                    ->setCellValue("F$row_number", $data['org_agency_name'])
-                    ->setCellValue("G$row_number", $data['org_type_name'])
-                    ->setCellValue("H$row_number", $data['org_organizational_functions_name'])
-                    ->setCellValue("I$row_number", $data['org_level_name'])
-                    ->setCellValue("J$row_number", $data['mobile_number1'])
-                    ->setCellValue("K$row_number", $data['email_address1'])
+                    ->setCellValue("E$row_number", $data['upazila_name'])
+                    ->setCellValue("F$row_number", $data['facilityagency_name'])
+                    ->setCellValue("G$row_number", $data['facilitytype_name'])
+                    ->setCellValue("H$row_number", $data['facilityfunction_name'])
+                    ->setCellValue("I$row_number", $data['facilitylevel_name'])
+                    ->setCellValue("J$row_number", $data['mobile1'])
+                    ->setCellValue("K$row_number", $data['email1'])
                     ->setCellValue("L$row_number", $data['approved_bed_number'])
 					->setCellValue("M$row_number", $data['revenue_bed_number'])
 					->setCellValue("N$row_number", $data['development_bed_number'])
-                    ->setCellValue("O$row_number", $data['electricity_source_name']);
+                    ->setCellValue("O$row_number", $data['main_electricitysourceoption_name']);
         }
 
         /**
@@ -363,7 +599,7 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="index.php"><i class="fa fa-home fa-lg"></i> Home</a></li>
-                        <li><a href="add_new_organization.php"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>
+                        <!--<li><a href="add_new_organization.php"><i class="fa fa-pencil fa-lg"></i> Apply for registration</a></li>-->
                         <li class="active"><a href="report.php"><i class="fa fa-calendar-o fa-lg"></i> Reports</a></li>
                         <li><a href="search.php"><i class="fa fa-search fa-lg"></i> Search</a></li>
                     </ul>
@@ -388,14 +624,17 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 <select id="admin_division" name="admin_division" class="form-control">
                                     <option value="0">Select Division</option>
                                     <?php
-                                    /**
-                                     * @todo change old_visision_id to division_bbs_code
-                                     */
-                                    $sql = "SELECT admin_division.division_name, admin_division.division_bbs_code FROM admin_division";
+                                    $sql = "SELECT
+                                                    dghshrml4_divisions.id,
+                                                    dghshrml4_divisions.`name`,
+                                                    dghshrml4_divisions.combinedcode,
+                                                    dghshrml4_divisions.`code`
+                                            FROM
+                                                    `dghshrml4_divisions`";
                                     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadDivision:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
                                     while ($rows = mysql_fetch_assoc($result)) {
-                                        echo "<option value=\"" . $rows['division_bbs_code'] . "\">" . $rows['division_name'] . "</option>";
+                                        echo "<option value=\"" . $rows['id'] . "\">" . $rows['name'] . "</option>";
                                     }
                                     ?>
                                 </select>
@@ -419,16 +658,15 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                     <option value="0">Select Agency</option>
                                     <?php
                                     $sql = "SELECT
-                                                    org_agency_code.org_agency_code,
-                                                    org_agency_code.org_agency_name
-                                                FROM
-                                                    org_agency_code
-                                                ORDER BY
-                                                    org_agency_code.org_agency_code";
+                                                    `id`,
+                                                    `name`,
+                                                    `code`
+                                            FROM
+                                                    `dghshrml4_facilityagencies`";
                                     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadorg_agency:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
                                     while ($rows = mysql_fetch_assoc($result)) {
-                                        echo "<option value=\"" . $rows['org_agency_code'] . "\">" . $rows['org_agency_name'] . "</option>";
+                                        echo "<option value=\"" . $rows['id'] . "\">" . $rows['name'] . "</option>";
                                     }
                                     ?>
                                 </select>
@@ -438,16 +676,17 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                     <!--<option value="0">Select Org Type</option>-->
                                     <?php
                                     $sql = "SELECT
-                                                org_type.org_type_code,
-                                                org_type.org_type_name
+                                                    `id`,
+                                                    `name`,
+                                                    `code`
                                             FROM
-                                                org_type
+                                                    `dghshrml4_facilitytypes`
                                             ORDER BY
-                                                org_type.org_type_name ASC";
+                                                    `name`";
                                     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadorg_type:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
                                     while ($rows = mysql_fetch_assoc($result)) {
-                                        echo "<option value=\"" . $rows['org_type_code'] . "\">" . $rows['org_type_name'] . "</option>";
+                                        echo "<option value=\"" . $rows['id'] . "\">" . $rows['name'] . "</option>";
                                     }
                                     ?>
                                 </select>
@@ -472,21 +711,21 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                         Report displaying form: <br>
                                         <?php
                                         $echo_string = "";
-                                        if ($div_code > 0) {
-                                            $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_code) . "</strong><br>";
+                                        if ($div_id > 0) {
+                                            $echo_string .= " Division: <strong>" . getLocationNameFromId($div_id, 'divisions') . "</strong><br>";
                                         }
-                                        if ($dis_code > 0) {
-                                            $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_code) . "</strong><br>";
+                                        if ($dis_id > 0) {
+                                            $echo_string .= " District: <strong>" . getLocationNameFromId($dis_id, 'districts') . "</strong><br>";
                                         }
-                                        if ($upa_code > 0) {
-                                            $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
+                                        if ($upa_id > 0) {
+                                            $echo_string .= " Upazila: <strong>" . getLocationNameFromId($upa_id, 'upazilas') . "</strong><br>";
                                         }
-                                        if ($agency_code > 0) {
-                                            $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
+                                        if ($agency_id > 0) {
+                                            $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyId($agency_id) . "</strong><br>";
                                         }
-                                        if ($type_code > 0 && $type_code[0] != "multiselect-all") {
-                                            for ($i = 0; $i < $type_code_count; $i++) {
-                                                $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code[$i]) . "</strong><br>";
+                                        if ($type_id > 0 && $type_id[0] != "multiselect-all") {
+                                            for ($i = 0; $i < $type_id_count; $i++) {
+                                                $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_id[$i]) . "</strong><br>";
                                             }
                                         } else {
                                             $echo_string .= " Org Type: <strong>All Types</strong><br>";
@@ -502,12 +741,12 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                         <!--<button type="button" class="btn btn-primary">Export Excel</button>-->
                                         <p>
                                         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" role="form">
-                                            <input type="hidden" name="admin_division" value="<?php echo $div_code; ?>" >
-                                            <input type="hidden" name="admin_district" value="<?php echo $dis_code; ?>" >
-                                            <input type="hidden" name="admin_upazila" value="<?php echo $upa_code; ?>" >
-                                            <input type="hidden" name="org_agency" value=<?php echo $agency_code; ?>"" >
-                                            <?php for ($i = 0; $i < $type_code_count; $i++): ?>
-                                                <input type="hidden" name="org_type[]" value="<?php echo $type_code[$i]; ?>" >
+                                            <input type="hidden" name="admin_division" value="<?php echo $div_id; ?>" >
+                                            <input type="hidden" name="admin_district" value="<?php echo $dis_id; ?>" >
+                                            <input type="hidden" name="admin_upazila" value="<?php echo $upa_id; ?>" >
+                                            <input type="hidden" name="org_agency" value=<?php echo $agency_id; ?>"" >
+                                            <?php for ($i = 0; $i < $type_id_count; $i++): ?>
+                                                <input type="hidden" name="org_type[]" value="<?php echo $type_id[$i]; ?>" >
                                             <?php endfor; ?>
                                             <input type="hidden" name="form_submit" value="<?php echo $form_submit; ?>" >
                                             <button type="submit" class="btn btn-primary btn-block" name="export" value="excel">Export Excel</button>
@@ -524,6 +763,9 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                         <td><strong>Division</strong></td>
                                         <td><strong>District</strong></td>
                                         <td><strong>Upazila</strong></td>
+                                        <td><strong>Paurasava</strong></td>
+                                        <td><strong>Union</strong></td>
+                                        <td><strong>Ward</strong></td>
                                         <td><strong>Agency</strong></td>
                                         <td><strong>Org Type</strong></td>
                                         <td><strong>Photo</strong></td>
@@ -532,16 +774,19 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 <tbody>
                                     <?php while ($data = mysql_fetch_assoc($org_list_result)): ?>
                                         <tr>
-                                            <td><a href="org_profile.php?org_code=<?php echo $data['org_code']; ?>" target="_blank"><?php echo $data['org_name']; ?></a></td>
-                                            <td><?php echo $data['org_code']; ?></td>
+                                            <td><a href="org_profile.php?org_code=<?php echo $data['code']; ?>" target="_blank"><?php echo $data['name']; ?></a></td>
+                                            <td><?php echo $data['code']; ?></td>
                                             <td><?php echo $data['division_name']; ?></td>
                                             <td><?php echo $data['district_name']; ?></td>
-                                            <td><?php echo getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']); ?></td>
-                                            <td><?php echo $data['org_agency_name']; ?></td>
-                                            <td><?php echo $data['org_type_name']; ?></td>
+                                            <td><?php echo $data['upazila_name']; ?></td>
+                                            <td><?php echo $data['paurasava_name']; ?></td>
+                                            <td><?php echo $data['union_name']; ?></td>
+                                            <td><?php echo $data['ward_code']; ?></td>
+                                            <td><?php echo $data['facilityagency_name']; ?></td>
+                                            <td><?php echo $data['facilitytype_name']; ?></td>
                                             <td>
-                                                <?php if ($data['org_photo'] != ""): ?>
-                                                    <a href="<?php echo $hrm_root_dir; ?>/uploads/<?php echo $data['org_photo']; ?>" rel="lightbox" title="<?php echo $data['org_name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
+                                                <?php if ($data['photo'] != ""): ?>
+                                                    <a href="<?php echo $hrm_root_dir; ?>/uploads/<?php echo $data['photo']; ?>" rel="lightbox" title="<?php echo $data['name']; ?>"><i class="fa fa-picture-o fa-lg"></i> </a>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
@@ -552,26 +797,26 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                             <div class="alert alert-warning" id="info-area"> 
                                 Report displaying form:<br>
                                 <?php
-                                $echo_string = "";
-                                if ($div_code > 0) {
-                                    $echo_string .= " Division: <strong>" . getDivisionNamefromCode($div_code) . "</strong><br>";
+                                if ($div_id > 0) {
+                                    $echo_string .= " Division: <strong>" . getLocationNameFromId($div_id, 'divisions') . "</strong><br>";
                                 }
-                                if ($dis_code > 0) {
-                                    $echo_string .= " District: <strong>" . getDistrictNamefromCode($dis_code) . "</strong><br>";
+                                if ($dis_id > 0) {
+                                    $echo_string .= " District: <strong>" . getLocationNameFromId($dis_id, 'districts') . "</strong><br>";
                                 }
-                                if ($upa_code > 0) {
-                                    $echo_string .= " Upazila: <strong>" . getUpazilaNamefromCode($upa_code, $dis_code) . "</strong><br>";
+                                if ($upa_id > 0) {
+                                    $echo_string .= " Upazila: <strong>" . getLocationNameFromId($upa_id, 'upazilas') . "</strong><br>";
                                 }
-                                if ($agency_code > 0) {
-                                    $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyCode($agency_code) . "</strong><br>";
+                                if ($agency_id > 0) {
+                                    $echo_string .= " Agency: <strong>" . getAgencyNameFromAgencyId($agency_id) . "</strong><br>";
                                 }
-                                if ($type_code > 0 && $type_code[0] != "multiselect-all") {
-                                    for ($i = 0; $i < $type_code_count; $i++) {
-                                        $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_code[$i]) . "</strong><br>";
+                                if ($type_id > 0 && $type_id[0] != "multiselect-all") {
+                                    for ($i = 0; $i < $type_id_count; $i++) {
+                                        $echo_string .= " Org Type: <strong>" . getOrgTypeNameFormOrgTypeCode($type_id[$i]) . "</strong><br>";
                                     }
                                 } else {
                                     $echo_string .= " Org Type: <strong>All Types</strong><br>";
                                 }
+                                echo "$echo_string";
                                 echo "$echo_string";
                                 ?>
                                 <br />
@@ -619,14 +864,14 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         <script src="library/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
 
         <script type="text/javascript">
-            // load division
+            // Load Districs 
             $('#admin_division').change(function() {
                 $("#loading_content").show();
-                var div_code = $('#admin_division').val();
+                var div_id = $('#admin_division').val();
                 $.ajax({
                     type: "POST",
-                    url: 'get/get_districts.php',
-                    data: {div_code: div_code},
+                    url: 'get/get_district_list.php',
+                    data: {div_id: div_id},
                     dataType: 'json',
                     success: function(data)
                     {
@@ -641,14 +886,14 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 });
             });
 
-            // load district 
+            // load upazila lsit 
             $('#admin_district').change(function() {
-                var dis_code = $('#admin_district').val();
+                var dis_id = $('#admin_district').val();
                 $("#loading_content").show();
                 $.ajax({
                     type: "POST",
-                    url: 'get/get_upazilas.php',
-                    data: {dis_code: dis_code},
+                    url: 'get/get_upazila_list.php',
+                    data: {dis_id: dis_id},
                     dataType: 'json',
                     success: function(data)
                     {
