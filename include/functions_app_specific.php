@@ -327,13 +327,28 @@ function getOrgTypeNameFromCode($org_type_code) {
     if(!$org_type_code > 0){
         return "";
     }
-    $sql = "SELECT org_type_name FROM `org_type` WHERE org_type_code = $org_type_code AND active LIKE 1;";
+    $sql = "SELECT name FROM `dghshrml4_facilitytypes` WHERE code = $org_type_code;";
     $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getOrgTypeNameFromCode || Query:</b><br />___<br />$sql</p>");
 
     $data = mysql_fetch_assoc($result);
     
     if (mysql_num_rows($result) > 0) {
-        return $data['org_type_name'];
+        return $data['name'];
+    } else {
+        return "";
+    }
+}
+function getOrgTypeNameFromId($org_type_id) {
+    if(!$org_type_id > 0){
+        return "";
+    }
+    $sql = "SELECT name FROM `dghshrml4_facilitytypes` WHERE id = $org_type_id;";
+    $result = mysql_query($sql) or die(mysql_error() . "<p><b>Code:getOrgTypeNameFromId || Query:</b><br />___<br />$sql</p>");
+
+    $data = mysql_fetch_assoc($result);
+    
+    if (mysql_num_rows($result) > 0) {
+        return $data['name'];
     } else {
         return "";
     }

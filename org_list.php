@@ -19,7 +19,6 @@ if (isset($_GET['level']) && isset($_GET['id'])) {
         
         $total_result_count = mysql_num_rows($result);
         
-        
         if (mysql_num_rows($result) > 0) {
             $showReportTable = TRUE;
         }
