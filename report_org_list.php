@@ -1,6 +1,7 @@
 <?php
 require_once 'configuration.php';
-set_time_limit(6000); ini_set("memory_limit", -1);
+set_time_limit(6000); 
+ini_set("memory_limit", -1);
 
 
 /* * *
@@ -391,14 +392,17 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                 <select id="admin_division" name="admin_division" class="form-control">
                                     <option value="0">Select Division</option>
                                     <?php
-                                    /**
-                                     * @todo change old_visision_id to division_bbs_code
-                                     */
-                                    $sql = "SELECT admin_division.division_name, admin_division.division_bbs_code FROM admin_division";
+                                    $sql = "SELECT
+                                                    dghshrml4_divisions.id,
+                                                    dghshrml4_divisions.`name`,
+                                                    dghshrml4_divisions.combinedcode,
+                                                    dghshrml4_divisions.`code`
+                                            FROM
+                                                    `dghshrml4_divisions`";
                                     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadDivision:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
                                     while ($rows = mysql_fetch_assoc($result)) {
-                                        echo "<option value=\"" . $rows['division_bbs_code'] . "\">" . $rows['division_name'] . "</option>";
+                                        echo "<option value=\"" . $rows['id'] . "\">" . $rows['name'] . "</option>";
                                     }
                                     ?>
                                 </select>
@@ -422,16 +426,15 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                     <option value="0">Select Agency</option>
                                     <?php
                                     $sql = "SELECT
-                                                    org_agency_code.org_agency_code,
-                                                    org_agency_code.org_agency_name
-                                                FROM
-                                                    org_agency_code
-                                                ORDER BY
-                                                    org_agency_code.org_agency_code";
+                                                    `id`,
+                                                    `name`,
+                                                    `code`
+                                            FROM
+                                                    `dghshrml4_facilityagencies`";
                                     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadorg_agency:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
                                     while ($rows = mysql_fetch_assoc($result)) {
-                                        echo "<option value=\"" . $rows['org_agency_code'] . "\">" . $rows['org_agency_name'] . "</option>";
+                                        echo "<option value=\"" . $rows['id'] . "\">" . $rows['name'] . "</option>";
                                     }
                                     ?>
                                 </select>
@@ -441,16 +444,17 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                                     <!--<option value="0">Select Org Type</option>-->
                                     <?php
                                     $sql = "SELECT
-                                                org_type.org_type_code,
-                                                org_type.org_type_name
+                                                    `id`,
+                                                    `name`,
+                                                    `code`
                                             FROM
-                                                org_type
+                                                    `dghshrml4_facilitytypes`
                                             ORDER BY
-                                                org_type.org_type_name ASC";
+                                                    `name`";
                                     $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>loadorg_type:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
                                     while ($rows = mysql_fetch_assoc($result)) {
-                                        echo "<option value=\"" . $rows['org_type_code'] . "\">" . $rows['org_type_name'] . "</option>";
+                                        echo "<option value=\"" . $rows['id'] . "\">" . $rows['name'] . "</option>";
                                     }
                                     ?>
                                 </select>
@@ -626,14 +630,14 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         <script src="library/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
 
         <script type="text/javascript">
-            // load division
+            // Load Districs 
             $('#admin_division').change(function() {
                 $("#loading_content").show();
-                var div_code = $('#admin_division').val();
+                var div_id = $('#admin_division').val();
                 $.ajax({
                     type: "POST",
-                    url: 'get/get_districts.php',
-                    data: {div_code: div_code},
+                    url: 'get/get_district_list.php',
+                    data: {div_id: div_id},
                     dataType: 'json',
                     success: function(data)
                     {
@@ -648,14 +652,14 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                 });
             });
 
-            // load district 
+            // load upazila lsit 
             $('#admin_district').change(function() {
-                var dis_code = $('#admin_district').val();
+                var dis_id = $('#admin_district').val();
                 $("#loading_content").show();
                 $.ajax({
                     type: "POST",
-                    url: 'get/get_upazilas.php',
-                    data: {dis_code: dis_code},
+                    url: 'get/get_upazila_list.php',
+                    data: {dis_id: dis_id},
                     dataType: 'json',
                     success: function(data)
                     {
