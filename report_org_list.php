@@ -230,33 +230,6 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
                     
                 ORDER BY
                         `name`";
-//        $sql = "SELECT
-//                organization.org_name,
-//                organization.org_code,
-//                organization.upazila_thana_code,
-//				organization.union_code,
-//				organization.union_name,
-//				organization.ward_code,
-//                admin_division.division_name,
-//                admin_division.division_bbs_code,
-//                admin_district.district_name,
-//                admin_district.district_bbs_code,
-//                org_agency_id.org_agency_name,
-//                org_agency_id.org_agency_id,
-//                organization.org_function_code,
-//                organization.org_level_code,
-//                organization.mobile_number1,
-//                organization.email_address1,
-//                org_type.org_type_name,
-//                org_type.org_type_id,
-//                organization.org_photo
-//            FROM
-//                organization
-//            LEFT JOIN admin_division ON organization.division_code = admin_division.division_bbs_code
-//            LEFT JOIN admin_district ON organization.district_code = admin_district.district_bbs_code
-//            LEFT JOIN org_agency_id ON organization.agency_id = org_agency_id.org_agency_id
-//            LEFT JOIN org_type ON organization.org_type_id = org_type.org_type_id 
-//                $query_string  ORDER BY division_name ,district_name ,upazila_thana_name";
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
         $org_list_result_count = mysql_num_rows($org_list_result);
         if ($org_list_result_count > 0) {
@@ -272,34 +245,149 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
 
     if ($export == "excel" && $form_submit == 1 && isset($_REQUEST['export'])) {
         $sql = "SELECT
-                organization.org_name,
-                organization.org_code,
-                organization.upazila_thana_code,
-				organization.upazila_thana_name,
-				organization.union_name,
-                organization.union_code,
-                organization.division_name,
-                organization.division_code,
-                organization.district_name,
-                organization.district_code,
-                organization.ward_code,
-                organization.agency_name,
-                organization.org_function_name,
-                organization.org_level_name,
-                organization.mobile_number1,
-                organization.email_address1,
-                org_source_of_electricity_main.electricity_source_name,
-                organization.approved_bed_number,
-				organization.revenue_bed_number,
-				organization.development_bed_number,
-                org_type.org_type_name,
-                org_type.org_type_id,
-                organization.org_photo
-            FROM
-                organization
-            LEFT JOIN org_source_of_electricity_main ON organization.source_of_electricity_main_code = org_source_of_electricity_main.electricity_source_code
-            LEFT JOIN org_organizational_functions ON organization.org_function_code = org_organizational_functions.org_organizational_functions_code
-            LEFT JOIN org_type ON organization.org_type_id = org_type.org_type_id $query_string ORDER BY division_name ,district_name,upazila_thana_name ASC";
+                        dghshrml4_facilities.id,
+                        dghshrml4_facilities.`name`,
+                        dghshrml4_facilities.`code`,
+                        dghshrml4_facilities.division_id,
+                        dghshrml4_facilities.division_code,
+                        dghshrml4_facilities.division_name,
+                        dghshrml4_facilities.district_id,
+                        dghshrml4_facilities.district_code,
+                        dghshrml4_facilities.district_name,
+                        dghshrml4_facilities.upazila_id,
+                        dghshrml4_facilities.upazila_code,
+                        dghshrml4_facilities.upazila_name,
+                        dghshrml4_facilities.paurasava_id,
+                        dghshrml4_facilities.paurasava_code,
+                        dghshrml4_facilities.paurasava_name,
+                        dghshrml4_facilities.union_id,
+                        dghshrml4_facilities.union_code,
+                        dghshrml4_facilities.union_name,
+                        dghshrml4_facilities.ward_id,
+                        dghshrml4_facilities.ward_code,
+                        dghshrml4_facilities.ward_name,
+                        dghshrml4_facilities.village_code,
+                        dghshrml4_facilities.house_number,
+                        dghshrml4_facilities.latitude,
+                        dghshrml4_facilities.longitude,
+                        dghshrml4_facilities.photo,
+                        dghshrml4_facilities.mailing_address,
+                        dghshrml4_facilities.landphone1,
+                        dghshrml4_facilities.landphone2,
+                        dghshrml4_facilities.landphone3,
+                        dghshrml4_facilities.mobile1,
+                        dghshrml4_facilities.mobile2,
+                        dghshrml4_facilities.mobile3,
+                        dghshrml4_facilities.email1,
+                        dghshrml4_facilities.email2,
+                        dghshrml4_facilities.email3,
+                        dghshrml4_facilities.fax1,
+                        dghshrml4_facilities.fax2,
+                        dghshrml4_facilities.fax3,
+                        dghshrml4_facilities.websiteurl,
+                        dghshrml4_facilities.facebookurl,
+                        dghshrml4_facilities.googleplusurl,
+                        dghshrml4_facilities.twitterurl,
+                        dghshrml4_facilities.youtubeurl,
+                        dghshrml4_facilities.facilitytype_id,
+                        dghshrml4_facilities.facilitytype_code,
+                        dghshrml4_facilities.facilitytype_name,
+                        dghshrml4_facilities.facilityagency_id,
+                        dghshrml4_facilities.facilityagency_code,
+                        dghshrml4_facilities.facilityagency_name,
+                        dghshrml4_facilities.facilityfunction_id,
+                        dghshrml4_facilities.facilityfunction_code,
+                        dghshrml4_facilities.facilityfunction_name,
+                        dghshrml4_facilities.facilitylevel_id,
+                        dghshrml4_facilities.facilitylevel_code,
+                        dghshrml4_facilities.facilitylevel_name,
+                        dghshrml4_facilities.facilityhealthcarelevel_id,
+                        dghshrml4_facilities.facilityhealthcarelevel_code,
+                        dghshrml4_facilities.facilityhealthcarelevel_name,
+                        dghshrml4_facilities.facilitylocationtype_id,
+                        dghshrml4_facilities.facilitylocationtype_code,
+                        dghshrml4_facilities.facilitylocationtype_name,
+                        dghshrml4_facilities.facilityownership_id,
+                        dghshrml4_facilities.facilityownership_code,
+                        dghshrml4_facilities.facilityownership_name,
+                        dghshrml4_facilities.main_electricitysourceoption_id,
+                        dghshrml4_facilities.main_electricitysourceoption_code,
+                        dghshrml4_facilities.main_electricitysourceoption_name,
+                        dghshrml4_facilities.alt_electricitysourceoption_id,
+                        dghshrml4_facilities.alt_electricitysourceoption_code,
+                        dghshrml4_facilities.alt_electricitysourceoption_name,
+                        dghshrml4_facilities.main_watersourceoption_id,
+                        dghshrml4_facilities.main_watersourceoption_code,
+                        dghshrml4_facilities.main_watersourceoption_name,
+                        dghshrml4_facilities.alt_watersourceoption_id,
+                        dghshrml4_facilities.alt_watersourceoption_code,
+                        dghshrml4_facilities.alt_watersourceoption_name,
+                        dghshrml4_facilities.toiletoption_id,
+                        dghshrml4_facilities.toiletoption_code,
+                        dghshrml4_facilities.toiletoption_name,
+                        dghshrml4_facilities.toiletadequacytype_id,
+                        dghshrml4_facilities.toiletadequacytype_code,
+                        dghshrml4_facilities.toiletadequacytype_name,
+                        dghshrml4_facilities.fuelsourceoption_id,
+                        dghshrml4_facilities.fuelsourceoption_code,
+                        dghshrml4_facilities.fuelsourceoption_name,
+                        dghshrml4_facilities.laundrysystemoption_id,
+                        dghshrml4_facilities.laundrysystemoption_code,
+                        dghshrml4_facilities.laundrysystemoption_name,
+                        dghshrml4_facilities.autoclavesystemoption_id,
+                        dghshrml4_facilities.autoclavesystemoption_code,
+                        dghshrml4_facilities.autoclavesystemoption_name,
+                        dghshrml4_facilities.wastedisposeoption_id,
+                        dghshrml4_facilities.wastedisposeoption_code,
+                        dghshrml4_facilities.wastedisposeoption_name,
+                        dghshrml4_facilities.permission_approval_license_number,
+                        dghshrml4_facilities.permission_approval_license_next_renewal_date,
+                        dghshrml4_facilities.permission_approval_license_conditions,
+                        dghshrml4_facilities.permission_approval_license_info_code,
+                        dghshrml4_facilities.permission_approval_license_info_date,
+                        dghshrml4_facilities.permission_approval_license_type,
+                        dghshrml4_facilities.permission_approval_license_aithority,
+                        dghshrml4_facilities.land_info_code,
+                        dghshrml4_facilities.land_size_decimal,
+                        dghshrml4_facilities.land_mouza_name,
+                        dghshrml4_facilities.land_mouza_geo_code,
+                        dghshrml4_facilities.land_jl_number,
+                        dghshrml4_facilities.land_functional_code,
+                        dghshrml4_facilities.land_rs_dag_number,
+                        dghshrml4_facilities.land_ss_dag_number,
+                        dghshrml4_facilities.land_kharian_number,
+                        dghshrml4_facilities.land_other_info,
+                        dghshrml4_facilities.land_mutation_number,
+                        dghshrml4_facilities.additional_chcp_name,
+                        dghshrml4_facilities.additional_chcp_contact,
+                        dghshrml4_facilities.additional_community_group_info,
+                        dghshrml4_facilities.additional_chairnam_name,
+                        dghshrml4_facilities.additional_chairman_contact,
+                        dghshrml4_facilities.additional_chairman_community_support_info,
+                        dghshrml4_facilities.additional_csg_1_name,
+                        dghshrml4_facilities.additional_csg_1_contact,
+                        dghshrml4_facilities.additional_csg_2_name,
+                        dghshrml4_facilities.additional_csg_2_contact,
+                        dghshrml4_facilities.sanctioned_office_equipment,
+                        dghshrml4_facilities.sanctioned_vehicles,
+                        dghshrml4_facilities.approved_bed_number,
+                        dghshrml4_facilities.revenue_bed_number,
+                        dghshrml4_facilities.development_bed_number,
+                        dghshrml4_facilities.physical_structure_value,
+                        dghshrml4_facilities.other_miscellaneous_issues,
+                        dghshrml4_facilities.financial_revenue_code,
+                        dghshrml4_facilities.establishmentyear,
+                        dghshrml4_facilities.updated_by,
+                        dghshrml4_facilities.created_at,
+                        dghshrml4_facilities.updated_at,
+                        dghshrml4_facilities.is_active
+                FROM
+                        `dghshrml4_facilities`
+                        
+                $query_string
+                    
+                ORDER BY
+                        `name`";
         $org_list_result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>get_org_list:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
 
 //        echo "<pre>";
@@ -418,21 +506,21 @@ if ($form_submit == 1 && isset($_REQUEST['form_submit'])) {
         while ($data = mysql_fetch_assoc($org_list_result)) {
             $row_number++;
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue("A$row_number", $data['org_name'])
-                    ->setCellValue("B$row_number", $data['org_code'])
+                    ->setCellValue("A$row_number", $data['name'])
+                    ->setCellValue("B$row_number", $data['code'])
                     ->setCellValue("C$row_number", $data['division_name'])
                     ->setCellValue("D$row_number", $data['district_name'])
-                    ->setCellValue("E$row_number", getUpazilaNamefromCode($data['upazila_thana_code'], $data['district_bbs_code']))
-                    ->setCellValue("F$row_number", $data['org_agency_name'])
-                    ->setCellValue("G$row_number", $data['org_type_name'])
-                    ->setCellValue("H$row_number", $data['org_organizational_functions_name'])
-                    ->setCellValue("I$row_number", $data['org_level_name'])
-                    ->setCellValue("J$row_number", $data['mobile_number1'])
-                    ->setCellValue("K$row_number", $data['email_address1'])
+                    ->setCellValue("E$row_number", $data['upazila_name'])
+                    ->setCellValue("F$row_number", $data['facilityagency_name'])
+                    ->setCellValue("G$row_number", $data['facilitytype_name'])
+                    ->setCellValue("H$row_number", $data['facilityfunction_name'])
+                    ->setCellValue("I$row_number", $data['facilitylevel_name'])
+                    ->setCellValue("J$row_number", $data['mobile1'])
+                    ->setCellValue("K$row_number", $data['email1'])
                     ->setCellValue("L$row_number", $data['approved_bed_number'])
 					->setCellValue("M$row_number", $data['revenue_bed_number'])
 					->setCellValue("N$row_number", $data['development_bed_number'])
-                    ->setCellValue("O$row_number", $data['electricity_source_name']);
+                    ->setCellValue("O$row_number", $data['main_electricitysourceoption_name']);
         }
 
         /**
