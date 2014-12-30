@@ -5,8 +5,8 @@
 /**
  * Get Division Name form id (Division id)
  * 
- * @param INT $div_code
- * @return string division_name
+ * @param INT $id
+ * @return string name
  */
 function getDivisionNameFromId($id) {
     if(!$id > 0){
@@ -47,6 +47,52 @@ function getLocationNameFromId($id, $level_name) {
     }    
 }
 
+/**
+ * Get the Agency Name form the Agency Code
+ * @param type $agency_id
+ * @return type
+ */
+function getAgencyNameFromAgencyId($agency_id) {
+    if(!$agency_id > 0){
+        return "";
+    }
+    $sql = "SELECT
+                    *
+            FROM
+                    `dghshrml4_facilityagencies`
+            WHERE
+                    id = $agency_id
+            ORDER BY
+                    `name`";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getAgencyNameFromAgencyCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_data = mysql_fetch_assoc($result);
+    $org_agency_code_name = $org_data['name'];
+    return $org_agency_code_name;
+}
+
+/**
+ * Get the organization type Name form the Organization type Id
+ * @param type $org_type_id
+ * @return string org_type_name
+ */
+function getOrgTypeNameFormOrgTypeId($org_type_id) {
+    if(!$org_type_id > 0){
+        return "";
+    }
+    $sql = "SELECT
+                    *
+            FROM
+                    `dghshrml4_facilitytypes`
+            WHERE
+                    id = $org_type_id
+            LIMIT 1";
+    $result = mysql_query($sql) or die(mysql_error() . "<br /><br />Code:<b>getOrgTypeNameFormOrgTypeCode:1</b><br /><br /><b>Query:</b><br />___<br />$sql<br />");
+
+    $org_type_data = mysql_fetch_assoc($result);
+    $org_type_name = $org_type_data['name'];
+    return $org_type_name;
+}
 
 /**
  * Get Division Name form id (Division id)
